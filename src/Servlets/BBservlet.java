@@ -9,17 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+@WebServlet("/register")
 public class BBservlet extends HttpServlet {
 
     private DataBase db = new DataBase();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("Hello user!");
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
@@ -28,6 +32,9 @@ public class BBservlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("Hello user!");
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
@@ -37,13 +44,15 @@ public class BBservlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         String page = request.getParameter("page");
         //PrintWriter out = response.getWriter();
-        if (action.equals("signup")) {   //SIGN UP
+        out.println("Hello user1!");
+        //if (action.equals("signup")) {   //SIGN UP
 
             String FirstName = request.getParameter("name");   //take all parameters from form
             String LastName = request.getParameter("surname");
@@ -56,9 +65,9 @@ public class BBservlet extends HttpServlet {
             String city = request.getParameter("city");
             String address = request.getParameter("address");
             String verified = request.getParameter("verified");
-
+            out.println("Hello user1.5!");
             db.openConn();
-
+            out.println("Hello user2!");
             String query3 = "SELECT COUNT(*) AS total FROM user where username='" + UserName + "'";   //check if username already exists
             ResultSet rs3 = db.executeQuery(query3);
             int exists = 0;
@@ -109,7 +118,7 @@ public class BBservlet extends HttpServlet {
 
                 }
 
-               // request.getRequestDispatcher("/welcome/success_signup.jsp").include(request, response);
+                // request.getRequestDispatcher("/welcome/success_signup.jsp").include(request, response);
             }
 //            else {
 //
@@ -124,6 +133,6 @@ public class BBservlet extends HttpServlet {
 
             db.closeConnection();
 
-        }
+      //  }
     }
 }

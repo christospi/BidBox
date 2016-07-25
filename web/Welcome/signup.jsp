@@ -99,7 +99,7 @@
         <div id="signup">
             <h1>Sign Up for Free</h1>
 
-            <form action="./../BBservlet?action=signup" method="post">
+            <form  action="${pageContext.request.contextPath}/register" method="post" >
 
                 <div class="top-row">
                     <div class="field-wrap">
@@ -164,17 +164,21 @@
                     <label>
                         verified<span class="req">*</span>
                     </label>
+                    <input type="text" name="verified" required autocomplete="off"/>
+
                 </div>
 
-                    <br><input type="submit" id="scform" value="Sign Up Now" action = signup>
+                    <br><input type="submit" value="register"/>
+
 
             </form>
 
 
 
-
     </div><!-- tab-content -->
 
-</div> <!-- /form -->
+    </div> <!-- /form -->
+
+    </div>
 </body>
 </html>
