@@ -110,7 +110,7 @@ public class BBservlet extends HttpServlet {
                 for(int k=0;k<role.length;k++) {
 
                     roles_in="";
-                    roles_in+=role[k];
+                    roles_in+=role[k]; 
                     String query2 = "INSERT INTO roles VALUES (0, '"+roles_in+"', '"+UserName+"')";
                     Integer j = db.executeUpdate(query2);
                     //out.print(j);
