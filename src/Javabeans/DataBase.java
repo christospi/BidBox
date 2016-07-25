@@ -37,6 +37,7 @@ public class DataBase implements Serializable{
 
     }
 
+    /**************************************************************************/
     public void openConn() throws FileNotFoundException {
 
         importProperties();
@@ -51,26 +52,32 @@ public class DataBase implements Serializable{
         }
     }
 
+    /**************************************************************************/
     public Connection getConn() {
         return this.conn;
     }
 
+    /**************************************************************************/
     public void setStatement(Statement statement) {
         this.st = statement;
     }
 
+    /**************************************************************************/
     public Statement getStatement() {
         return this.st;
     }
 
+    /**************************************************************************/
     public void setResultSet(ResultSet result) {
         this.rs = result;
     }
 
+    /**************************************************************************/
     public ResultSet setResultSet() {
         return this.rs;
     }
 
+    /**************************************************************************/
     public void closeConnection() {
 
         try {
@@ -80,7 +87,7 @@ public class DataBase implements Serializable{
         }
     }
 
-    // EXEQUTE QUERY
+    /**************************************************************************/
     public ResultSet executeQuery(String query) {
 
         try {
@@ -92,7 +99,7 @@ public class DataBase implements Serializable{
         return this.rs;
     }
 
-    // EXECUTE QUERY IN ORDER TO UPDATE DATABASE
+    /**************************************************************************/
     public int executeUpdate(String query) {
 
         int num = 0;
