@@ -92,7 +92,7 @@ public class DataBase implements Serializable{
     /**************************************************************************/
     public ResultSet executeQuery(String query) {
 
-        out.println("xaxaxaxa");
+        out.println("xaaxaxa");
         try {
             this.rs = getStatement().executeQuery(query);
         } catch (SQLException ex) {

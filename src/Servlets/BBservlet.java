@@ -97,7 +97,7 @@ public class BBservlet extends HttpServlet {
                 }
             }
             out.println("Hello user3!");
-           // if(exists == 0 && exists2 ==0 ) {   //user entered valid username and email
+           if(exists == 0 && exists2 ==0 ) {   //user entered valid username and email
 
                 String query = "INSERT INTO user VALUES(0, '" + UserName + "',"
                         + "'" + Password + "',"
@@ -128,7 +128,7 @@ public class BBservlet extends HttpServlet {
                 }
 
                 // request.getRequestDispatcher("/welcome/success_signup.jsp").include(request, response);
-           // }
+            }
 //            else {
 //
 //                if(exists == 1) {   //username exists
