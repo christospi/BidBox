@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Signup</title>
+
     <script type="text/javascript">
         function checkForm(form) {
 
@@ -87,19 +88,18 @@
             return true;
         }
     </script>
+
 </head>
 <body>
 
 
 
 <div class="form">
-
-
     <div class="tab-content">
         <div id="signup">
             <h1>Sign Up for Free</h1>
 
-            <form  action="${pageContext.request.contextPath}/register" method="post" >
+            <form  action="BBservlet?action=signup" method="post" >
 
                 <div class="top-row">
                     <div class="field-wrap">
@@ -165,20 +165,12 @@
                         verified<span class="req">*</span>
                     </label>
                     <input type="text" name="verified" required autocomplete="off"/>
-
                 </div>
-
-                    <br><input type="submit" value="register"/>
-
-
+                    <br><input type="submit" value="register">
             </form>
-
-
-
-    </div><!-- tab-content -->
-
+        </div><!-- tab-content -->
     </div> <!-- /form -->
+</div>
 
-    </div>
 </body>
 </html>

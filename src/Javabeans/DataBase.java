@@ -6,6 +6,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+import static java.lang.System.out;
+
 public class DataBase implements Serializable{
 
     private static String dbUrl;
@@ -33,7 +35,7 @@ public class DataBase implements Serializable{
         dbUrl = props.getProperty("databaseUrl");
         dbDriver = props.getProperty("driverClassName");
 
-        System.out.println("Diavasa apo to property file ta :  " +user +"  "+ password +"  "+ dbUrl+"  "+dbDriver );
+        out.println("Diavasa apo to property file ta :  " +user +"  "+ password +"  "+ dbUrl+"  "+dbDriver );
 
     }
 
@@ -90,6 +92,7 @@ public class DataBase implements Serializable{
     /**************************************************************************/
     public ResultSet executeQuery(String query) {
 
+        out.println("xaxaxaxa");
         try {
             this.rs = getStatement().executeQuery(query);
         } catch (SQLException ex) {

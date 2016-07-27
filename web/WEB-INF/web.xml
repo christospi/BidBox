@@ -3,4 +3,34 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+    <servlet>
+        <servlet-name>BBservlet</servlet-name>
+        <servlet-class>Servlets.BBservlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BBservlet</servlet-name>
+        <url-pattern>/BBservlet</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <security-constraint>
+        <display-name>BidBox</display-name>
+        <web-resource-collection>
+            <web-resource-name>BidBox</web-resource-name>
+            <description/>
+            <url-pattern>/*</url-pattern>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+
+        <!--<user-data-constraint>-->
+            <!--<description/>-->
+            <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
+        <!--</user-data-constraint>-->
+
+    </security-constraint>
+
 </web-app>

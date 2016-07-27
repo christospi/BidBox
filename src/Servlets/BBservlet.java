@@ -1,6 +1,7 @@
 package Servlets;
 
 import Javabeans.DataBase;
+import Javabeans.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-@WebServlet("/register")
+
+
+//@WebServlet("/register")
 public class BBservlet extends HttpServlet {
 
     private DataBase db = new DataBase();
@@ -34,7 +37,9 @@ public class BBservlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+
         out.println("Hello user!");
+
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
@@ -44,6 +49,7 @@ public class BBservlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
@@ -51,8 +57,10 @@ public class BBservlet extends HttpServlet {
         String action = request.getParameter("action");
         String page = request.getParameter("page");
         //PrintWriter out = response.getWriter();
+
         out.println("Hello user1!");
-        //if (action.equals("signup")) {   //SIGN UP
+
+        if (action.equals("signup")) {   //SIGN UP
 
             String FirstName = request.getParameter("name");   //take all parameters from form
             String LastName = request.getParameter("surname");
@@ -133,6 +141,78 @@ public class BBservlet extends HttpServlet {
 
             db.closeConnection();
 
-      //  }
+        }
+        else if (action.equals("login")) {    //LOGIN
+
+            out.println("Hello from login brace!");
+
+            try {
+
+                String username = request.getParameter("Username"); //get user and pass from form
+                String password = request.getParameter("Password");
+                String query = "select * from User where username='" + username + "' and pass='" + password + "'";
+
+                out.println("--" + username + "-->" + password);
+
+                db.openConn();
+
+                out.println("bug 1 !");
+                out.println(query);
+
+                ResultSet rs = db.executeQuery(query);
+
+                out.println("bug 2 !");
+
+                if (rs.next()) {    //if user exists
+
+                    out.println("EXISTS !");
+                    User user = User.getUser(username);
+                    session.setAttribute("user", user);
+
+                    if (user.ver == 0) {    //if he isnt verified yet display this
+                        request.getRequestDispatcher("/welcome/unverified.jsp").include(request, response);
+                    }
+                    else {  //else see his role and redirect him to the wright page
+
+                        response.sendRedirect("./../web/welcome/login.jsp");
+                        /*
+                        String []user2 = new String[user.roles.length];
+                        for (int k=0;k<user.roles.length;k++) {
+                            user2[k]=user.roles[k];
+                            //System.out.println(user[k]);
+                        }
+
+                        if(user.hasRole(user2) == "Renter"){
+                            response.sendRedirect("/DiEstate/DbServlet?page=render");
+                        }
+                        else if(user.hasRole(user2) == "Tenant"){
+                            response.sendRedirect("/DiEstate/DbServlet?page=tenant");
+                        }
+                        else if(user.hasRole(user2) == "Visitor"){
+                            response.sendRedirect("/DiEstate/DbServlet?page=visitor");
+                        }
+                        else if(user.hasRole(user2) == "Admin"){
+                            response.sendRedirect("/DiEstate/DbServlet?page=admin");
+                        }
+                        else if(user.hasRole(user2) == "Combo"){
+                            response.sendRedirect("/DiEstate/DbServlet?page=combo");
+                        }
+                        */
+                    }
+
+                }else { //if user and pass dont exist in db then..
+
+                    out.print("Invalid User: " + username + " " + password);
+                    request.getRequestDispatcher("./welcome/unverified.jsp").include(request, response);
+
+                }
+
+                db.closeConnection();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
 }
