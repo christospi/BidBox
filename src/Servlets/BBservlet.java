@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-//@WebServlet("/register")
+//@WebServlet("/BBservlet")
 public class BBservlet extends HttpServlet {
 
     private DataBase db = new DataBase();
@@ -62,6 +62,7 @@ public class BBservlet extends HttpServlet {
 
         if (action.equals("signup")) {   //SIGN UP
 
+
             String FirstName = request.getParameter("name");   //take all parameters from form
             String LastName = request.getParameter("surname");
             String UserName = request.getParameter("username");
@@ -95,8 +96,8 @@ public class BBservlet extends HttpServlet {
                     exists2 = 1;
                 }
             }
-
-            if(exists == 0 && exists2 ==0 ) {   //user entered valid username and email
+            out.println("Hello user3!");
+           // if(exists == 0 && exists2 ==0 ) {   //user entered valid username and email
 
                 String query = "INSERT INTO user VALUES(0, '" + UserName + "',"
                         + "'" + Password + "',"
@@ -111,14 +112,14 @@ public class BBservlet extends HttpServlet {
                 Integer i = db.executeUpdate(query);
                 //out.print(i);
                 //out.print(db.getConn().getWarnings());
-
+                out.println("Hello user4!");
                 String roles_in="";
                 String role[]=request.getParameterValues("roles");
 
                 for(int k=0;k<role.length;k++) {
 
                     roles_in="";
-                    roles_in+=role[k]; 
+                    roles_in+=role[k];
                     String query2 = "INSERT INTO roles VALUES (0, '"+roles_in+"', '"+UserName+"')";
                     Integer j = db.executeUpdate(query2);
                     //out.print(j);
@@ -127,7 +128,7 @@ public class BBservlet extends HttpServlet {
                 }
 
                 // request.getRequestDispatcher("/welcome/success_signup.jsp").include(request, response);
-            }
+           // }
 //            else {
 //
 //                if(exists == 1) {   //username exists
