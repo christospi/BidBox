@@ -24,7 +24,7 @@ public class DataBase implements Serializable{
         Properties props = new Properties();
 
         try{
-            FileReader reader = new FileReader("C:\\Users\\kwnst\\Desktop\\BidBox\\src\\Javabeans\\db.properties");
+            FileReader reader = new FileReader("/home/chris/IdeaProjects/BidBox/src/Javabeans/db.properties");
             props.load(reader);
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,9 +45,14 @@ public class DataBase implements Serializable{
         importProperties();
 
         try {
+            out.println("gia pame" + dbDriver);
             Class.forName(dbDriver).newInstance();
+            out.println("gia pame 2");
             conn = DriverManager.getConnection(dbUrl, user, password);
+            out.println("gia pame 3");
             setStatement(conn.createStatement());
+
+            out.println("TO EKANA");
 
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
@@ -94,7 +99,9 @@ public class DataBase implements Serializable{
 
         out.println("xaaxaxa");
         try {
+            out.println("xaxaxaxa-2");
             this.rs = getStatement().executeQuery(query);
+            out.println("xaxaxaxa-3");
         } catch (SQLException ex) {
             Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
         }

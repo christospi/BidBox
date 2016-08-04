@@ -27,7 +27,7 @@ public class User {
 
         db.openConn();
 
-        String query = "select * from User where username='" + username + "'";
+        String query = "select * from user where username='" + username + "'";
         ResultSet rs = db.executeQuery(query);
 
         try{

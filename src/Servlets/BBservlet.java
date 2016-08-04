@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,7 +62,23 @@ public class BBservlet extends HttpServlet {
 
         out.println("Hello user1!");
 
-        if (action.equals("signup")) {   //SIGN UP
+        if (action == null || action.equals("")) {
+            switch (page){
+                case "admin":
+                    request.getRequestDispatcher("/user/admin.jsp").include(request, response);
+                    break;
+                case "userlist":
+                    request.getRequestDispatcher("/admin/user_list.jsp").include(request, response);
+                    break;
+                case "userinfo":
+                    request.getRequestDispatcher("/admin/user_info.jsp").include(request, response);
+                    break;
+                case "verify":
+                    request.getRequestDispatcher("/admin/user_list.jsp").include(request, response);
+                    break;
+            }
+        }
+        else if (action.equals("signup")) {   //SIGN UP
 
 
             String FirstName = request.getParameter("name");   //take all parameters from form
@@ -97,7 +115,7 @@ public class BBservlet extends HttpServlet {
                 }
             }
             out.println("Hello user3!");
-           if(exists == 0 && exists2 ==0 ) {   //user entered valid username and email
+            if(exists == 0 && exists2 ==0 ) {   //user entered valid username and email
 
                 String query = "INSERT INTO user VALUES(0, '" + UserName + "',"
                         + "'" + Password + "',"
@@ -151,7 +169,7 @@ public class BBservlet extends HttpServlet {
 
                 String username = request.getParameter("Username"); //get user and pass from form
                 String password = request.getParameter("Password");
-                String query = "select * from User where username='" + username + "' and pass='" + password + "'";
+                String query = "select * from user where username='" + username + "' and pass='" + password + "'";
 
                 out.println("--" + username + "-->" + password);
 
@@ -175,7 +193,11 @@ public class BBservlet extends HttpServlet {
                     }
                     else {  //else see his role and redirect him to the wright page
 
-                        response.sendRedirect("./../web/welcome/login.jsp");
+                        if(Objects.equals(user.username, "admin")){
+                            response.sendRedirect("/BBservlet?page=admin");
+                        }
+
+//                        response.sendRedirect("/welcome/login.jsp");
                         /*
                         String []user2 = new String[user.roles.length];
                         for (int k=0;k<user.roles.length;k++) {
@@ -213,6 +235,34 @@ public class BBservlet extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+        }
+        else if (action.equals("userlist")) {   //USER LIST
+
+            ArrayList<User> uList = User.doSelectAll(); //arraylist with all info fro all users in db
+            session.setAttribute("uList", uList);
+
+            response.sendRedirect("/BBservlet?page=userlist");
+        }
+        else if (action.equals("userinfo")) {   //USER INFO
+
+            String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this user
+            session.setAttribute("pointer", pointer);
+            response.sendRedirect("/BBservlet?page=userinfo");
+
+        }
+        else if (action.equals("verify")) { //VERIFY A USER
+
+            String user_name = request.getParameter("user_name2");
+            String query = "UPDATE user SET verified=1 WHERE username='"+user_name+"'";
+            db.openConn();
+            int rs = db.executeUpdate(query);
+            db.closeConnection();
+
+            ArrayList<User> uList = User.doSelectAll(); //arraylist with all info fro all users in db
+            session.setAttribute("uList", uList);
+
+            response.sendRedirect("/BBservlet?page=verify");
 
         }
     }
