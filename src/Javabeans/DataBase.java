@@ -35,7 +35,7 @@ public class DataBase implements Serializable{
         dbUrl = props.getProperty("databaseUrl");
         dbDriver = props.getProperty("driverClassName");
 
-        out.println("Diavasa apo to property file ta :  " +user +"  "+ password +"  "+ dbUrl+"  "+dbDriver );
+//        out.println("Property file is:  " +user +"  "+ password +"  "+ dbUrl+"  "+dbDriver );
 
     }
 
@@ -45,15 +45,9 @@ public class DataBase implements Serializable{
         importProperties();
 
         try {
-            out.println("gia pame" + dbDriver);
             Class.forName(dbDriver).newInstance();
-            out.println("gia pame 2");
             conn = DriverManager.getConnection(dbUrl, user, password);
-            out.println("gia pame 3");
             setStatement(conn.createStatement());
-
-            out.println("TO EKANA");
-
         } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -97,11 +91,8 @@ public class DataBase implements Serializable{
     /**************************************************************************/
     public ResultSet executeQuery(String query) {
 
-        out.println("xaaxaxa");
         try {
-            out.println("xaxaxaxa-2");
             this.rs = getStatement().executeQuery(query);
-            out.println("xaxaxaxa-3");
         } catch (SQLException ex) {
             Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
         }

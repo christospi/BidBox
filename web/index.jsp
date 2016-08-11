@@ -3,9 +3,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>JSP Example</title>
+    <title>BidBox</title>
 </head>
 <body>
+<center><h1>Welcome to BidBox - The best auction site !</h1></center>
 <form method="post" action="BBservlet?action=login">
     <center>
         <table border="1" width="30%" cellpadding="3">

@@ -19,16 +19,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-//@WebServlet("/BBservlet")
 public class BBservlet extends HttpServlet {
 
     private DataBase db = new DataBase();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println("Hello user!");
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
@@ -37,11 +33,6 @@ public class BBservlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-
-        out.println("Hello user!");
-
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
@@ -52,17 +43,14 @@ public class BBservlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
 
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         String page = request.getParameter("page");
         //PrintWriter out = response.getWriter();
 
-        out.println("Hello user1!");
-
         if (action == null || action.equals("")) {
+
             switch (page){
                 case "admin":
                     request.getRequestDispatcher("/user/admin.jsp").include(request, response);
@@ -77,6 +65,7 @@ public class BBservlet extends HttpServlet {
                     request.getRequestDispatcher("/admin/user_list.jsp").include(request, response);
                     break;
             }
+
         }
         else if (action.equals("signup")) {   //SIGN UP
 
@@ -92,9 +81,9 @@ public class BBservlet extends HttpServlet {
             String city = request.getParameter("city");
             String address = request.getParameter("address");
             String verified = request.getParameter("verified");
-            out.println("Hello user1.5!");
+
             db.openConn();
-            out.println("Hello user2!");
+
             String query3 = "SELECT COUNT(*) AS total FROM user where username='" + UserName + "'";   //check if username already exists
             ResultSet rs3 = db.executeQuery(query3);
             int exists = 0;
@@ -114,7 +103,7 @@ public class BBservlet extends HttpServlet {
                     exists2 = 1;
                 }
             }
-            out.println("Hello user3!");
+
             if(exists == 0 && exists2 ==0 ) {   //user entered valid username and email
 
                 String query = "INSERT INTO user VALUES(0, '" + UserName + "',"
@@ -128,9 +117,7 @@ public class BBservlet extends HttpServlet {
                         + "'" + afm + "', 0)";
 
                 Integer i = db.executeUpdate(query);
-                //out.print(i);
-                //out.print(db.getConn().getWarnings());
-                out.println("Hello user4!");
+
                 String roles_in="";
                 String role[]=request.getParameterValues("roles");
 
@@ -163,41 +150,34 @@ public class BBservlet extends HttpServlet {
         }
         else if (action.equals("login")) {    //LOGIN
 
-            out.println("Hello from login brace!");
-
             try {
 
                 String username = request.getParameter("Username"); //get user and pass from form
                 String password = request.getParameter("Password");
                 String query = "select * from user where username='" + username + "' and pass='" + password + "'";
 
-                out.println("--" + username + "-->" + password);
-
                 db.openConn();
-
-                out.println("bug 1 !");
-                out.println(query);
 
                 ResultSet rs = db.executeQuery(query);
 
-                out.println("bug 2 !");
-
                 if (rs.next()) {    //if user exists
 
-                    out.println("EXISTS !");
                     User user = User.getUser(username);
                     session.setAttribute("user", user);
 
                     if (user.ver == 0) {    //if he isnt verified yet display this
                         request.getRequestDispatcher("/welcome/unverified.jsp").include(request, response);
                     }
-                    else {  //else see his role and redirect him to the wright page
+                    else {  //else see his role and redirect him to the right page
 
                         if(Objects.equals(user.username, "admin")){
                             response.sendRedirect("/BBservlet?page=admin");
                         }
+                        else{
+                            //TODO den einai swsto thelei page
+                            response.sendRedirect("/welcome/login.jsp");
+                        }
 
-//                        response.sendRedirect("/welcome/login.jsp");
                         /*
                         String []user2 = new String[user.roles.length];
                         for (int k=0;k<user.roles.length;k++) {
@@ -225,8 +205,8 @@ public class BBservlet extends HttpServlet {
 
                 }else { //if user and pass dont exist in db then..
 
-                    out.print("Invalid User: " + username + " " + password);
-                    request.getRequestDispatcher("./welcome/unverified.jsp").include(request, response);
+//                    out.print("Invalid User: " + username + " " + password);
+                    request.getRequestDispatcher("./welcome/login_fail.jsp").include(request, response);
 
                 }
 
