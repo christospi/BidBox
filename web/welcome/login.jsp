@@ -4,6 +4,8 @@
 <head>
     <title>Login OK</title>
     <h1>Successfully logged in dude.</h1>
+    <li><a href="">My Auctions</a></li>
+    <li><a href="">Search Auctions</a></li>
 </head>
 <body>
 

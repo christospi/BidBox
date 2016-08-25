@@ -64,6 +64,9 @@ public class BBservlet extends HttpServlet {
                 case "verify":
                     request.getRequestDispatcher("/admin/user_list.jsp").include(request, response);
                     break;
+                case "userlogin":
+                    request.getRequestDispatcher("/welcome/login.jsp").include(request, response);
+                    break;
             }
 
         }
@@ -174,8 +177,7 @@ public class BBservlet extends HttpServlet {
                             response.sendRedirect("/BBservlet?page=admin");
                         }
                         else{
-                            //TODO den einai swsto thelei page
-                            response.sendRedirect("/welcome/login.jsp");
+                            response.sendRedirect("/BBservlet?page=userlogin");
                         }
 
                         /*

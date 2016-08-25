@@ -36,7 +36,6 @@ public class DataBase implements Serializable{
         dbDriver = props.getProperty("driverClassName");
 
 //        out.println("Property file is:  " +user +"  "+ password +"  "+ dbUrl+"  "+dbDriver );
-
     }
 
     /**************************************************************************/
@@ -80,7 +79,6 @@ public class DataBase implements Serializable{
 
     /**************************************************************************/
     public void closeConnection() {
-
         try {
             this.conn.close();
         } catch (SQLException ex) {
@@ -90,7 +88,6 @@ public class DataBase implements Serializable{
 
     /**************************************************************************/
     public ResultSet executeQuery(String query) {
-
         try {
             this.rs = getStatement().executeQuery(query);
         } catch (SQLException ex) {
@@ -102,7 +99,6 @@ public class DataBase implements Serializable{
 
     /**************************************************************************/
     public int executeUpdate(String query) {
-
         int num = 0;
 
         try {
@@ -110,7 +106,6 @@ public class DataBase implements Serializable{
         } catch (SQLException ex) {
             Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return num;
     }
 }
