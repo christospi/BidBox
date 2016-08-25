@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class BBservlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             processRequest(request, response);
+
         } catch (SQLException ex) {
             Logger.getLogger(BBservlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -47,7 +49,7 @@ public class BBservlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         String page = request.getParameter("page");
-        //PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter();
 
         if (action == null || action.equals("")) {
 
@@ -83,8 +85,7 @@ public class BBservlet extends HttpServlet {
             String afm = request.getParameter("afm");
             String city = request.getParameter("city");
             String address = request.getParameter("address");
-            String verified = request.getParameter("verified");
-
+            String role = request.getParameter("roles");
             db.openConn();
 
             String query3 = "SELECT COUNT(*) AS total FROM user where username='" + UserName + "'";   //check if username already exists
@@ -95,8 +96,11 @@ public class BBservlet extends HttpServlet {
             while (rs3.next()) {
                 if (rs3.getInt("total") > 0 ) {
                     exists = 1;
+                    out.println("<font color=red><b>"+UserName+"</b> is already in use</font>");
+                    request.getRequestDispatcher("/welcome/signup.jsp").include(request, response);
                 }
             }
+
 
             String query4 = "SELECT COUNT(*) AS total FROM user where email='" + Email + "'";  //check if email already exists
             ResultSet rs4 = db.executeQuery(query4);
@@ -117,25 +121,25 @@ public class BBservlet extends HttpServlet {
                         + "'" + Phone+ "',"
                         + "'" + address + "',"
                         + "'" + city + "',"
-                        + "'" + afm + "', 0)";
+                        + "'" + afm + "', 0,'" + role + "')";
 
                 Integer i = db.executeUpdate(query);
 
-                String roles_in="";
-                String role[]=request.getParameterValues("roles");
+                //String roles_in="";
+                //String role[]=request.getParameterValues("roles");
 
-                for(int k=0;k<role.length;k++) {
+//                for(int k=0;k<role.length;k++) {
+//
+//                    roles_in="";
+//                    roles_in+=role[k];
+//                    String query2 = "INSERT INTO roles VALUES (0, '"+roles_in+"', '"+UserName+"')";
+//                    Integer j = db.executeUpdate(query2);
+//                    //out.print(j);
+//                    //out.print(db.getConn().getWarnings());
+//
+//                }
 
-                    roles_in="";
-                    roles_in+=role[k];
-                    String query2 = "INSERT INTO roles VALUES (0, '"+roles_in+"', '"+UserName+"')";
-                    Integer j = db.executeUpdate(query2);
-                    //out.print(j);
-                    //out.print(db.getConn().getWarnings());
-
-                }
-
-                // request.getRequestDispatcher("/welcome/success_signup.jsp").include(request, response);
+                 request.getRequestDispatcher("/welcome/success_signup.jsp").include(request, response);
             }
 //            else {
 //

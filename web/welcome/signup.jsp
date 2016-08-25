@@ -5,89 +5,7 @@
 <head>
     <title>Signup</title>
 
-    <script type="text/javascript">
-        function checkForm(form) {
 
-            if (form.FirstName.value === "") {
-                alert("Firstname cannot be blank!");
-                form.FirstName.focus();
-                return false;
-            }
-            if (form.LastName.value === "") {
-                alert("Lastname cannot be blank!");
-                form.LastName.focus();
-                return false;
-            }
-            if (form.UserName.value === "") {
-                alert("Username cannot be blank!");
-                form.UserName.focus();
-                return false;
-            }
-            re = /^\w+$/;
-            if (!re.test(form.UserName.value)) {
-                alert("Username must contain only letters, numbers and underscores!");
-                form.UserName.focus();
-                return false;
-            }
-            if (form.Password.value !== "") {
-                if (form.Password.value.length < 4) {
-                    alert("Error: Password must contain at least four characters!");
-                    form.Password.focus();
-                    return false;
-                }
-                if (form.Password.value === form.UserName.value) {
-                    alert("Password must be different from Username!");
-                    form.Password.focus();
-                    return false;
-                }
-                re = /[0-9]/;
-                if (!re.test(form.Password.value)) {
-                    alert("Password must contain at least one number (0-9)!");
-                    form.Password.focus();
-                    return false;
-                }
-                re = /[a-z]/;
-                if (!re.test(form.Password.value)) {
-                    alert("Password must contain at least one lowercase letter (a-z)!");
-                    form.Password.focus();
-                    return false;
-                }
-                re = /[A-Z]/;
-                if (!re.test(form.Password.value)) {
-                    alert("Password must contain at least one uppercase letter (A-Z)!");
-                    form.Password.focus();
-                    return false;
-                }
-            } else {
-                alert("Please check that you've entered and confirmed your password!");
-                form.Password.focus();
-                return false;
-            }
-
-            if( form.Password.value !== form.RPassword.value) {
-                alert("Please enter the same password as above!");
-                form.RPassword.focus();
-                return false;
-            }
-
-            var checked=false;
-            var elements = document.getElementsByName("roles");
-
-            for(var i=0; i < elements.length; i++){
-                if(elements[i].checked) {
-                    checked = true;
-                }
-            }
-
-            if (!checked) {
-                alert("You have to choose at least one role!");
-                return false;
-            }
-
-            //alert("You entered a valid password: " + form.Password.value);
-            return true;
-        }
-    </script>
 
 </head>
 <body>
@@ -101,19 +19,52 @@
 
             <form  action="./../BBservlet?action=signup" method="post" >
 
-                <div class="top-row">
+
                     <div class="field-wrap">
                         <label>
                             First Name<span class="req">*</span>
                         </label>
                         <input type="text" name ="name" required autocomplete="off" />
                     </div>
-                    <div class="top-row">
+                <%--<script type="text/javascript" src="jquery.js"></script>--%>
+                <%--<script type="text/javascript">--%>
+                    <%--$(document).ready(function()--%>
+                    <%--{--%>
+                        <%--$(".uname").change(function()--%>
+                        <%--{--%>
+                            <%--var uname = $(this).val();--%>
+                            <%--if(uname.length > 3)--%>
+                            <%--{--%>
+                                <%--$(".status").html("Checking availability...");--%>
+                                <%--$.ajax--%>
+                                <%--({--%>
+                                    <%--type: "POST",--%>
+                                    <%--url: "BBservlet",--%>
+                                    <%--data: "uname="+ uname,--%>
+                                    <%--success: function(msg)--%>
+                                    <%--{--%>
+                                        <%--$(".status").ajaxComplete(function(event, request, settings)--%>
+                                        <%--{--%>
+                                            <%--$(".status").html(msg);--%>
+                                        <%--});--%>
+                                    <%--}--%>
+                                <%--});--%>
+                            <%--}--%>
+
+                            <%--else--%>
+                            <%--{--%>
+                                <%--$(".status").html("username should be 3 chars");--%>
+                            <%--}--%>
+
+                        <%--});--%>
+                    <%--});--%>
+
+                <%--</script>--%>
                         <div class="field-wrap">
                             <label>
                                user Name<span class="req">*</span>
                             </label>
-                            <input type="text" name ="username" required autocomplete="off" />
+                            <input type="text" class="uname" name ="username" required autocomplete="off" /><span class="status"></span>
                         </div>
                     <div class="field-wrap">
                         <label>
@@ -121,7 +72,7 @@
                         </label>
                         <input type="text" name="surname" required autocomplete="off"/>
                     </div>
-                </div>
+
 
                 <div class="field-wrap">
                     <label>
@@ -134,9 +85,32 @@
                     <label>
                         Set A Password<span class="req">*</span>
                     </label>
-                    <input type="password" name="pass" required autocomplete="off"/>
+                    <input type="password" id="password" name="pass" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,}" title="You have to use six or more characters,uppercase and lowercase letters and numbers." required autocomplete="off"/>
                 </div>
+
                 <div class="field-wrap">
+                    <label>
+                           Confirm Password<span class="req">*</span>
+                    </label>
+                    <input type="password"  id="confirm_password" required autocomplete="off"/>
+                </div>
+                    <script type="text/javascript">
+                        var password = document.getElementById("password")
+                                , confirm_password = document.getElementById("confirm_password");
+
+                        function validatePassword(){
+                            if(password.value != confirm_password.value) {
+                                confirm_password.setCustomValidity("Passwords don't match");
+                            } else {
+                                confirm_password.setCustomValidity('');
+                            }
+                        }
+
+                        password.onchange = validatePassword;
+                        confirm_password.onkeyup = validatePassword;
+                    </script>
+
+                    <div class="field-wrap">
                     <label>
                         phone<span class="req">*</span>
                     </label>
@@ -160,11 +134,19 @@
                     </label>
                     <input type="text" name="address" required autocomplete="off"/>
                 </div>
+
                 <div class="field-wrap">
-                    <label>
-                        verified<span class="req">*</span>
-                    </label>
-                    <input type="text" name="verified" required autocomplete="off"/>
+                    <label>Type of registration: </label>
+
+
+                        <select name="roles">
+                            <option  value="bidder">Bidder</option>
+                            <option  value ="seller">Seller</option>
+                            <option  value ="combo"> Both </option>
+
+                        </select>
+
+
                 </div>
                     <br><input type="submit" value="register">
             </form>
