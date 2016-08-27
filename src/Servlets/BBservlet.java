@@ -14,7 +14,10 @@ import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -249,6 +252,60 @@ public class BBservlet extends HttpServlet {
             session.setAttribute("uList", uList);
 
             response.sendRedirect("/BBservlet?page=verify");
+
+        }
+        else if (action.equals("addauction")) {
+
+
+            String seller = request.getParameter("seller");
+            String name = request.getParameter("name");
+            String cat = request.getParameter("category");
+            float latitude = Float.parseFloat(request.getParameter("latitude"));
+            float longitude = Float.parseFloat(request.getParameter("longitude"));
+            String country = request.getParameter("country");
+            String city = request.getParameter("city");
+            float curr = Float.parseFloat(request.getParameter("curr"));
+            float buy_pr = Float.parseFloat(request.getParameter("buy_price"));
+            float first_bid = Float.parseFloat(request.getParameter("firstbid"));
+            int num_bid = Integer.parseInt(request.getParameter("num_bid"));
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            String st = dateFormat.format(date);
+            String end = request.getParameter("end");
+
+
+
+            db.openConn();
+
+            String query = "INSERT INTO estate_info VALUES(0, '" + latitude + "',"
+                    + "'" + longitude + "',"
+                    + "'" + seller + "',"
+                    + "'" + name + "',"
+                    + "'" + country + "',"
+                    + "'" + city + "',"
+                    + "'" + buy_pr + "',"
+                    + "'" + first_bid + "',"
+                    + "'" + curr + "',"
+                    + "'" + cat + "',"
+                    + "'" + num_bid + "',"
+                    + "'" + st + "',"
+                    + "'" + end + "')";
+
+            Integer i = db.executeUpdate(query);
+            //out.print(i);
+            //out.print(db.getConn().getWarnings());
+
+            if (i>0) {
+
+                request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
+
+            }
+            else {
+                request.getRequestDispatcher("/seller/fail_add.jsp").include(request, response);
+
+            }
+
+            db.closeConnection();
 
         }
     }
