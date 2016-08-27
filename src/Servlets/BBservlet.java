@@ -293,7 +293,7 @@ public class BBservlet extends HttpServlet {
 
             Integer i = db.executeUpdate(query);
             //out.print(i);
-            //out.print(db.getConn().getWarnings());
+
 
             if (i>0) {
 
