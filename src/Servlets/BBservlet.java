@@ -261,24 +261,29 @@ public class BBservlet extends HttpServlet {
             String name = request.getParameter("name");
             String cat = request.getParameter("category");
             float latitude = Float.parseFloat(request.getParameter("latitude"));
-            float longitude = Float.parseFloat(request.getParameter("longitude"));
+            float longtitude = Float.parseFloat(request.getParameter("longtitude"));
             String country = request.getParameter("country");
             String city = request.getParameter("city");
-            float curr = Float.parseFloat(request.getParameter("curr"));
+           // float curr = Float.parseFloat(request.getParameter("curr"));
             float buy_pr = Float.parseFloat(request.getParameter("buy_price"));
-            float first_bid = Float.parseFloat(request.getParameter("firstbid"));
-            int num_bid = Integer.parseInt(request.getParameter("num_bid"));
+            float first_bid = Float.parseFloat(request.getParameter("first_bid"));
+            float curr;
+            curr= first_bid;
+
+            //int num_bid = Integer.parseInt(request.getParameter("num_bid"));
+            int num_bid;
+            num_bid=0;
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
             String st = dateFormat.format(date);
             String end = request.getParameter("end");
-
+            String description = request.getParameter("description");
 
 
             db.openConn();
 
-            String query = "INSERT INTO estate_info VALUES(0, '" + latitude + "',"
-                    + "'" + longitude + "',"
+            String query = "INSERT INTO auction VALUES(0, '" + latitude + "',"
+                    + "'" + longtitude + "',"
                     + "'" + seller + "',"
                     + "'" + name + "',"
                     + "'" + country + "',"
@@ -289,7 +294,8 @@ public class BBservlet extends HttpServlet {
                     + "'" + cat + "',"
                     + "'" + num_bid + "',"
                     + "'" + st + "',"
-                    + "'" + end + "')";
+                    + "'" + end + "',"
+                    + "'" + description + "')";
 
             Integer i = db.executeUpdate(query);
             //out.print(i);

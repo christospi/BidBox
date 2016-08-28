@@ -6,7 +6,7 @@
     <h1>Successfully logged in dude.</h1>
     <li><a href="">My Auctions</a></li>
     <li><a href="./../welcome/search.jsp">Search Auctions</a></li>
-    <li><a href="">Add Auction</a></li>
+    <li><a href="./../seller/add_auction.jsp">Add Auction</a></li>
 </head>
 <body>
 
