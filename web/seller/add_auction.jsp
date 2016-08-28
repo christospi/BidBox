@@ -53,7 +53,7 @@
                 if (status === 'OK') {
                     if (results[1]) {
                         //formatted address
-                        alert(results[0].formatted_address)
+                       // alert(results[0].formatted_address)
                         //find country name
                         for(var i = 0; i < results[0].address_components.length; i++) {
                             if (results[0].address_components[i].types[0] == "country") {
@@ -72,7 +72,7 @@
                             }
                         }
                         //city data
-                        alert(city.short_name + " " + city.long_name)
+                        //alert(city.short_name + " " + city.long_name)
 
 
                     }
@@ -102,7 +102,21 @@
     <div id="new_auctionform">
         Seller : <input type="text" readonly name="seller" value="<%=user2.username%>   "><br>
         Item name:  <input type="text" name="name" placeholder="Item Name"><br>
-        Category :  <input type="text" name="category" placeholder="Category"><br>
+        Category :
+        <select name="category">
+            <option  value ="art"> Art </option>
+            <option  value ="books"> Books </option>
+            <option  value ="computers"> Computers & Tablets </option>
+            <option  value="electronics">Electronics</option>
+            <option  value ="fashion">Fashion</option>
+            <option  value ="gadgets"> Gadgets </option>
+            <option  value ="home"> Home & Garden </option>
+            <option  value ="jewelry"> Jewelry & Watches </option>
+            <option  value ="sports"> Sports </option>
+            <option  value ="videogame"> Video Games </option>
+            <option  value ="else"> Everything Else </option>
+
+        </select>
         <div id="map" ></div>
         Country: <input type="text" readonly id = "country" name="country" placeholder="ex.Greece"><br>
         City: <input type="text" readonly id="city" name="city" placeholder="ex.Athens"><br>
