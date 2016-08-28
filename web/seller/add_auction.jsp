@@ -31,8 +31,8 @@
 
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 4,
-            center: {lat: 34, lng: -40.605}
+            zoom: 10,
+            center: {lat: 37.97, lng: 23.73}
         });
         var geocoder = new google.maps.Geocoder;
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(
@@ -41,7 +41,7 @@
         marker1 = new google.maps.Marker({
             map: map,
             draggable: true,
-            position: {lat: 40.714, lng: -74.006}
+            position: {lat: 37.97, lng: 23.73}
         });
 
         google.maps.event.addListener(marker1, 'dragend', function(event) {
@@ -62,17 +62,19 @@
                             for (var b=0;b<results[0].address_components[i].types.length;b++) {
 
 
-                                if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
-
+                                if (results[0].address_components[i].types[b] == "administrative_area_level_5") {
+                                    //this is the object you are looking for
                                     city= results[0].address_components[i];
                                     break;
                                 }
                             }
                         }
+                        //city data
+                        //alert(city.short_name + " " + city.long_name)
 
 
                     }
-
+                    //window.alert( results[1].formatted_address );
                     document.getElementById('city').value =city.long_name ;
                     document.getElementById('country').value =country.long_name ;
                 }
