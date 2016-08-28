@@ -1,39 +1,53 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>BidBox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    <title>BidBox | Bid&Buy</title>
+
 </head>
 <body>
-<center><h1>Welcome to BidBox - The best auction site !</h1></center>
-<form method="post" action="BBservlet?action=login">
-    <center>
-        <table border="1" width="30%" cellpadding="3">
-            <thead>
-            <tr>
-                <th colspan="2">Login Here</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>User Name</td>
-                <td><input type="text" name="Username"/></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="password" name="Password"/></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="Login" /></td>
-                <td><input type="reset" value="Reset" /></td>
-            </tr>
-            <tr>
-                <td colspan="2">Yet Not Registered!! <a href="welcome/signup.jsp">Register Here</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </center>
-</form>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+
+        <div id="triangle-topleft">
+        <img  class="penguin" src="img/peng.png" height="130" width="285" ></div>
+
+    </div>
+</nav>
+<center><h1><b>Welcome to BidBox - The best auction site !</b></h1></center>
+
+
+    <div class="container">
+        <div class="login-container">
+            <div id="output"></div>
+            <div class="avatar"></div>
+            <div class="form-box">
+                <form method="post" action="BBservlet?action=login">
+                    <input name="Username" type="text" placeholder="username" required>
+                    <input type="password" name="Password" placeholder="password" required>
+                    <button class="btn btn-info btn-block login" type="submit">Login</button>
+                    <%--<input type="submit" value="Login" />--%>
+                    <p>or <a href="welcome/signup.jsp" >Register here</a></p>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+<%--<div class="navbar navbar-fixed-bottom" ></div>--%>
+<footer class="footer">
+    <div class="container">
+        <p class="developers"> © Developed by <b>C&K</b></p>
+    </div>
+</footer>
 </body>
 </html>
