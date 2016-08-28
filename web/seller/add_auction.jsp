@@ -52,9 +52,7 @@
             geocoder.geocode({'location': latlng}, function(results, status) {
                 if (status === 'OK') {
                     if (results[1]) {
-                        //formatted address
-                       // alert(results[0].formatted_address)
-                        //find country name
+
                         for(var i = 0; i < results[0].address_components.length; i++) {
                             if (results[0].address_components[i].types[0] == "country") {
                                 country=results[0].address_components[i];
@@ -63,20 +61,18 @@
                         for (var i=0; i<results[0].address_components.length; i++) {
                             for (var b=0;b<results[0].address_components[i].types.length;b++) {
 
-                                //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+
                                 if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
-                                    //this is the object you are looking for
+
                                     city= results[0].address_components[i];
                                     break;
                                 }
                             }
                         }
-                        //city data
-                        //alert(city.short_name + " " + city.long_name)
 
 
                     }
-                    //window.alert( results[1].formatted_address );
+
                     document.getElementById('city').value =city.long_name ;
                     document.getElementById('country').value =country.long_name ;
                 }
