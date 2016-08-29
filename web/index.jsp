@@ -3,7 +3,7 @@
 <html>
 
 <head>
- <script src="js/header.js"></script>
+    <jsp:include page="/basics/header.jsp" />
 </head>
 <body>
 
@@ -28,7 +28,7 @@
 
     </div>
 
-<script src="js/footer.js"></script>
+<jsp:include page="/basics/footer.jsp" />
 
 </body>
 </html>
