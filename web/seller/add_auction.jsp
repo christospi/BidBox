@@ -1,4 +1,6 @@
 <%@page import="Javabeans.User"%>
+
+<%@page import="Javabeans.Photo"%>
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
@@ -127,6 +129,21 @@
         Item description : <textarea name="description" rows="4" cols="120 "maxlength="120">Maximum characters 120</textarea><br>
         <br><input type="submit" value="Add auction">
     </div>
+</form>
+
+<h3>Upload a photo :</h3>
+<form method="post" action="./../BBservlet?action=upload&owner=<%=user2.username%>" enctype="multipart/form-data">
+    <table border="0" class="forms">
+        <tr>
+            <td>Upload Photo: </td>
+            <td><input type="file" name="photo" accept="image/gif, image/jpeg, image/png" size="50"/></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Upload" id="send2">
+            </td>
+        </tr>
+    </table>
 </form>
 </body>
 </html>

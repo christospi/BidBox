@@ -29,6 +29,7 @@ public class Auction {
     public String country;
     public Date st;
     public Date end;
+    public String description;
 
     public static Auction getAuction(String username) throws FileNotFoundException {
 
@@ -45,18 +46,20 @@ public class Auction {
 
                 auction.id = rs.getInt("itemID");
                 auction.lat = rs.getFloat("latitude");
-                auction.longt = rs.getFloat("longitude");
+                auction.longt = rs.getFloat("longtitude");
                 auction.seller = rs.getString("seller");
                 auction.city = rs.getString("city");
                 auction.name = rs.getString("name");
                 auction.curr = rs.getFloat("curr");
-                auction.buy_pr = rs.getFloat("buy_price");
+                auction.buy_pr = rs.getFloat("buy_pr");
                 auction.first_bid = rs.getFloat("first_bid");
                 auction.cat = rs.getString("cat");
                 auction.country = rs.getString("country");
                 auction.num_bid = rs.getInt("num_bid");
                 auction.st = rs.getDate("st");
                 auction.end = rs.getDate("end");
+                auction.description = rs.getString("description");
+
             }
 
         } catch (Exception e) {
@@ -84,18 +87,19 @@ public class Auction {
 
                 auction.id = rs.getInt("itemID");
                 auction.lat = rs.getFloat("latitude");
-                auction.longt = rs.getFloat("longitude");
+                auction.longt = rs.getFloat("longtitude");
                 auction.seller = rs.getString("seller");
                 auction.city = rs.getString("city");
                 auction.name = rs.getString("name");
                 auction.curr = rs.getFloat("curr");
-                auction.buy_pr = rs.getFloat("buy_price");
+                auction.buy_pr = rs.getFloat("buy_pr");
                 auction.first_bid = rs.getFloat("first_bid");
                 auction.cat = rs.getString("cat");
                 auction.country = rs.getString("country");
                 auction.num_bid = rs.getInt("num_bid");
                 auction.st = rs.getDate("st");
                 auction.end = rs.getDate("end");
+                auction.description = rs.getString("description");
                 aList.add((Auction) auction);
 
             }

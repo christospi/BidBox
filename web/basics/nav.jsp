@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -25,6 +26,7 @@
 
 
 
+
             <ul class="nav  nav-pills navbar-right">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="#">My Auctions</a></li>
@@ -33,7 +35,7 @@
                 <li><a href="#">About us</a></li>
                 <li><a href="#">Log out</a></li>
             </ul>
-
+            <hr>
 
         </div>
 

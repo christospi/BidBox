@@ -2,18 +2,17 @@ package Servlets;
 
 import Javabeans.DataBase;
 import Javabeans.User;
-
+import Javabeans.Auction;
+import Javabeans.Photo;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +21,8 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@WebServlet("/BBservlet?action=upload")
+@MultipartConfig(maxFileSize = 16177215)    // upload file's size up to 16MB
 
 public class BBservlet extends HttpServlet {
 
@@ -72,7 +73,17 @@ public class BBservlet extends HttpServlet {
                 case "userlogin":
                     request.getRequestDispatcher("/welcome/login.jsp").include(request, response);
                     break;
+                case "auctionlist":
+                    request.getRequestDispatcher("/seller/auctionlist.jsp").include(request,response);
+                    break;
+                case "auctioninfo":
+                    request.getRequestDispatcher("/seller/auctioninfo.jsp").include(request,response);
+                    break;
+                case "viewphoto":
+                    request.getRequestDispatcher("/seller/photos.jsp").include(request,response);
+                    break;
             }
+
 
         }
         else if (action.equals("signup")) {   //SIGN UP
@@ -313,6 +324,175 @@ public class BBservlet extends HttpServlet {
 
             db.closeConnection();
 
+        }
+        else if (action.equals("upload")) { //UPLOAD A PHOTO
+
+
+
+            String owner = request.getParameter("seller");
+            //String imageName = null;
+            int id = Integer.parseInt(request.getParameter("id"));
+            InputStream inputStream = null; // input stream of the upload file
+
+            // obtains the upload file part in this multipart request
+            Part filePart = request.getPart("photo_file");
+            String header = filePart.getHeader("content-disposition");
+            String filename = header.substring(header.indexOf("filename=\"")).split("\"")[1];  //getting filename
+            //System.out.println(filename +"!!!!!!!!!!!");
+
+            if (filePart != null) {
+               //  prints out some information for debugging
+//                System.out.println(filePart.getName());
+//                System.out.println(filePart.getSize());
+//                System.out.println(filePart.getContentType());
+
+                // obtains input stream of the upload file
+                inputStream = filePart.getInputStream();
+                //imageName = filePart.getName();
+            }
+
+            try {
+                // connects to the database
+                db.openConn();
+                Connection conn = db.getConn();
+
+                // constructs SQL statement
+                String sql = "INSERT INTO photo (owner,pic,pic_name,itemID) values(?,?,?,?)";
+
+
+
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setString(1, owner);
+
+                statement.setString(3, filename);
+                statement.setInt(4, id);
+                if (inputStream != null) {
+                    // fetches input stream of the upload file for the blob column
+                    statement.setBlob(2, inputStream);
+                }
+
+                // sends the statement to the database server
+                int row = statement.executeUpdate();
+
+                if (row>0) {
+
+
+                        request.getRequestDispatcher("/seller/success_photo.jsp").include(request, response);
+
+
+
+                }
+                else {
+
+
+                        request.getRequestDispatcher("/seller/failure_photo.jsp").include(request, response);
+
+
+
+                }
+
+            } finally {
+
+                db.closeConnection();
+
+            }
+
+        }
+        else if (action.equals("auctionlist")) { //ESTATE LIST
+
+            String seller = request.getParameter("username");
+            System.out.println(seller);
+            ArrayList<Auction> aList = Auction.Auctionlist(seller);   //arraylist with all info for a user's estates
+            session.setAttribute("aList", aList);
+
+
+
+            response.sendRedirect("/BBservlet?page=auctionlist");
+        }
+        else if (action.equals("auctioninfo")) { //ESTATE INFO
+
+            String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this estate
+            session.setAttribute("pointer", pointer);
+
+            String seller = request.getParameter("seller");
+            session.setAttribute("seller", seller);
+
+            ArrayList<Photo> pList = Photo.pdoSelectAll(seller); //get all photos this users uploaded
+            session.setAttribute("pList", pList);
+
+//            ArrayList<MessageBean> mList = MessageBean.mdoSelectAll(owner); //get all messages this user has recieved
+//            session.setAttribute("mList", mList);
+
+
+            response.sendRedirect("/BBservlet?page=auctioninfo");
+
+        }
+        else if (action.equals("viewphoto")) {   //SEE ESTATE'S PHOTOS
+
+            String id = request.getParameter("id");
+            session.setAttribute("id", id);
+            System.out.println(id);
+            String seller = request.getParameter("seller");
+
+            ArrayList<Photo> pList = Photo.pdoSelectAll(seller);
+            session.setAttribute("pList", pList);
+
+
+            response.sendRedirect("/BBservlet?page=viewphoto");
+
+        }
+        else if (action.equals("viewphoto2")) {   //SEE ESTATE'S PHOTOS ON JSP
+
+            String name = request.getParameter("pic_name");
+            Connection con = null;
+            Blob image = null;
+            byte[ ] imgData = null ;
+            Statement stmt = null;
+            ResultSet rs = null;
+
+            try {
+
+                db.openConn();
+                con = db.getConn();
+                stmt = con.createStatement();
+
+                rs = stmt.executeQuery("SELECT pic from photo where pic_name='"+name+"'");
+
+                if (rs.next()) {
+
+                    image = rs.getBlob(1);
+                    imgData = image.getBytes(1,(int)image.length());
+
+                }else {
+
+                    System.out.println("Display Blob Example");
+                    System.out.println("image not found for given id");
+
+                }
+
+                // display the image
+                response.reset();
+                response.setContentType("image/gpg");
+                OutputStream o = response.getOutputStream();
+                o.write(imgData);
+                o.flush();
+                o.close();
+
+            }catch (Exception e) {
+                System.out.println("Unable To Display image");
+                System.out.println("Image Display Error=" + e.getMessage());
+
+            } finally {
+                try {
+                    rs.close();
+                    stmt.close();
+                    con.close();
+                    db.closeConnection();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
