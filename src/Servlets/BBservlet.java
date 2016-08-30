@@ -431,9 +431,7 @@ public class BBservlet extends HttpServlet {
 
             String id = request.getParameter("id");
             session.setAttribute("id", id);
-            System.out.println(id);
             String seller = request.getParameter("seller");
-
             ArrayList<Photo> pList = Photo.pdoSelectAll(seller);
             session.setAttribute("pList", pList);
 

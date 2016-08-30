@@ -42,7 +42,8 @@
     </tr>
 </table>
 <br>
-<a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>%>">See photos for this item</a><br>
+
+<a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>">See photos for this item</a><br>
 
 
 <h3>Upload a photo :</h3>
