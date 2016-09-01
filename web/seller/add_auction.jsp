@@ -7,6 +7,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <jsp:include page="/basics/maxcdn.jsp" />
+    <jsp:include page="/basics/add_auct.jsp" />
     <title>Add Auction</title>
     <style>
         html, body {
@@ -22,7 +24,7 @@
 
     </style>
 </head>
-<body>
+<center>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfp9V-7Zc4O_YtJFxAtw8mmy8Dd_XVD-Y&libraries=geometry"></script>
 
 <script>
@@ -97,53 +99,67 @@
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
     Date date = new Date();
     String st = dateFormat.format(date);%>
-<h2>Add a new auction:</h2>
-<form  action="./../BBservlet?action=addauction" method="post" >
-    <div id="new_auctionform">
-        Seller : <input type="text" readonly name="seller" value="<%=user2.username%>   "><br>
-        Item name:  <input type="text" name="name" placeholder="Item Name"><br>
-        Category :
-        <select name="category">
-            <option  value ="art"> Art </option>
-            <option  value ="books"> Books </option>
-            <option  value ="computers"> Computers & Tablets </option>
-            <option  value="electronics">Electronics</option>
-            <option  value ="fashion">Fashion</option>
-            <option  value ="gadgets"> Gadgets </option>
-            <option  value ="home"> Home & Garden </option>
-            <option  value ="jewelry"> Jewelry & Watches </option>
-            <option  value ="sports"> Sports </option>
-            <option  value ="videogame"> Video Games </option>
-            <option  value ="else"> Everything Else </option>
+<center></center><h2>Add a new auction:</h2></center>
+<div class="container">
+    <div class="login-container2">
+    <div id="output"></div>
+     <div class="form-box2">
+        <form  action="./../BBservlet?action=addauction" method="post" >
+            <div id="new_auctionform">
+                <label>
+                Seller : <input type="text" readonly name="seller" value="<%=user2.username%>   ">
+                </label>
+                <label>
+                Item name:  <input type="text" name="name" placeholder="Item Name">
+                </label>
+                <label>
+                Category :
+                <select name="category">
+                    <option  value ="art"> Art </option>
+                    <option  value ="books"> Books </option>
+                    <option  value ="computers"> Computers & Tablets </option>
+                    <option  value="electronics">Electronics</option>
+                    <option  value ="fashion">Fashion</option>
+                    <option  value ="gadgets"> Gadgets </option>
+                    <option  value ="home"> Home & Garden </option>
+                    <option  value ="jewelry"> Jewelry & Watches </option>
+                    <option  value ="sports"> Sports </option>
+                    <option  value ="videogame"> Video Games </option>
+                    <option  value ="else"> Everything Else </option>
 
-        </select>
-        <div id="map" ></div>
-        Country: <input type="text" readonly id = "country" name="country" placeholder="ex.Greece"><br>
-        City: <input type="text" readonly id="city" name="city" placeholder="ex.Athens"><br>
-        Latitude: <input type="text" readonly id="latitude" name="latitude" placeholder="Latitude"><br>
-        Longtitude : <input type="text" readonly id="longtitude" name="longtitude" placeholder="Longtitude"><br>
-        Starting Price: <input type="number" step="0.01" name="first_bid" placeholder="Starting Price"><br>
-        Maximum Price:  <input type="number" step="0.01" name="buy_price" placeholder="Max Price"><br>
-        Bids starting date : <input type="text" readonly name="st" value="<%=st%>"><br>
-        Bids ending date : <input type="date" name="end" placeholder=" Ending Date "><br>
-        Item description : <textarea name="description" rows="4" cols="120 "maxlength="120">Maximum characters 120</textarea><br>
-        <br><input type="submit" value="Add auction">
-    </div>
-</form>
-
-<h3>Upload a photo :</h3>
-<form method="post" action="./../BBservlet?action=upload&owner=<%=user2.username%>" enctype="multipart/form-data">
-    <table border="0" class="forms">
-        <tr>
-            <td>Upload Photo: </td>
-            <td><input type="file" name="photo" accept="image/gif, image/jpeg, image/png" size="50"/></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Upload" id="send2">
-            </td>
-        </tr>
-    </table>
-</form>
+                </select>
+                </label>
+                <label>
+                <div id="map" ></div></label>
+                <label> Country: <input type="text" readonly id = "country" name="country" placeholder="ex.Greece"></label>
+                <label>City: <input type="text" readonly id="city" name="city" placeholder="ex.Athens"></label>
+                <label>Latitude: <input type="text" readonly id="latitude" name="latitude" placeholder="Latitude"></label>
+                <label>Longtitude : <input type="text" readonly id="longtitude" name="longtitude" placeholder="Longtitude"></label>
+                <label>Starting Price: <input type="number" step="0.01" name="first_bid" placeholder="Starting Price"></label>
+                <label> Maximum Price:  <input type="number" step="0.01" name="buy_price" placeholder="Max Price"></label>
+                <label>Bids starting date : <input type="text" readonly name="st" value="<%=st%>"></label>
+                <label> Bids ending date : <input type="date" name="end" placeholder=" Ending Date "></label>
+                <label>Item description : <textarea name="description" rows="4" cols="120 "maxlength="120">Maximum characters 120</textarea></label>
+                <label><button class="btn btn-info btn-block login" type="submit" >Add auction </button></label>
+            </div>
+        </form>
+     </div>
+     </div>
+</div>
+<%--<h3>Upload a photo :</h3>--%>
+<%--<form method="post" action="./../BBservlet?action=upload&owner=<%=user2.username%>" enctype="multipart/form-data">--%>
+    <%--<table border="0" class="forms">--%>
+        <%--<tr>--%>
+            <%--<td>Upload Photo: </td>--%>
+            <%--<td><input type="file" name="photo" accept="image/gif, image/jpeg, image/png" size="50"/></td>--%>
+        <%--</tr>--%>
+        <%--<tr>--%>
+            <%--<td colspan="2">--%>
+                <%--<input type="submit" value="Upload" id="send2">--%>
+            <%--</td>--%>
+        <%--</tr>--%>
+    <%--</table>--%>
+<%--</form>--%>
+<jsp:include page="/basics/footer.jsp" />
 </body>
 </html>

@@ -10,11 +10,13 @@
 <body>
 
 <% ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("aList");
+    int num= (int) request.getSession().getAttribute("num");
     for (int i=0; i<aList.size(); i++)  {
         Auction a = new Auction();
         int pointer = i;
         a = aList.get(i); %>
-<br><a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>" "><%out.println(a.name);%></a>
+<br><a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a>
+<p><%out.println(num);%></p>
 <%}%>
 </body>
 </html>

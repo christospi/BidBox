@@ -18,15 +18,16 @@ h1{
     background: linear-gradient(-90deg, rgba(255, 233, 78, 0.88), rgba(229, 106, 20, 0.92)); /* Standard syntax (must be last) */
 }
 
-body{background: #eee url(http://subtlepatterns.com/patterns/sativa.png);}
+body{background: #eee url(http://subtlepatterns.com/patterns/sativa.png); }
 html,body{
     position: relative;
     height: 100%;
+    font-family: 'Dosis', sans-serif;
 }
 
-.login-container{
+.login-container2{
     position: relative;
-    width: 300px;
+    width: 920px;
     margin: 40px auto;
     padding: 20px 40px 40px;
     text-align: center;
@@ -35,15 +36,8 @@ html,body{
 }
 
 
-.avatar{
-    width: 100px;height: 100px;
-    margin: 10px auto 30px;
-    border-radius: 100%;
-    border: 2px solid #aaa;
-    background-size: cover;
-    background-image: url("./../img/fav.png");
-}
-.login-container::before,.login-container::after{
+
+.login-container2::before,.login-container2::after{
     content: "";
     position: absolute;
     width: 100%;height: 100%;
@@ -57,7 +51,7 @@ html,body{
 
 }
 
-.login-container::after{
+.login-container2::after{
     top: 5px;
     z-index: -2;
     -webkit-transform: rotateZ(-2deg);
@@ -66,7 +60,7 @@ html,body{
 
 }
 
-.form-box input{
+.form-box2 input{
     width: 100%;
     padding: 10px;
     text-align: center;
@@ -77,31 +71,26 @@ html,body{
 
 }
 
-.form-box input:focus{
+.form-box2 input:focus{
     outline: 0;
     background: #eee;
 }
 
-.form-box input[type="text"]{
+.form-box2 input[type="text"]{
     border-radius: 5px 5px 0 0;
     text-transform: lowercase;
 }
 
-.form-box input[type="password"]{
+.form-box2 input[type="password"]{
     border-radius: 0 0 5px 5px;
     border-top: 0;
 }
 
-.form-box button.login{
+.form-box2 button.login{
     margin-top:15px;
     padding: 10px 20px;
 }
-.animated {
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-}
+
 @-webkit-keyframes fadeInUp {
     0% {
         opacity: 0;
@@ -140,6 +129,7 @@ html,body{
     background-color:#c2c2c2;
 
 }
+
 .footer{
     background-color:#c2c2c2;
 
@@ -149,4 +139,15 @@ html,body{
     padding:5px;
     text-align: right;
     font-family: 'Dosis', sans-serif;
+}
+
+label, input {
+    display: block;
+}
+
+label {
+    margin-bottom: 20px;
+}
+#send2{
+    margin:10px;
 }

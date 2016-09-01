@@ -4,6 +4,8 @@ import Javabeans.DataBase;
 import Javabeans.User;
 import Javabeans.Auction;
 import Javabeans.Photo;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -81,6 +83,9 @@ public class BBservlet extends HttpServlet {
                     break;
                 case "viewphoto":
                     request.getRequestDispatcher("/seller/photos.jsp").include(request,response);
+                    break;
+                case "log_out":
+                    request.getRequestDispatcher("index.jsp").include(request,response);
                     break;
             }
 
@@ -403,6 +408,9 @@ public class BBservlet extends HttpServlet {
             String seller = request.getParameter("username");
             System.out.println(seller);
             ArrayList<Auction> aList = Auction.Auctionlist(seller);   //arraylist with all info for a user's estates
+            int num=new Auction().getnum(seller);
+            System.out.println(num);
+            session.setAttribute("num",num);
             session.setAttribute("aList", aList);
 
 
@@ -491,6 +499,28 @@ public class BBservlet extends HttpServlet {
                     e.printStackTrace();
                 }
             }
+        }else if(action.equals("pagination")){
+//            int page2 = 1;
+//            int recordsPerPage = 5;
+//            if(request.getParameter("page") != null)
+//                page2 = Integer.parseInt(request.getParameter("page"));
+//           Auction a= new Auction();
+//            List<Auction> list = a.viewAllAuctions((page2-1)*recordsPerPage, //prp mallon n pername me get attr seller...
+//                    recordsPerPage);
+//            int noOfRecords = a.getNoOfRecords();
+//            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+//            request.setAttribute("employeeList", list);
+//            request.setAttribute("noOfPages", noOfPages);
+//            request.setAttribute("currentPage", page);
+//            RequestDispatcher view = request.getRequestDispatcher("auctionlist2.jsp");
+//            view.forward(request, response);
+
+        }
+        else if (action.equals("logout")) { //LOG OUT
+
+            request.getSession().invalidate();  //terminate session
+            response.sendRedirect("/BBservlet?page=log_out");
+
         }
     }
 }

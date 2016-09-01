@@ -30,6 +30,8 @@ public class Auction {
     public Date st;
     public Date end;
     public String description;
+    public int noOfRecords;
+
 
     public static Auction getAuction(String username) throws FileNotFoundException {
 
@@ -68,7 +70,7 @@ public class Auction {
         return auction;
     }
 
-    public static ArrayList<Auction> Auctionlist(String seller) throws FileNotFoundException {
+    public  static ArrayList<Auction> Auctionlist(String seller) throws FileNotFoundException, SQLException {
 
         ArrayList<Auction> aList = null;
 
@@ -84,7 +86,6 @@ public class Auction {
             while (rs.next()) {
 
                 Auction auction = new Auction();
-
                 auction.id = rs.getInt("itemID");
                 auction.lat = rs.getFloat("latitude");
                 auction.longt = rs.getFloat("longtitude");
@@ -114,7 +115,19 @@ public class Auction {
 
     }
 
+    public int getnum(String seller) throws FileNotFoundException, SQLException {
+        DataBase db = new DataBase();
+        db.openConn();
 
+        String query = "SELECT COUNT(*) from auction where seller='" + seller + "'";
+        ResultSet rs = db.executeQuery(query);
+        if (rs.next()) {
+            this.noOfRecords = rs.getInt(1);
+        }
+
+        System.out.println(noOfRecords);
+        return  noOfRecords;
+    }
 
 
 }

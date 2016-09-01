@@ -25,23 +25,13 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
 
-        .carousel-indicators {
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            z-index: 15;
-            width: 60%;
-            margin-left: 20px;
-            list-style: none;
-            text-align: center;
+        .carousel-indicators li { visibility: hidden; }
+        .carousel-inner > .item > img{
+            width:640px;
+            height:360px;
         }
-        .carousel-inner > .item > img,
-        .carousel-inner > .item > a > img {
-            width: 50%;
-
-            margin: auto;
-        }
-
+        .carousel{width:640px;
+            height:360px;}
     </style>
 </head>
 <body>
@@ -53,7 +43,7 @@
 
 <br><br><br>
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
+    <ol class="carousel-indicators horizontal">
             <%  int ind=0;
                 for (int i=0;i<pList.size();i++) {
                 Photo pb = new Photo();

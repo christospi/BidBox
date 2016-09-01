@@ -8,13 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <jsp:include page="/basics/maxcdn.jsp" />
     <link rel="stylesheet" href="./../css/index.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="./../img/fav.png">
+
+
     <title>BidBox | Bid&Buy</title>
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container-fluid">
