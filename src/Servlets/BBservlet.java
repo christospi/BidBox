@@ -1,9 +1,6 @@
 package Servlets;
 
-import Javabeans.DataBase;
-import Javabeans.User;
-import Javabeans.Auction;
-import Javabeans.Photo;
+import Javabeans.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -87,12 +84,13 @@ public class BBservlet extends HttpServlet {
                 case "log_out":
                     request.getRequestDispatcher("index.jsp").include(request,response);
                     break;
+                case "msglist":
+                    request.getRequestDispatcher("/user/messages.jsp").include(request,response);
+                    break;
             }
-
 
         }
         else if (action.equals("signup")) {   //SIGN UP
-
 
             String FirstName = request.getParameter("name");   //take all parameters from form
             String LastName = request.getParameter("surname");
@@ -272,7 +270,6 @@ public class BBservlet extends HttpServlet {
         }
         else if (action.equals("addauction")) {
 
-
             String seller = request.getParameter("seller");
             String name = request.getParameter("name");
             String cat = request.getParameter("category");
@@ -295,7 +292,6 @@ public class BBservlet extends HttpServlet {
             String end = request.getParameter("end");
             String description = request.getParameter("description");
 
-
             db.openConn();
 
             String query = "INSERT INTO auction VALUES(0, '" + latitude + "',"
@@ -316,23 +312,17 @@ public class BBservlet extends HttpServlet {
             Integer i = db.executeUpdate(query);
             //out.print(i);
 
-
             if (i>0) {
-
                 request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
-
             }
             else {
                 request.getRequestDispatcher("/seller/fail_add.jsp").include(request, response);
-
             }
 
             db.closeConnection();
 
         }
         else if (action.equals("upload")) { //UPLOAD A PHOTO
-
-
 
             String owner = request.getParameter("seller");
             //String imageName = null;
@@ -364,8 +354,6 @@ public class BBservlet extends HttpServlet {
                 // constructs SQL statement
                 String sql = "INSERT INTO photo (owner,pic,pic_name,itemID) values(?,?,?,?)";
 
-
-
                 PreparedStatement statement = conn.prepareStatement(sql);
                 statement.setString(1, owner);
 
@@ -380,26 +368,14 @@ public class BBservlet extends HttpServlet {
                 int row = statement.executeUpdate();
 
                 if (row>0) {
-
-
-                        request.getRequestDispatcher("/seller/success_photo.jsp").include(request, response);
-
-
-
+                    request.getRequestDispatcher("/seller/success_photo.jsp").include(request, response);
                 }
                 else {
-
-
-                        request.getRequestDispatcher("/seller/failure_photo.jsp").include(request, response);
-
-
-
+                    request.getRequestDispatcher("/seller/failure_photo.jsp").include(request, response);
                 }
 
             } finally {
-
                 db.closeConnection();
-
             }
 
         }
@@ -412,8 +388,6 @@ public class BBservlet extends HttpServlet {
             System.out.println(num);
             session.setAttribute("num",num);
             session.setAttribute("aList", aList);
-
-
 
             response.sendRedirect("/BBservlet?page=auctionlist");
         }
@@ -430,7 +404,6 @@ public class BBservlet extends HttpServlet {
 
 //            ArrayList<MessageBean> mList = MessageBean.mdoSelectAll(owner); //get all messages this user has recieved
 //            session.setAttribute("mList", mList);
-
 
             response.sendRedirect("/BBservlet?page=auctioninfo");
 
@@ -520,6 +493,28 @@ public class BBservlet extends HttpServlet {
 
             request.getSession().invalidate();  //terminate session
             response.sendRedirect("/BBservlet?page=log_out");
+
+        }
+        else if (action.equals("msglist")){
+
+            String username = request.getParameter("username");
+            session.setAttribute("username", username);
+
+            ArrayList<Message> mList = Message.mdoSelectAll(username); //get all messages this user has recieved
+            session.setAttribute("mList", mList);
+
+            response.sendRedirect("/BBservlet?page=msglist");
+        }
+        else if (action.equals("deletemsg")){
+
+            int message_id = Integer.parseInt(request.getParameter("msgid"));
+            String query = "DELETE FROM message WHERE msgID='"+message_id+"'";
+
+            db.openConn();
+            int rs3 = db.executeUpdate(query);
+            db.closeConnection();
+
+            response.sendRedirect("/BBservlet?action=msglist");
 
         }
     }
