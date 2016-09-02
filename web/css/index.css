@@ -2,7 +2,7 @@
     padding:5px ;
 }
 h1{
-    font-family: 'Dosis', sans-serif;
+    font-family: 'Dosis';
 }
 .navbar-default {
     /*background-color: #FFA54F;*/
@@ -22,6 +22,7 @@ body{background: #eee url(http://subtlepatterns.com/patterns/sativa.png);}
 html,body{
     position: relative;
     height: 100%;
+    font-family: 'Dosis';
 }
 
 .login-container{

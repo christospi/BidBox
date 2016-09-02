@@ -14,9 +14,8 @@ import java.io.PrintWriter;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,6 +49,7 @@ public class BBservlet extends HttpServlet {
 
         HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=UTF-8");
+
         String action = request.getParameter("action");
         String page = request.getParameter("page");
         PrintWriter out = response.getWriter();

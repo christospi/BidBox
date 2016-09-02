@@ -5,11 +5,12 @@
 
 </head>
 <body>
-<footer class="footer">
+<footer class="footer  navbar-fixed-bottom">
     <div class="container">
         <div class="foo"><img class="fooimg" src="./../img/2.png" align="right" width="40" height="43"><p class="developers"> © Developed by <b>C&K </b></p></div>
     </div>
 </footer>
+
 </body>
 </html>
 

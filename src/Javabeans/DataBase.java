@@ -3,6 +3,8 @@ package Javabeans;
 import java.io.*;
 import java.sql.*;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -24,9 +26,10 @@ public class DataBase implements Serializable{
         Properties props = new Properties();
 
         try{
-            FileReader reader = new FileReader("/home/chris/IdeaProjects/BidBox/src/Javabeans/db.properties");
-//            FileReader reader = new FileReader("C:\\Users\\kwnst\\Desktop\\BidBox\\src\\Javabeans\\db.properties");
+           // FileReader reader = new FileReader("/home/chris/IdeaProjects/BidBox/src/Javabeans/db.properties");
+            FileReader reader = new FileReader("C:\\Users\\kwnst\\Desktop\\BidBox\\src\\Javabeans\\db.properties");
             props.load(reader);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

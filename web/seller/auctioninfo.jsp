@@ -127,10 +127,10 @@
 
             <br>
 
-            <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-arrow-right"></span> See photos for this item</a></b></h3>
+            <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item</a></b></h3>
 
             <div class="panel panel-warning">
-                <div class="panel-heading"><h3>Upload a photo :</h3></div>
+                <div class="panel-heading"><h3>Upload a photo </h3></div>
                 <div class="panel-body">
                     <form method="post" action="./../BBservlet?action=upload&seller=<%=x.seller%>&id=<%=x.id%>" enctype="multipart/form-data">
                         <table border="0" class="forms">

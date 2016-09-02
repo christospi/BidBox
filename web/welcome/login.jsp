@@ -9,6 +9,7 @@
 
 </head>
 <body>
+<div class="container"></div>
 <jsp:include page="./../basics/footer.jsp" />
 </body>
 </html>
