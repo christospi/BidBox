@@ -69,7 +69,7 @@
 
         </div>
             <br>
-            <%}else{%>
+            <%}else if (pb.itemID == pi ){%>
                 <div class="item">
                     <img src="./../BBservlet?action=viewphoto2&pic_name=<%=pb.pic_name%>" width="460" height="345"  >
                 </div>
