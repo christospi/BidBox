@@ -138,7 +138,13 @@
                 <label>Starting Price: <input type="number" step="0.01" name="first_bid" placeholder="Starting Price"></label>
                 <label> Maximum Price:  <input type="number" step="0.01" name="buy_price" placeholder="Max Price"></label>
                 <label>Bids starting date : <input type="text" readonly name="st" value="<%=st%>"></label>
-                <label> Bids ending date : <input type="date" name="end" placeholder=" Ending Date "></label>
+                <label> Bids ending date : <input type="datetime-local" id="end" name="end" placeholder=" Ending Date "></label>
+                <script>
+                    var s = $("#end").val();
+                    var end = new Date(s.replace(/-/g,'/').replace('T',' '));
+                    document.getElementById('end').value = end;
+
+                </script>
                 <label>Item description : <textarea name="description" rows="4" cols="120 "maxlength="120">Maximum characters 120</textarea></label>
                 <label><button class="btn btn-info btn-block login" type="submit" >Add auction </button></label>
             </div>

@@ -76,8 +76,15 @@ public class Auction {
 
         DataBase db = new DataBase();
         db.openConn();
+        String query;
 
-        String query = "select * from auction where seller='" + seller + "'";
+        if( seller.equals("*") ){
+            query = "select * from auction";
+        }
+        else{
+            query = "select * from auction where seller='" + seller + "'";
+        }
+
         ResultSet rs = db.executeQuery(query);
 
         try {

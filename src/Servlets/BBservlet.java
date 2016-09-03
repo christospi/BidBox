@@ -26,6 +26,7 @@ public class BBservlet extends HttpServlet {
 
     private DataBase db = new DataBase();
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -87,6 +88,13 @@ public class BBservlet extends HttpServlet {
                 case "msglist":
                     request.getRequestDispatcher("/user/messages.jsp").include(request,response);
                     break;
+                case "searchres":
+                    request.getRequestDispatcher("/welcome/search_res.jsp").include(request,response);
+                    break;
+                case "auction_search":
+                    request.getRequestDispatcher("/welcome/search_info.jsp").include(request,response);
+                    break;
+
             }
 
         }
@@ -307,7 +315,9 @@ public class BBservlet extends HttpServlet {
                     + "'" + num_bid + "',"
                     + "'" + st + "',"
                     + "'" + end + "',"
-                    + "'" + description + "')";
+                    + "'" + description + "',"
+                    + "'" + 0 + "',"
+                    + "'" + 0 + "')";
 
             Integer i = db.executeUpdate(query);
             //out.print(i);
@@ -382,10 +392,10 @@ public class BBservlet extends HttpServlet {
         else if (action.equals("auctionlist")) { //ESTATE LIST
 
             String seller = request.getParameter("username");
-            System.out.println(seller);
+
             ArrayList<Auction> aList = Auction.Auctionlist(seller);   //arraylist with all info for a user's estates
             int num=new Auction().getnum(seller);
-            System.out.println(num);
+
             session.setAttribute("num",num);
             session.setAttribute("aList", aList);
 
@@ -517,5 +527,56 @@ public class BBservlet extends HttpServlet {
             response.sendRedirect("/BBservlet?action=msglist");
 
         }
+        else if (action.equals("searchres")){
+
+            ArrayList<Auction> aList = Auction.Auctionlist("*");   //arraylist with all info for a user's estates
+
+            session.setAttribute("aList", aList);
+
+            response.sendRedirect("/BBservlet?page=searchres");
+
+        }
+        else if (action.equals("auction_search")){
+
+            String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this estate
+            session.setAttribute("pointer", pointer);
+
+            String seller = request.getParameter("seller");
+            session.setAttribute("seller", seller);
+
+            ArrayList<Photo> pList = Photo.pdoSelectAll(seller); //get all photos this users uploaded
+            session.setAttribute("pList", pList);
+
+            response.sendRedirect("/BBservlet?page=auction_search");
+        }
+        else if (action.equals("place_bid")){
+
+            int itemid = Integer.parseInt(request.getParameter("itemid"));
+            session.setAttribute("itemid", itemid);
+
+            int bidderid = Integer.parseInt(request.getParameter("bidderid"));
+            float amount = Float.parseFloat(request.getParameter("amount"));
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            String curdate = dateFormat.format(date);
+
+            String query = "INSERT INTO bid VALUES(0, '" + bidderid + "',"
+                    + "'" + itemid + "',"
+                    + "'" + amount + "',"
+                    + "'" + curdate + "')";
+
+            db.openConn();
+
+            Integer i = db.executeUpdate(query);
+
+            query = "UPDATE auction SET curr='" + amount + "' WHERE itemID='"+itemid+"'";
+            i = db.executeUpdate(query);
+
+            db.closeConnection();
+
+            response.sendRedirect("/BBservlet?page=auction_search");
+        }
+
     }
 }

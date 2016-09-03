@@ -16,7 +16,6 @@
         int pointer = i;
         a = aList.get(i); %>
 <br><a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a>
-<p><%out.println(num);%></p>
 <%}%>
 </body>
 </html>

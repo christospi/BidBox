@@ -12,7 +12,7 @@
         <div class="container-fluid">
 
             <div id="triangle-topleft">
-                <img  class="penguin" src="img/peng.png" height="130" width="285" >
+                <a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>"><img  class="penguin" src="img/peng.png" height="130" width="285" > </a>
             </div>
 
 
