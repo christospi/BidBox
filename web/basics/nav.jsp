@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+
     <% User user2 = (User) request.getSession().getAttribute("user");%>
     <jsp:include page="/basics/maxcdn.jsp" />
     <link rel="stylesheet" href="./../css/index.css">
@@ -12,14 +13,25 @@
         <div class="container-fluid">
 
             <div id="triangle-topleft">
-                <a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>"><img  class="penguin" src="img/peng.png" height="130" width="285" > </a>
+                <a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>"><img  class="penguin" src="./../img/peng.png" height="130" width="285" > </a>
             </div>
 
-
+            <script>
+//                $(document).ready(function () {
+//                    var url = window.location;
+//                    // Will only work if string in href matches with location
+//                    $('ul.nav a[href="' + url + '"]').parent().addClass('active');
+//
+//                    // Will also work for relative and absolute hrefs
+//                    $('ul.nav a').filter(function () {
+//                        return this.href == url;
+//                    }).parent().addClass('active').parent().parent().addClass('active');
+//                });
+            </script>
 
 
             <ul class="nav  nav-pills navbar-right">
-                <li class="active"><a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>">Home</a></li>
+                <li  class="active"><a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>">Home</a></li>
                 <li><a href="./../welcome/search.jsp">Search Auctions</a></li>
                 <li><a href="./../seller/add_auction.jsp">Add Auction</a></li>
                 <li><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>">My Auctions</a>
