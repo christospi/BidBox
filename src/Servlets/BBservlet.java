@@ -50,7 +50,15 @@ public class BBservlet extends HttpServlet {
 
         HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=UTF-8");
-
+//        Timer timer = new Timer();
+//        TimerTask myTask = new TimerTask() {
+//            int i=0;
+//            public void run() {
+//               System.out.println("geia!");
+//            }
+//        };
+//
+//        timer.schedule(myTask, 2000, 2000);
         String action = request.getParameter("action");
         String page = request.getParameter("page");
         PrintWriter out = response.getWriter();
@@ -576,6 +584,56 @@ public class BBservlet extends HttpServlet {
             db.closeConnection();
 
             response.sendRedirect("/BBservlet?page=auction_search");
+        }else if (action.equals("check_username")) {
+
+
+            db.openConn();
+            String UserName = request.getParameter("username");
+            String query3 = "SELECT COUNT(*) AS total FROM user where username='" + UserName + "'";
+            ResultSet rs3 = db.executeQuery(query3);
+            int exists = 0;
+
+            response.setContentType("text/html;charset=UTF-8");
+
+
+            while (rs3.next()) {
+                if (rs3.getInt("total") > 0) {
+                    exists = 1;
+
+                    out.println("<font color=red><b>" + UserName + "</b> is already in use</font>");
+
+
+
+                } else {
+
+                    out.println("<font color=green><b>" + UserName + "</b> is available!</font>");
+
+                }
+
+            }
+        }else if (action.equals("check_email")) {
+
+
+            db.openConn();
+            String email = request.getParameter("email");
+            String query3 = "SELECT COUNT(*) AS total FROM user where email='" + email + "'";
+            ResultSet rs3 = db.executeQuery(query3);
+            response.setContentType("text/html;charset=UTF-8");
+            while (rs3.next()) {
+                if (rs3.getInt("total") > 0) {
+
+
+                    out.println("<font color=red><b>" + email + "</b> is already in use</font>");
+
+
+
+                } else {
+
+                    out.println("<font color=green><b>" + email + "</b> is available!</font>");
+
+                }
+
+            }
         }
 
     }

@@ -1,6 +1,8 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" type="text/css" href="./../css/signup.css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <html>
 <head>
     <title>Signup</title>
@@ -10,6 +12,18 @@
 </head>
 <body>
 
+<script type="text/javascript">
+
+//    function checkuser(val){
+////        $(this).next().stop(true, true).fadeIn(0).html('[input event fired!]: ' + $(this).val()).fadeOut(2000);
+//        var xhr = new XMLHttpRequest();
+//        xhr.open('GET', 'BBServlet?action=signup', true);
+//        $.get('./../welcome/executecheck.jsp');
+//        alert("The input value has changed. The new value is: " + val);
+//    }
+
+
+</script>
 
 
 <div class="form">
@@ -26,45 +40,72 @@
                         </label>
                         <input type="text" name ="name" required autocomplete="off" />
                     </div>
-                <%--<script type="text/javascript" src="jquery.js"></script>--%>
-                <%--<script type="text/javascript">--%>
-                    <%--$(document).ready(function()--%>
-                    <%--{--%>
-                        <%--$(".uname").change(function()--%>
-                        <%--{--%>
-                            <%--var uname = $(this).val();--%>
-                            <%--if(uname.length > 3)--%>
-                            <%--{--%>
-                                <%--$(".status").html("Checking availability...");--%>
-                                <%--$.ajax--%>
-                                <%--({--%>
-                                    <%--type: "POST",--%>
-                                    <%--url: "BBservlet",--%>
-                                    <%--data: "uname="+ uname,--%>
-                                    <%--success: function(msg)--%>
-                                    <%--{--%>
-                                        <%--$(".status").ajaxComplete(function(event, request, settings)--%>
-                                        <%--{--%>
-                                            <%--$(".status").html(msg);--%>
-                                        <%--});--%>
-                                    <%--}--%>
-                                <%--});--%>
-                            <%--}--%>
+                <script type="text/javascript" src="jquery.js"></script>
+                <script type="text/javascript">
+                    $(document).ready(function()
+                    {
+                        $(".username").change(function()
+                        {
+                            var username = $(this).val();
+                            if(username.length > 3)
+                            {
+                                $(".status").html("Checking availability...");
+                                $.ajax
+                                ({
+                                    type: "POST",
+                                    url: "./../BBservlet?action=check_username",
+                                    data: "username="+ username,
+                                    success: function(response)
+                                    {$(".status").html(response);
+//
+                                    }
+                                });
+                            }
 
-                            <%--else--%>
-                            <%--{--%>
-                                <%--$(".status").html("username should be 3 chars");--%>
-                            <%--}--%>
+                            else
+                            {
+                                $(".status").html("");
+                            }
 
-                        <%--});--%>
-                    <%--});--%>
+                        });
+                    });
 
-                <%--</script>--%>
+                </script>
+                <script type="text/javascript">
+                    $(document).ready(function()
+                    {
+                        $(".email").change(function()
+                        {
+                            var email = $(this).val();
+                            if(email.length > 3) {
+                                $(".status2").html("Checking availability...");
+                                $.ajax
+                                ({
+                                    type: "POST",
+                                    url: "./../BBservlet?action=check_email",
+                                    data: "email=" + email,
+                                    success: function (response) {
+                                        $(".status2").html(response);
+//
+                                    }
+                                });
+
+                            }else{
+                                $(".status2").html("");
+                            }
+
+
+                        });
+                    });
+
+                </script>
                         <div class="field-wrap">
-                            <label>
-                               user Name<span class="req">*</span>
+                            <label >
+                               User Name<span class="req">*</span>
                             </label>
-                            <input type="text" class="uname" name ="username" required autocomplete="off" /><span class="status"></span>
+
+                            <input type="text"  class="username" name ="username"  required autocomplete="off" /><span class="status"></span>
+
                         </div>
                     <div class="field-wrap">
                         <label>
@@ -78,7 +119,7 @@
                     <label>
                         Email Address<span class="req">*</span>
                     </label>
-                    <input type="email" name = "email" required autocomplete="off"/>
+                    <input type="email" class="email" name = "email" required autocomplete="off"/><span class="status2"></span>
                 </div>
 
                 <div class="field-wrap">
