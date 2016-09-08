@@ -68,21 +68,7 @@
 
     </script>
 
-    <script type="text/javascript">
-        var password = document.getElementById("password")
-                , confirm_password = document.getElementById("confirm_password");
 
-        function validatePassword(){
-            if(password.value != confirm_password.value) {
-                confirm_password.setCustomValidity("Passwords don't match");
-            } else {
-                confirm_password.setCustomValidity('');
-            }
-        }
-
-        password.onchange = validatePassword;
-        confirm_password.onkeyup = validatePassword;
-    </script>
 
 </head>
 <body>
@@ -118,7 +104,21 @@
                             <label>
                                    Confirm Password:   <input type="password"  id="confirm_password" required autocomplete="off">
                             </label>
+                            <script type="text/javascript">
+                                var password = document.getElementById("password")
+                                        , confirm_password = document.getElementById("confirm_password");
 
+                                function validatePassword(){
+                                    if(password.value != confirm_password.value) {
+                                        confirm_password.setCustomValidity("Passwords don't match");
+                                    } else {
+                                        confirm_password.setCustomValidity('');
+                                    }
+                                }
+
+                                password.onchange = validatePassword;
+                                confirm_password.onkeyup = validatePassword;
+                            </script>
 
 
                             <label>

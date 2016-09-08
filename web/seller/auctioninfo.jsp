@@ -88,7 +88,7 @@
                 </table>
             </div>
 
-            <script>
+            <script >
 
                 var end = new Date("<%=x.end%>");
 
@@ -107,7 +107,9 @@
                         document.getElementById('clockdiv').innerHTML = '<p style="color:red;">EXPIRED!</p>';
 
                         return;
+
                     }
+                    else{
                     var days = Math.floor(distance / _day);
                     var hours = Math.floor((distance % _day) / _hour);
                     var minutes = Math.floor((distance % _hour) / _minute);

@@ -45,14 +45,46 @@ public class Message {
         return message;
     }
 
-    public static ArrayList<Message> mdoSelectAll(String to_user) throws FileNotFoundException {
+    public static ArrayList<Message> get_inbox(String to_user) throws FileNotFoundException {
 
         ArrayList<Message> mList = null;
 
         DataBase db = new DataBase();
         db.openConn();
 
-        String query = "select * from message where to_user='" + to_user + "'";
+        String query = "select * from message where owner='" + to_user + "' and to_user='"+to_user+"'";
+        ResultSet rs = db.executeQuery(query);
+
+        try {
+
+            mList = new ArrayList<Message>();
+            while (rs.next()) {
+
+                Message message = new Message();
+
+                message.msgID = rs.getInt("msgID");
+                message.from = rs.getString("from_user");
+                message.to = rs.getString("to_user");
+                message.message = rs.getString("message");
+                message.itemID = rs.getInt("itemID");
+//                message2.seen = 0;
+                mList.add((Message) message);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mList;
+    }
+    public static ArrayList<Message> get_sent(String to_user) throws FileNotFoundException {
+
+        ArrayList<Message> mList = null;
+
+        DataBase db = new DataBase();
+        db.openConn();
+
+        String query = "select * from message where owner='" + to_user + "' and from_user='"+to_user+"'";
         ResultSet rs = db.executeQuery(query);
 
         try {

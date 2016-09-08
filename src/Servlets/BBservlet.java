@@ -2,7 +2,6 @@ package Servlets;
 
 import Javabeans.*;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -101,6 +100,9 @@ public class BBservlet extends HttpServlet {
                     break;
                 case "auction_search":
                     request.getRequestDispatcher("/welcome/search_info.jsp").include(request,response);
+                    break;
+                case "send_msg":
+                    request.getRequestDispatcher("/user/send_msg.jsp").include(request,response);
                     break;
 
             }
@@ -325,6 +327,7 @@ public class BBservlet extends HttpServlet {
                     + "'" + end + "',"
                     + "'" + description + "',"
                     + "'" + 0 + "',"
+                    + "'" + 0 + "',"
                     + "'" + 0 + "')";
 
             Integer i = db.executeUpdate(query);
@@ -420,7 +423,7 @@ public class BBservlet extends HttpServlet {
             ArrayList<Photo> pList = Photo.pdoSelectAll(seller); //get all photos this users uploaded
             session.setAttribute("pList", pList);
 
-//            ArrayList<MessageBean> mList = MessageBean.mdoSelectAll(owner); //get all messages this user has recieved
+//            ArrayList<MessageBean> mList = MessageBean.get_inbox(owner); //get all messages this user has recieved
 //            session.setAttribute("mList", mList);
 
             response.sendRedirect("/BBservlet?page=auctioninfo");
@@ -518,13 +521,15 @@ public class BBservlet extends HttpServlet {
             String username = request.getParameter("username");
             session.setAttribute("username", username);
 
-            ArrayList<Message> mList = Message.mdoSelectAll(username); //get all messages this user has recieved
+            ArrayList<Message> mList = Message.get_inbox(username); //get all messages this user has recieved
             session.setAttribute("mList", mList);
+            ArrayList<Message> mList2 = Message.get_sent(username); //get all messages this user has recieved
+            session.setAttribute("mList2", mList2);
 
             response.sendRedirect("/BBservlet?page=msglist");
         }
         else if (action.equals("deletemsg")){
-
+            String username = request.getParameter("username");
             int message_id = Integer.parseInt(request.getParameter("msgid"));
             String query = "DELETE FROM message WHERE msgID='"+message_id+"'";
 
@@ -532,7 +537,7 @@ public class BBservlet extends HttpServlet {
             int rs3 = db.executeUpdate(query);
             db.closeConnection();
 
-            response.sendRedirect("/BBservlet?action=msglist");
+            response.sendRedirect("/BBservlet?action=msglist&username="+username+"");
 
         }
         else if (action.equals("searchres")){
@@ -554,16 +559,25 @@ public class BBservlet extends HttpServlet {
 
             ArrayList<Photo> pList = Photo.pdoSelectAll(seller); //get all photos this users uploaded
             session.setAttribute("pList", pList);
+            ArrayList<Auction> aList = Auction.Auctionlist("*");   //arraylist with all info for a user's estates
 
+            session.setAttribute("aList", aList);
             response.sendRedirect("/BBservlet?page=auction_search");
         }
         else if (action.equals("place_bid")){
+            String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this estate
+            session.setAttribute("pointer", pointer);
+
+            String seller = request.getParameter("seller");
+            session.setAttribute("seller", seller);
+
 
             int itemid = Integer.parseInt(request.getParameter("itemid"));
             session.setAttribute("itemid", itemid);
 
             int bidderid = Integer.parseInt(request.getParameter("bidderid"));
             float amount = Float.parseFloat(request.getParameter("amount"));
+
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
@@ -578,12 +592,22 @@ public class BBservlet extends HttpServlet {
 
             Integer i = db.executeUpdate(query);
 
-            query = "UPDATE auction SET curr='" + amount + "' WHERE itemID='"+itemid+"'";
-            i = db.executeUpdate(query);
 
+
+            Auction auction = Auction.getAuctionbyid(itemid);
+
+            if(auction.buy_pr==amount){
+                query="UPDATE auction SET buyerID='"+bidderid+"', expired= 1 , curr='"+amount+"', sold=1 WHERE  itemID='"+itemid+"'";
+
+            }else{
+                query = "UPDATE auction SET curr='" + amount + "' WHERE itemID='"+itemid+"'";
+
+
+            }
+            i=db.executeUpdate(query);
             db.closeConnection();
 
-            response.sendRedirect("/BBservlet?page=auction_search");
+            response.sendRedirect("/BBservlet?action=auction_search&pointer="+pointer+"&seller="+seller+"");
         }else if (action.equals("check_username")) {
 
 
@@ -634,6 +658,36 @@ public class BBservlet extends HttpServlet {
                 }
 
             }
+        }else if (action.equals("send_msg")) {
+
+            response.sendRedirect("/BBservlet?page=send_msg");
+
+        }else if (action.equals("send_msgf")) {
+            db.openConn();
+            String user = request.getParameter("user");
+            String receiver = request.getParameter("receiver");
+            String message = request.getParameter("message");
+            String itemID = request.getParameter("itemID");
+            String query = "INSERT INTO message VALUES(0, '" + message + "',"
+                    + "'" + 0 + "',"
+                    + "'" + user + "',"
+                    + "'" + receiver + "',"
+                    + "'" + itemID + "',"
+                    + "'" + user + "')";
+
+            db.executeUpdate(query);
+            query = "INSERT INTO message VALUES(0, '" + message + "',"
+                    + "'" + 0 + "',"
+                    + "'" + user + "',"
+                    + "'" + receiver + "',"
+                    + "'" + itemID + "',"
+                    + "'" + receiver + "')";
+            db.executeUpdate(query);
+
+            db.closeConnection();
+
+            response.sendRedirect("/BBservlet?action=msglist&username="+user+"");
+
         }
 
     }

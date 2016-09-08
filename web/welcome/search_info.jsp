@@ -100,6 +100,7 @@
                 var _hour = _minute * 60;
                 var _day = _hour * 24;
                 var timer;
+                var sold= parseInt("<%=x.sold%>");
 
                 function showRemaining() {
                     var now = new Date();
@@ -110,7 +111,13 @@
                         document.getElementById('clockdiv').innerHTML = '<p style="color:red;">EXPIRED!</p>';
 
                         return;
+                    }else if(sold==1){
+                        clearInterval(timer);
+                        document.getElementById('clockdiv').innerHTML = '<p style="color:red;">SOLD OUT!</p>';
+
+                        return;
                     }
+
                     var days = Math.floor(distance / _day);
                     var hours = Math.floor((distance % _day) / _hour);
                     var minutes = Math.floor((distance % _hour) / _minute);
@@ -132,8 +139,8 @@
 
             <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item</a></b></h3>
 
-            <form method="post" action="/BBservlet?action=place_bid&itemid=<%=x.id%>&bidderid=<%=user2.userID%>">
-                <input type="number" name="amount" min="<%=x.curr%>" max="<%=x.buy_pr%>">
+            <form method="post" action="/BBservlet?action=place_bid&itemid=<%=x.id%>&bidderid=<%=user2.userID%>&seller=<%=x.seller%>&pointer=<%=pointer%>">
+                <input type="number" step="any" name="amount" min="<%=x.curr%>" max="<%=x.buy_pr%>">
                 <input type="submit" value="Bid !"/>
             </form>
         </center>

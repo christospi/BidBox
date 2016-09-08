@@ -135,8 +135,8 @@
                 <label>City: <input type="text" readonly id="city" name="city" placeholder="ex.Athens"></label>
                 <label>Latitude: <input type="text" readonly id="latitude" name="latitude" placeholder="Latitude"></label>
                 <label>Longtitude : <input type="text" readonly id="longtitude" name="longtitude" placeholder="Longtitude"></label>
-                <label>Starting Price: <input type="number" step="0.01" name="first_bid" placeholder="Starting Price"></label>
-                <label> Maximum Price:  <input type="number" step="0.01" name="buy_price" placeholder="Max Price"></label>
+                <label>Starting Price: <input type="number" step="any" name="first_bid" placeholder="Starting Price"></label>
+                <label> Maximum Price:  <input type="number" step="any" name="buy_price" placeholder="Max Price"></label>
                 <label>Bids starting date : <input type="text" readonly name="st" value="<%=st%>"></label>
                 <label> Bids ending date : <input type="datetime-local" id="end" name="end" placeholder=" Ending Date "></label>
                 <script>
