@@ -52,7 +52,37 @@ public class User {
 
         return user;
     }
+    public static User getusername(Integer id) throws FileNotFoundException {
+        DataBase db = new DataBase();
+        User user = new User();
 
+        db.openConn();
+
+        String query = "select * from user where userID='" + id + "'";
+        ResultSet rs = db.executeQuery(query);
+
+        try{
+            if(rs.next()){
+                user.userID = rs.getInt("userID");
+                user.username = rs.getString("username");
+                user.name = rs.getString("name");
+                user.surname = rs.getString("surname");
+                user.email = rs.getString("email");
+                user.phone = rs.getString("phone");
+                user.ver = rs.getInt("verified");
+                user.pass = rs.getString("pass");
+                user.address = rs.getString("address");
+                user.city = rs.getString("city");
+                user.afm = rs.getString("afm");
+
+                //TODO Roles mpla mpla
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
     public static ArrayList<User> doSelectAll() throws FileNotFoundException {
 
         ArrayList<User> uList = null;

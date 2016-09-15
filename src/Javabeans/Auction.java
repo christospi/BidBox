@@ -152,6 +152,7 @@ public class Auction {
                 auction.description = rs.getString("description");
                 auction.expired = rs.getInt("expired");
                 auction.sold = rs.getInt("sold");
+                auction.buyerID=rs.getInt("buyerID");
                 aList.add((Auction) auction);
 
             }
