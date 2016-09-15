@@ -55,22 +55,37 @@ public class Listener implements ServletContextListener,
                 String query="select * from auction where expired = 0 ";
                 ResultSet rs = db.executeQuery(query);
                 try {
+                    if (rs.last()) {
+                        int rows = rs.getRow();
+                        System.out.println(rows);
+                        rs.beforeFirst();
+
+
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                try {
                     while (rs.next()) {
 
                         String string = rs.getString("end");
-                        DateFormat format = new SimpleDateFormat("yyyy-MM-ddTHH:mm");
-                        Date end = format.parse(string);
-
+                        System.out.println(string);
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        Date end ;
+                        end=df.parse(string);
                         Date now=new Date();
                         int id=rs.getInt("itemID");
-
+                        int buyerID = rs.getInt("buyerID");
                         long diff = (end.getTime() - now.getTime());
                         long distance = diff /(1000);
                         System.out.println(distance);
                         if (distance <= 0) {
                             System.out.println("mpikaa");
-                            query="UPDATE auction SET expired=1 WHERE itemID='"+ id +"'";
-
+                            if(buyerID!=0){
+                                query="UPDATE auction SET expired=1 WHERE itemID='"+ id +"'";
+                            }else{
+                                query="UPDATE auction SET sold=1,expired=1 WHERE itemID='"+ id +"'";
+                            }
                             db.executeUpdate(query);
                         }
 
@@ -79,13 +94,13 @@ public class Listener implements ServletContextListener,
                 } catch (SQLException e) {
                     //e.printStackTrace();
                 } catch (ParseException e) {
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 }
                 db.closeConnection();
             }
         };
 
-        timer.schedule(myTask, 2000, 2000);
+        timer.schedule(myTask, 2000,2000 );
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

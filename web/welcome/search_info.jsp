@@ -138,11 +138,12 @@
             <br>
 
             <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item</a></b></h3>
-
+            <% if(x.expired!=1 || x.sold==1){ %>
             <form method="post" action="/BBservlet?action=place_bid&itemid=<%=x.id%>&bidderid=<%=user2.userID%>&seller=<%=x.seller%>&pointer=<%=pointer%>">
                 <input type="number" step="any" name="amount" min="<%=x.curr%>" max="<%=x.buy_pr%>">
                 <input type="submit" value="Bid !"/>
             </form>
+            <%}%>
         </center>
 
     </div>

@@ -304,10 +304,12 @@ public class BBservlet extends HttpServlet {
             //int num_bid = Integer.parseInt(request.getParameter("num_bid"));
             int num_bid;
             num_bid=0;
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
             String st = dateFormat.format(date);
             String end = request.getParameter("end");
+
+            end = (end.replace("T"," "));
             String description = request.getParameter("description");
 
             db.openConn();
@@ -600,7 +602,7 @@ public class BBservlet extends HttpServlet {
                 query="UPDATE auction SET buyerID='"+bidderid+"', expired= 1 , curr='"+amount+"', sold=1 WHERE  itemID='"+itemid+"'";
 
             }else{
-                query = "UPDATE auction SET curr='" + amount + "' WHERE itemID='"+itemid+"'";
+                query = "UPDATE auction SET buyerID='"+bidderid+"',curr='" + amount + "' WHERE itemID='"+itemid+"'";
 
 
             }

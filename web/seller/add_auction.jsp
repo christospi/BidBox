@@ -95,6 +95,14 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiStlX5yVBGYb6sDGA7VHax7rb8BcgblM&language=en&callback=initMap">
 </script>
+<script>
+        function removeT() {
+            var s = $("#end").val();
+            var end = new Date(s.replace(/-/g, '/').replace('T', ' '));
+            document.getElementById("end").value = end;
+            window.alert(end);
+        }
+</script>
 <% User user2 = (User) request.getSession().getAttribute("user");
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
     Date date = new Date();
@@ -138,13 +146,8 @@
                 <label>Starting Price: <input type="number" step="any" name="first_bid" placeholder="Starting Price"></label>
                 <label> Maximum Price:  <input type="number" step="any" name="buy_price" placeholder="Max Price"></label>
                 <label>Bids starting date : <input type="text" readonly name="st" value="<%=st%>"></label>
-                <label> Bids ending date : <input type="datetime-local" id="end" name="end" placeholder=" Ending Date "></label>
-                <script>
-                    var s = $("#end").val();
-                    var end = new Date(s.replace(/-/g,'/').replace('T',' '));
-                    document.getElementById('end').value = end;
+                <label> Bids ending date : <input type="datetime-local" id="end"  name="end" placeholder=" Ending Date " ></label>
 
-                </script>
                 <label>Item description : <textarea name="description" rows="4" cols="120 "maxlength="120">Maximum characters 120</textarea></label>
                 <label><button class="btn btn-info btn-block login" type="submit" >Add auction </button></label>
             </div>

@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 public class Auction {
     public int id;
+    public int expired;
     public String seller;
     public String name;
     public String cat;
@@ -63,6 +64,7 @@ public class Auction {
                 auction.num_bid = rs.getInt("num_bid");
                 auction.st = rs.getDate("st");
                 auction.end = rs.getDate("end");
+                auction.expired = rs.getInt("expired");
                 auction.description = rs.getString("description");
 
             }
@@ -100,6 +102,7 @@ public class Auction {
                 auction.st = rs.getDate("st");
                 auction.end = rs.getDate("end");
                 auction.description = rs.getString("description");
+                auction.expired = rs.getInt("expired");
                 auction.buyerID = rs.getInt("buyerID");
 
             }
@@ -147,6 +150,7 @@ public class Auction {
                 auction.st = rs.getDate("st");
                 auction.end = rs.getDate("end");
                 auction.description = rs.getString("description");
+                auction.expired = rs.getInt("expired");
                 auction.sold = rs.getInt("sold");
                 aList.add((Auction) auction);
 
