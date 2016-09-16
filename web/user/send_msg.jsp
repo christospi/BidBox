@@ -7,9 +7,13 @@
 <head>
 <% User user2 = (User) request.getSession().getAttribute("user");
     ArrayList<Auction> aList = Auction.Auctionlist(user2.username);
+    ArrayList<Auction> bList = Auction.Auctionlist("*");
     ArrayList<String> receivers = new ArrayList<String>();
     ArrayList<String> item = new ArrayList<String>();
     ArrayList<String> itemid = new ArrayList<String>();
+    ArrayList<String> bidded = new ArrayList<String>();
+    ArrayList<String> itemb = new ArrayList<String>();
+    ArrayList<String> itembid = new ArrayList<String>();
     for (int i=0; i<aList.size(); i++) {
         Auction a = new Auction();
         int pointer = i;
@@ -28,7 +32,22 @@
 
         }
     }
+    for (int i=0; i<bList.size(); i++) {
+        Auction b = new Auction();
 
+        b = aList.get(i);
+
+        if(b.buyerID==user2.userID){
+            if(itemb.contains(b.name)){
+
+            }else{
+                String str=String.valueOf(b.id);
+                bidded.add(user2.username);
+                itemb.add(b.name);
+                itembid.add(str);
+            }
+        }
+    }
 
 
 %>
@@ -58,9 +77,11 @@
         </label>
         <div class="ddl-select input-group-btn">
 
-            <select id="ddlsearch" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" onchange="takeid(this.value)">
-                <div class="dropdown-menu">
-                    <option value="" data-hidden="true" class="ddl-title">Receivers</option>
+            <select onchange="takeid(this.value)" required>
+                <option value="">Choose a receiver:</option>
+                <optgroup label="Buyers"></optgroup>
+                    <%--<optgroup value="" data-hidden="true" class="ddl-title" label="Receivers">--%>
+
                     <%   for (int i=0; i<receivers.size(); i++) {
                         String strings = receivers.get(i);
                         String itemname = item.get(i);
@@ -68,8 +89,15 @@
 
                         %><option value="<%=id%>:<%=strings%>"   ><%out.println(strings);%> | <%out.println(itemname);%> </option><%
                     }%>
+                <optgroup label="My Bids"></optgroup>
+                <%   for (int i=0; i<bidded.size(); i++) {
+                    String strings = bidded.get(i);
+                    String itemname = itemb.get(i);
+                    String id = itembid.get(i);
 
-                </div>
+                %><option value="<%=id%>:<%=strings%>"   ><%out.println(strings);%> | <%out.println(itemname);%> </option><%
+                }%>
+
 
             </select>
         </div>
