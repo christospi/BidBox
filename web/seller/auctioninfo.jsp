@@ -109,27 +109,38 @@
                         return;
 
                     }
-                    else{
-                    var days = Math.floor(distance / _day);
-                    var hours = Math.floor((distance % _day) / _hour);
-                    var minutes = Math.floor((distance % _hour) / _minute);
-                    var seconds = Math.floor((distance % _minute) / _second);
+                    else {
+                        var days = Math.floor(distance / _day);
+                        var hours = Math.floor((distance % _day) / _hour);
+                        var minutes = Math.floor((distance % _hour) / _minute);
+                        var seconds = Math.floor((distance % _minute) / _second);
 
-                    document.getElementById('clockdiv').innerHTML =  ' <div> <span id="days">' +days+ '</span> <div class="smalltext">Days</div> </div> ';
-                    document.getElementById('clockdiv').innerHTML +=' <div> <span id="hours">' + hours + '</span> <div class="smalltext">hrs</div> </div> ';
-                    document.getElementById('clockdiv').innerHTML +=  ' <div> <span id="minutes">'+ minutes +'</span> <div class="smalltext">mins</div> </div> ';
-                    document.getElementById('clockdiv').innerHTML +=  ' <div> <span id="seconds">'+ seconds +'</span> <div class="smalltext">secs</div> </div> ';
+                        document.getElementById('clockdiv').innerHTML = ' <div> <span id="days">' + days + '</span> <div class="smalltext">Days</div> </div> ';
+                        document.getElementById('clockdiv').innerHTML += ' <div> <span id="hours">' + hours + '</span> <div class="smalltext">hrs</div> </div> ';
+                        document.getElementById('clockdiv').innerHTML += ' <div> <span id="minutes">' + minutes + '</span> <div class="smalltext">mins</div> </div> ';
+                        document.getElementById('clockdiv').innerHTML += ' <div> <span id="seconds">' + seconds + '</span> <div class="smalltext">secs</div> </div> ';
+                    }
+
+                    timer = setInterval(showRemaining, 1000);
                 }
-
-                timer = setInterval(showRemaining, 1000);
             </script>
 
             <div id="clockdiv">
             </div>
 
+            <div>
+                <form method="post" action="./../BBservlet?action=edit_item&id=<%=x.id%>&username=<%=x.seller%>">
+                    <button type="submit" class="btn btn-warning"  id="edit"> Edit it </button>
+                </form>
+
+                <form method="post" action="./../BBservlet?action=delete_item&id=<%=x.id%>&username=<%=x.seller%>">
+                    <button type="submit" class="btn btn-danger"  id="Delete"> Delete it </button>
+                </form>
+            </div>
+
             <br>
 
-            <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item</a></b></h3>
+            <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item <span class="glyphicon glyphicon-eye-open"></span></a></b></h3>
 
             <div class="panel panel-warning">
                 <div class="panel-heading"><h3>Upload a photo </h3></div>

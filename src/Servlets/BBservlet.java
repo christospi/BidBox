@@ -610,7 +610,8 @@ public class BBservlet extends HttpServlet {
             db.closeConnection();
 
             response.sendRedirect("/BBservlet?action=auction_search&pointer="+pointer+"&seller="+seller+"");
-        }else if (action.equals("check_username")) {
+        }
+        else if (action.equals("check_username")) {
 
 
             db.openConn();
@@ -637,7 +638,8 @@ public class BBservlet extends HttpServlet {
                 }
 
             }
-        }else if (action.equals("check_email")) {
+        }
+        else if (action.equals("check_email")) {
 
 
             db.openConn();
@@ -660,16 +662,21 @@ public class BBservlet extends HttpServlet {
                 }
 
             }
-        }else if (action.equals("send_msg")) {
+        }
+        else if (action.equals("send_msg")) {
 
             response.sendRedirect("/BBservlet?page=send_msg");
 
-        }else if (action.equals("send_msgf")) {
+        }
+        else if (action.equals("send_msgf")) {
             db.openConn();
             String user = request.getParameter("user");
             String receiver = request.getParameter("receiver");
             String message = request.getParameter("message");
+
+            //TODO mipws to itemid thelei int ? !!!
             String itemID = request.getParameter("itemID");
+
             String query = "INSERT INTO message VALUES(0, '" + message + "',"
                     + "'" + 0 + "',"
                     + "'" + user + "',"
@@ -689,6 +696,91 @@ public class BBservlet extends HttpServlet {
             db.closeConnection();
 
             response.sendRedirect("/BBservlet?action=msglist&username="+user+"");
+
+        }
+        else if (action.equals("delete_item")) {
+
+            int itemid = Integer.parseInt(request.getParameter("id"));
+            String uname = request.getParameter("username");
+
+            //First we delete the item's photo due to foreign key
+            String query = "DELETE FROM photo WHERE itemID='"+itemid+"'";
+
+            db.openConn();
+            int rs3 = db.executeUpdate(query);
+            //After we have delete its photos, we delete the auction itself
+            query = "DELETE FROM auction WHERE itemID='"+itemid+"'";
+            rs3 = db.executeUpdate(query);
+
+            db.closeConnection();
+
+            response.sendRedirect("/BBservlet?action=auctionlist&username="+uname+"");
+
+        }
+        else if (action.equals("edit_item")) {
+
+            int itemid = Integer.parseInt(request.getParameter("id"));
+            String uname = request.getParameter("username");
+
+            Auction auction = Auction.getAuctionbyid(itemid);
+
+            //TODO mipws einai ligo vlaxiko na pigainei apo action se page xwris logo ??
+            //response.sendRedirect("/BBservlet?action=auctionlist&username="+uname+"");
+
+            request.setAttribute("auction",auction);
+            //request.setAttribute("username",uname);
+            request.getRequestDispatcher("/seller/edit_auction.jsp").include(request, response);
+        }
+        else if (action.equals("do_edit_auction")) {
+            String seller = request.getParameter("seller");
+            String name = request.getParameter("name");
+            String cat = request.getParameter("category");
+            float latitude = Float.parseFloat(request.getParameter("latitude"));
+            float longtitude = Float.parseFloat(request.getParameter("longtitude"));
+            String country = request.getParameter("country");
+            String city = request.getParameter("city");
+            float buy_pr = Float.parseFloat(request.getParameter("buy_price"));
+            float first_bid = Float.parseFloat(request.getParameter("first_bid"));
+            float curr;
+            curr= first_bid;
+            int itemid = Integer.parseInt(request.getParameter("itemid"));
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            String st = dateFormat.format(date);
+            String end = request.getParameter("end");
+
+            end = (end.replace("T"," "));
+            String description = request.getParameter("description");
+
+            db.openConn();
+
+            String query = "UPDATE auction SET latitude='" + latitude + "',"
+                    + "longtitude='" + longtitude + "',"
+                    + "seller='" + seller + "',"
+                    + "name='" + name + "',"
+                    + "country='" + country + "',"
+                    + "city='" + city + "',"
+                    + "buy_pr='" + buy_pr + "',"
+                    + "first_bid='" + first_bid + "',"
+                    + "curr='" + curr + "',"
+                    + "cat='" + cat + "',"
+                    + "st='" + st + "',"
+                    + "end='" + end + "',"
+                    + "description='" + description + "' WHERE itemID='"+itemid+"'";
+
+
+            Integer i = db.executeUpdate(query);
+            //TODO thelei veltiwsh,den mporw na to steilw sto auctioinfo giati to exoume
+            //TODO kanei na pernaei pointer (psaxnei oli ti lista) kai oxi itemid
+            if (i>0) {
+                request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
+            }
+            else {
+                request.getRequestDispatcher("/seller/fail_add.jsp").include(request, response);
+            }
+
+            db.closeConnection();
 
         }
 
