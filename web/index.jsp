@@ -23,8 +23,14 @@
                     <%--<input type="submit" value="Login" />--%>
                     <p>or <a href="welcome/signup.jsp" >Register here</a></p>
                 </form>
+                <hr>
+                <h4>Wanna take a sneak peek ?</h4>
+                <form method="post" action="">
+                    <button type="button" class="btn btn-warning">Continue as Visitor</button>
+                </form>
             </div>
         </div>
+
 
     </div>
 

@@ -127,7 +127,7 @@
                     <label>
                         Category :
                         <select name="category">
-                            <option selected><%=auction.cat%></option>
+                            <option selected><%=auction.cat%> (prev.)</option>
                             <option  value ="art"> Art </option>
                             <option  value ="books"> Books </option>
                             <option  value ="computers"> Computers & Tablets </option>
