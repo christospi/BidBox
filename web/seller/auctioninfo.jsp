@@ -1,6 +1,7 @@
 <%@ page import="Javabeans.Auction" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="Javabeans.Photo" %>
+<%@ page import="Javabeans.Category" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -47,7 +48,8 @@
             <center>
             <h3>Auction Info</h3>
             <% ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("aList");
-                ArrayList<Photo> pList = (ArrayList<Photo>) request.getSession().getAttribute("pList");%>
+                ArrayList<Photo> pList = (ArrayList<Photo>) request.getSession().getAttribute("pList");
+                ArrayList<Category> cList = (ArrayList<Category>) request.getSession().getAttribute("cList");%>
 
             <% String pointer = (String) request.getSession().getAttribute("pointer");
                 int point = Integer.parseInt(pointer);%>
@@ -79,11 +81,33 @@
                         <td><%=x.country%></td>
                         <td><%=x.city%></td>
                         <td><%=x.curr%></td>
-                        <td><%=x.cat%></td>
+                        <%
+                            Category a = new Category();
+                            a = cList.get(0); %>
+                        <td><%=a.name%></td>
                         <td><%=x.end%></td>
                         <td><%=x.description%></td>
 
                     </tr>
+
+                <%for (int i=1; i<cList.size(); i++)  {
+                    a = new Category();
+                        a = cList.get(i); %>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                        <td><%=a.name%></td>
+
+                        <td></td>
+                        <td></td>
+                    </tr>
+                <%}%>
+
+
                     </tbody>
                 </table>
             </div>

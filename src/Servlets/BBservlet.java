@@ -80,6 +80,9 @@ public class BBservlet extends HttpServlet {
                 case "userlogin":
                     request.getRequestDispatcher("/welcome/login.jsp").include(request, response);
                     break;
+                case "addauction":
+                    request.getRequestDispatcher("/seller/add_auction.jsp").include(request, response);
+                    break;
                 case "auctionlist":
                     request.getRequestDispatcher("/seller/auctionlist.jsp").include(request,response);
                     break;
@@ -286,11 +289,19 @@ public class BBservlet extends HttpServlet {
             response.sendRedirect("/BBservlet?page=verify");
 
         }
+        else if(action.equals("addpage")){
+            ArrayList<Category> cList = Category.get_all_cat(); //arraylist with all info fro all users in db
+            session.setAttribute("cList", cList);
+
+            response.sendRedirect("/BBservlet?page=addauction");
+        }
         else if (action.equals("addauction")) {
 
             String seller = request.getParameter("seller");
             String name = request.getParameter("name");
-            String cat = request.getParameter("category");
+
+            String cats[] = request.getParameterValues("category");
+
             float latitude = Float.parseFloat(request.getParameter("latitude"));
             float longtitude = Float.parseFloat(request.getParameter("longtitude"));
             String country = request.getParameter("country");
@@ -323,24 +334,38 @@ public class BBservlet extends HttpServlet {
                     + "'" + buy_pr + "',"
                     + "'" + first_bid + "',"
                     + "'" + curr + "',"
-                    + "'" + cat + "',"
                     + "'" + num_bid + "',"
                     + "'" + st + "',"
                     + "'" + end + "',"
                     + "'" + description + "',"
                     + "'" + 0 + "',"
                     + "'" + 0 + "',"
-                    + "'" + 0 + "')";
+                    + "'" + 0 + "') ";
 
-            Integer i = db.executeUpdate(query);
-            //out.print(i);
-
-            if (i>0) {
+            PreparedStatement prest;
+            prest = db.getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            prest.executeUpdate();
+            ResultSet rs = prest.getGeneratedKeys();
+            if(rs.next())
+            {
+                int last_inserted_id = rs.getInt(1);
+                for(int i=0; i<cats.length; i++){
+                    query = "INSERT INTO auction_has_cat VALUES(0, '" + last_inserted_id + "',"
+                            + "'" + Integer.parseInt(cats[i]) + "') ";
+                    db.executeUpdate(query);
+                }
                 request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
             }
-            else {
-                request.getRequestDispatcher("/seller/fail_add.jsp").include(request, response);
-            }
+
+//            Integer i = db.executeUpdate(query);
+            //out.print(i);
+
+//            if (i>0) {
+//                request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
+//            }
+//            else {
+//                request.getRequestDispatcher("/seller/fail_add.jsp").include(request, response);
+//            }
 
             db.closeConnection();
 
@@ -422,6 +447,9 @@ public class BBservlet extends HttpServlet {
             String seller = request.getParameter("seller");
             session.setAttribute("seller", seller);
 
+            int itemID = Integer.parseInt(request.getParameter("itemID"));
+            ArrayList<Category> cList = Category.get_its_cat(itemID);
+            session.setAttribute("cList", cList);
             ArrayList<Photo> pList = Photo.pdoSelectAll(seller); //get all photos this users uploaded
             session.setAttribute("pList", pList);
 
@@ -741,6 +769,10 @@ public class BBservlet extends HttpServlet {
 
             db.openConn();
             int rs3 = db.executeUpdate(query);
+
+            query = "DELETE FROM auction_has_cat WHERE itemID='"+itemid+"'";
+            rs3 = db.executeUpdate(query);
+
             //After we have delete its photos, we delete the auction itself
             query = "DELETE FROM auction WHERE itemID='"+itemid+"'";
             rs3 = db.executeUpdate(query);
@@ -754,7 +786,8 @@ public class BBservlet extends HttpServlet {
 
             int itemid = Integer.parseInt(request.getParameter("id"));
             String uname = request.getParameter("username");
-
+            ArrayList<Category> cList = Category.get_all_cat();
+            session.setAttribute("cList", cList);
             Auction auction = Auction.getAuctionbyid(itemid);
 
             //TODO mipws einai ligo vlaxiko na pigainei apo action se page xwris logo ??
@@ -767,7 +800,7 @@ public class BBservlet extends HttpServlet {
         else if (action.equals("do_edit_auction")) {
             String seller = request.getParameter("seller");
             String name = request.getParameter("name");
-            String cat = request.getParameter("category");
+            String cats[] = request.getParameterValues("category");
             float latitude = Float.parseFloat(request.getParameter("latitude"));
             float longtitude = Float.parseFloat(request.getParameter("longtitude"));
             String country = request.getParameter("country");
@@ -797,13 +830,21 @@ public class BBservlet extends HttpServlet {
                     + "buy_pr='" + buy_pr + "',"
                     + "first_bid='" + first_bid + "',"
                     + "curr='" + curr + "',"
-                    + "cat='" + cat + "',"
                     + "st='" + st + "',"
                     + "end='" + end + "',"
                     + "description='" + description + "' WHERE itemID='"+itemid+"'";
 
 
             Integer i = db.executeUpdate(query);
+            query = "DELETE FROM auction_has_cat WHERE itemID='"+itemid+"'";
+            i = db.executeUpdate(query);
+            for(int k=0; k<cats.length; k++){
+                query = "INSERT INTO auction_has_cat VALUES(0, '" + itemid + "',"
+                        + "'" + Integer.parseInt(cats[k]) + "') ";
+                i=db.executeUpdate(query);
+            }
+
+
             //TODO thelei veltiwsh,den mporw na to steilw sto auctioinfo giati to exoume
             //TODO kanei na pernaei pointer (psaxnei oli ti lista) kai oxi itemid
             if (i>0) {

@@ -35,7 +35,7 @@
             <ul class="nav  nav-pills navbar-right">
                 <li  class="active"><a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>">Home</a></li>
                 <li><a href="./../welcome/search.jsp">Search Auctions</a></li>
-                <li><a href="./../seller/add_auction.jsp">Add Auction</a></li>
+                <li><a href="./../BBservlet?action=addpage">Add Auction</a></li>
                 <li><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>">My Auctions</a>
                 <li><a href="./../BBservlet?action=msglist&username=<%=user2.username%>">Messages<%if(count!=0){%><span class="badge"><%=count%></span><%}%></a></li>
                 <li><a href="#">About us</a></li>

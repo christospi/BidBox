@@ -4,6 +4,8 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="Javabeans.Auction" %>
+<%@ page import="Javabeans.Category" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -23,6 +25,7 @@
         }
 
     </style>
+
 </head>
 <center>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfp9V-7Zc4O_YtJFxAtw8mmy8Dd_XVD-Y&libraries=geometry"></script>
@@ -107,7 +110,7 @@
     <%
         User user2 = (User) request.getSession().getAttribute("user");
         Auction auction = (Auction)request.getAttribute("auction");
-
+        ArrayList<Category> cList = (ArrayList<Category>) request.getSession().getAttribute("cList");
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
         Date date = new Date();
         String st = dateFormat.format(date);%>
@@ -126,19 +129,12 @@
                     </label>
                     <label>
                         Category :
-                        <select name="category">
-                            <option selected><%=auction.cat%> (prev.)</option>
-                            <option  value ="art"> Art </option>
-                            <option  value ="books"> Books </option>
-                            <option  value ="computers"> Computers & Tablets </option>
-                            <option  value="electronics">Electronics</option>
-                            <option  value ="fashion">Fashion</option>
-                            <option  value ="gadgets"> Gadgets </option>
-                            <option  value ="home"> Home & Garden </option>
-                            <option  value ="jewelry"> Jewelry & Watches </option>
-                            <option  value ="sports"> Sports </option>
-                            <option  value ="videogame"> Video Games </option>
-                            <option  value ="else"> Everything Else </option>
+                        <select multiple name="category" required>
+                            <%for (int i=0; i<cList.size(); i++)  {
+                                Category a = new Category();
+                                a = cList.get(i); %>
+                            <option value="<%=a.catID%>"><%=a.name%></option>
+                            <%}%>
                         </select>
                     </label>
                     <div id="map" ></div></label>

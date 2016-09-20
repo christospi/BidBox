@@ -17,7 +17,7 @@
         Auction a = new Auction();
         int pointer = i;
         a = aList.get(i); %>
-<br><a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a>
+<br><a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>&itemID=<%=a.id%>" ><%out.println(a.name);%></a>
 <%}%>
 
 <jsp:include page="/basics/footer.jsp" />

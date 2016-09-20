@@ -4,6 +4,8 @@
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="Javabeans.Category" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -104,6 +106,8 @@
         }
 </script>
 <% User user2 = (User) request.getSession().getAttribute("user");
+    ArrayList<Category> cList = (ArrayList<Category>) request.getSession().getAttribute("cList");
+
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
     Date date = new Date();
     String st = dateFormat.format(date);%>
@@ -122,19 +126,12 @@
                 </label>
                 <label>
                 Category :
-                <select name="category">
-                    <option  value ="art"> Art </option>
-                    <option  value ="books"> Books </option>
-                    <option  value ="computers"> Computers & Tablets </option>
-                    <option  value="electronics">Electronics</option>
-                    <option  value ="fashion">Fashion</option>
-                    <option  value ="gadgets"> Gadgets </option>
-                    <option  value ="home"> Home & Garden </option>
-                    <option  value ="jewelry"> Jewelry & Watches </option>
-                    <option  value ="sports"> Sports </option>
-                    <option  value ="videogame"> Video Games </option>
-                    <option  value ="else"> Everything Else </option>
-
+                    <select multiple name="category" required>
+                    <%for (int i=0; i<cList.size(); i++)  {
+                        Category a = new Category();
+                        a = cList.get(i); %>
+                    <option value="<%=a.catID%>"><%=a.name%></option>
+                    <%}%>
                 </select>
                 </label>
                 <label>

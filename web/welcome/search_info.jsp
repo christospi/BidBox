@@ -82,7 +82,7 @@
                         <td><%=x.country%></td>
                         <td><%=x.city%></td>
                         <td><%=x.curr%></td>
-                        <td><%=x.cat%></td>
+                        <%--<td><%=x.cat%></td>--%>
                         <td><%=x.end%></td>
                         <td><%=x.description%></td>
 

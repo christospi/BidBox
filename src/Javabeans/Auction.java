@@ -19,7 +19,6 @@ public class Auction {
     public int expired;
     public String seller;
     public String name;
-    public String cat;
     public float curr;
     public float buy_pr;
     public float first_bid;
@@ -59,7 +58,6 @@ public class Auction {
                 auction.curr = rs.getFloat("curr");
                 auction.buy_pr = rs.getFloat("buy_pr");
                 auction.first_bid = rs.getFloat("first_bid");
-                auction.cat = rs.getString("cat");
                 auction.country = rs.getString("country");
                 auction.num_bid = rs.getInt("num_bid");
                 auction.st = rs.getDate("st");
@@ -96,7 +94,6 @@ public class Auction {
                 auction.curr = rs.getFloat("curr");
                 auction.buy_pr = rs.getFloat("buy_pr");
                 auction.first_bid = rs.getFloat("first_bid");
-                auction.cat = rs.getString("cat");
                 auction.country = rs.getString("country");
                 auction.num_bid = rs.getInt("num_bid");
                 auction.st = rs.getDate("st");
@@ -144,7 +141,6 @@ public class Auction {
                 auction.curr = rs.getFloat("curr");
                 auction.buy_pr = rs.getFloat("buy_pr");
                 auction.first_bid = rs.getFloat("first_bid");
-                auction.cat = rs.getString("cat");
                 auction.country = rs.getString("country");
                 auction.num_bid = rs.getInt("num_bid");
                 auction.st = rs.getDate("st");
@@ -206,7 +202,6 @@ public class Auction {
                 auction.curr = rs.getFloat("curr");
                 auction.buy_pr = rs.getFloat("buy_pr");
                 auction.first_bid = rs.getFloat("first_bid");
-                auction.cat = rs.getString("cat");
                 auction.country = rs.getString("country");
                 auction.num_bid = rs.getInt("num_bid");
                 auction.st = rs.getDate("st");
