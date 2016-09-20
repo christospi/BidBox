@@ -26,8 +26,8 @@ public class DataBase implements Serializable{
         Properties props = new Properties();
 
         try{
-            FileReader reader = new FileReader("/home/chris/IdeaProjects/BidBox/src/Javabeans/db.properties");
-//            FileReader reader = new FileReader("C:\\Users\\kwnst\\Desktop\\BidBox\\src\\Javabeans\\db.properties");
+//            FileReader reader = new FileReader("/home/chris/IdeaProjects/BidBox/src/Javabeans/db.properties");
+            FileReader reader = new FileReader("C:\\Users\\kwnst\\Desktop\\BidBox\\src\\Javabeans\\db.properties");
             props.load(reader);
 
         } catch (IOException e) {

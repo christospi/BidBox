@@ -430,12 +430,15 @@ public class BBservlet extends HttpServlet {
         else if (action.equals("auctionlist")) { //ESTATE LIST
 
             String seller = request.getParameter("username");
+            int page_num = Integer.parseInt(request.getParameter("page_num"));
+//            ArrayList<Auction> aList = Auction.Auctionlist(seller);   //arraylist with all info for a user's estates
+            int total=Auction.getnum(seller);
+            session.setAttribute("page_num",page_num);
+            session.setAttribute("total",total);
+           String query ="SELECT * FROM auction WHERE seller='"+ seller +"' LIMIT " + (page_num-1) * 2 + ", " + 2 + "";
+            ArrayList<Auction> aList= Auction.search_auction(query);
+            session.setAttribute("aList",aList);
 
-            ArrayList<Auction> aList = Auction.Auctionlist(seller);   //arraylist with all info for a user's estates
-            int num=new Auction().getnum(seller);
-
-            session.setAttribute("num",num);
-            session.setAttribute("aList", aList);
 
             response.sendRedirect("/BBservlet?page=auctionlist");
         }
