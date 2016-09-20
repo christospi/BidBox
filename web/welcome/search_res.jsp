@@ -16,7 +16,9 @@
         int pointer = i;
         a = aList.get(i); %>
 <br><a href="./BBservlet?action=auction_search&pointer=<%=pointer%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a>
-<%}%>
+<%}
+if(aList.size()==0){
+%><h3>Nothing to show...</h3><%}%>
 
 <jsp:include page="/basics/footer.jsp" />
 </body>

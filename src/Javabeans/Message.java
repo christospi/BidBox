@@ -109,5 +109,19 @@ public class Message {
         }
         return mList;
     }
+    public static Integer get_new(String owner) throws FileNotFoundException, SQLException {
+
+       Integer count=0;
+
+        DataBase db = new DataBase();
+        db.openConn();
+
+        String query = "select * from message where owner='" + owner + "' and seen='"+ 0 +"'and to_user='"+owner+"'";
+        ResultSet rs = db.executeQuery(query);
+        if (rs.last()){
+            count=rs.getRow();
+        }
+        return count;
+    }
 
 }

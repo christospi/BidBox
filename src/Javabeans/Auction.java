@@ -180,6 +180,53 @@ public class Auction {
         System.out.println(noOfRecords);
         return  noOfRecords;
     }
+    public  static ArrayList<Auction> search_auction(String query) throws FileNotFoundException, SQLException {
 
+        ArrayList<Auction> aList = null;
+
+        DataBase db = new DataBase();
+        db.openConn();
+
+
+
+        ResultSet rs = db.executeQuery(query);
+
+        try {
+
+            aList = new ArrayList<Auction>();
+            while (rs.next()) {
+
+                Auction auction = new Auction();
+                auction.id = rs.getInt("itemID");
+                auction.lat = rs.getFloat("latitude");
+                auction.longt = rs.getFloat("longtitude");
+                auction.seller = rs.getString("seller");
+                auction.city = rs.getString("city");
+                auction.name = rs.getString("name");
+                auction.curr = rs.getFloat("curr");
+                auction.buy_pr = rs.getFloat("buy_pr");
+                auction.first_bid = rs.getFloat("first_bid");
+                auction.cat = rs.getString("cat");
+                auction.country = rs.getString("country");
+                auction.num_bid = rs.getInt("num_bid");
+                auction.st = rs.getDate("st");
+                auction.end = rs.getDate("end");
+                auction.description = rs.getString("description");
+                auction.expired = rs.getInt("expired");
+                auction.sold = rs.getInt("sold");
+                auction.buyerID=rs.getInt("buyerID");
+                aList.add((Auction) auction);
+
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+        return aList;
+
+    }
 
 }

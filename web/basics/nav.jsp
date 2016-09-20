@@ -5,6 +5,8 @@
 
     <% User user2 = (User) request.getSession().getAttribute("user");%>
     <jsp:include page="/basics/maxcdn.jsp" />
+    <jsp:include page="/basics/msg_alert.jsp" />
+    <%int count= (Integer) request.getSession().getAttribute("count");%>
     <link rel="stylesheet" href="./../css/index.css">
     <link rel="icon" type="image/png" href="./../img/fav.png">
 
@@ -35,7 +37,7 @@
                 <li><a href="./../welcome/search.jsp">Search Auctions</a></li>
                 <li><a href="./../seller/add_auction.jsp">Add Auction</a></li>
                 <li><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>">My Auctions</a>
-                <li><a href="./../BBservlet?action=msglist&username=<%=user2.username%>">Messages</a>
+                <li><a href="./../BBservlet?action=msglist&username=<%=user2.username%>">Messages<%if(count!=0){%><span class="badge"><%=count%></span><%}%></a></li>
                 <li><a href="#">About us</a></li>
                 <li><a href="./../BBservlet?action=logout">Log out</a></li>
             </ul>

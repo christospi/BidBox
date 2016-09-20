@@ -519,7 +519,7 @@ public class BBservlet extends HttpServlet {
 
         }
         else if (action.equals("msglist")){
-
+            db.openConn();
             String username = request.getParameter("username");
             session.setAttribute("username", username);
 
@@ -527,6 +527,9 @@ public class BBservlet extends HttpServlet {
             session.setAttribute("mList", mList);
             ArrayList<Message> mList2 = Message.get_sent(username); //get all messages this user has recieved
             session.setAttribute("mList2", mList2);
+            String query="UPDATE message SET seen=1 WHERE owner='"+ username +"' ";
+            db.executeUpdate(query);
+            db.closeConnection();
 
             response.sendRedirect("/BBservlet?page=msglist");
         }
@@ -543,11 +546,41 @@ public class BBservlet extends HttpServlet {
 
         }
         else if (action.equals("searchres")){
+            String seller = request.getParameter("seller");
+            String choice = request.getParameter("choice");
+            String terms = request.getParameter("terms");
+            int from;
+            int to;
+            if(!"".equals(request.getParameter("from"))) {
+                 from = Integer.parseInt(request.getParameter("from"));
+            }
+            if(!"".equals(request.getParameter("to"))) {
 
-            ArrayList<Auction> aList = Auction.Auctionlist("*");   //arraylist with all info for a user's estates
+                 to = Integer.parseInt(request.getParameter("to"));
+            }
+            String query="SELECT * FROM auction WHERE seller!='"+ seller +"' AND expired=0 AND sold=0 ";
 
-            session.setAttribute("aList", aList);
 
+            if(!choice.equals("any")) {
+                query=query+" AND cat = '"+ choice +"'";
+            }
+            if(!"".equals(request.getParameter("from")) && !"".equals(request.getParameter("to"))) {
+                from = Integer.parseInt(request.getParameter("from"));
+                to = Integer.parseInt(request.getParameter("to"));
+                query=query+"AND curr BETWEEN '"+from+"' AND '"+ to +"'";
+            }else{
+                if(!"".equals(request.getParameter("from"))){
+                    from = Integer.parseInt(request.getParameter("from"));
+                    query=query+"AND curr >= '"+from+"' ";
+                }else if(!"".equals(request.getParameter("to"))){
+                    to = Integer.parseInt(request.getParameter("to"));
+                    query=query+"AND curr <= '"+to+"' ";
+                }
+
+            }
+
+            ArrayList<Auction> aList =Auction.search_auction(query);
+            session.setAttribute("aList",aList);
             response.sendRedirect("/BBservlet?page=searchres");
 
         }

@@ -32,22 +32,21 @@
 
         }
     }
-    for (int i=0; i<bList.size(); i++) {
+
+    for (int i = 0; i < bList.size(); i++) {
         Auction b = new Auction();
-
-        b = aList.get(i);
-
-        if(b.buyerID==user2.userID){
-            if(itemb.contains(b.name)){
-
-            }else{
-                String str=String.valueOf(b.id);
+        b = bList.get(i);
+        if (b.buyerID == user2.userID) {
+            if (itemb.contains(b.name)) {
+            } else {
+                String str = String.valueOf(b.id);
                 bidded.add(user2.username);
                 itemb.add(b.name);
                 itembid.add(str);
             }
         }
     }
+
 
 
 %>
