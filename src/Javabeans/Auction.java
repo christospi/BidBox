@@ -2,6 +2,9 @@ package Javabeans;
 
 import Servlets.BBservlet;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -224,4 +227,139 @@ public class Auction {
     }
 
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getExpired() {
+        return expired;
+    }
+
+    public void setExpired(int expired) {
+        this.expired = expired;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getCurr() {
+        return curr;
+    }
+
+    public void setCurr(float curr) {
+        this.curr = curr;
+    }
+
+    public float getBuy_pr() {
+        return buy_pr;
+    }
+
+    public void setBuy_pr(float buy_pr) {
+        this.buy_pr = buy_pr;
+    }
+
+    public float getFirst_bid() {
+        return first_bid;
+    }
+
+    public void setFirst_bid(float first_bid) {
+        this.first_bid = first_bid;
+    }
+
+    public int getNum_bid() {
+        return num_bid;
+    }
+
+    public void setNum_bid(int num_bid) {
+        this.num_bid = num_bid;
+    }
+
+    public float getLat() {
+        return lat;
+    }
+
+    public void setLat(float lat) {
+        this.lat = lat;
+    }
+
+    public float getLongt() {
+        return longt;
+    }
+
+    public void setLongt(float longt) {
+        this.longt = longt;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Date getSt() {
+        return st;
+    }
+
+    public void setSt(Date st) {
+        this.st = st;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getBuyerID() {
+        return buyerID;
+    }
+
+    public void setBuyerID(int buyerID) {
+        this.buyerID = buyerID;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
+    }
 }

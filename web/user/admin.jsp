@@ -12,5 +12,7 @@
 </head>
 <body>
     <li><a href="/BBservlet?action=userlist">User List</a></li>
+
+    <li><a href="/BBservlet?action=marshall">EMINEM</a></li>
 </body>
 </html>

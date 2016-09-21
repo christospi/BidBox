@@ -1,15 +1,18 @@
 package Servlets;
 
 import Javabeans.*;
+import xmlClasses.xmlAuction;
+import xmlClasses.xmlAuctions;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.*;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,6 +35,8 @@ public class BBservlet extends HttpServlet {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(BBservlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
     }
 
@@ -41,11 +46,13 @@ public class BBservlet extends HttpServlet {
 
         } catch (SQLException ex) {
             Logger.getLogger(BBservlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws ServletException, IOException, SQLException, JAXBException {
 
         HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=UTF-8");
@@ -879,6 +886,28 @@ public class BBservlet extends HttpServlet {
             session.setAttribute("user", user);
 
             response.sendRedirect("/BBservlet?page=profile");
+
+        }
+        else if (action.equals("marshall")) {
+
+            File file = new File("/home/chris/Desktop/items-0.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
+
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            xmlAuctions auctions = (xmlAuctions) jaxbUnmarshaller.unmarshal(file);
+
+            File fileout = new File("/home/chris/Desktop/out.xml");
+
+            JAXBContext jaxbContext2 = JAXBContext.newInstance(xmlAuction.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            // output pretty printed
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            jaxbMarshaller.marshal(auctions, fileout);
+            jaxbMarshaller.marshal(auctions, System.out);
+
+            response.sendRedirect("/BBservlet?page=admin");
 
         }
 
