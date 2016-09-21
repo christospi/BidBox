@@ -23,7 +23,7 @@
                 <li ><a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>">Home</a></li>
                 <li><a href="./../welcome/search.jsp">Search Auctions</a></li>
                 <li class="active"><a href="./../seller/add_auction.jsp">Add Auction</a></li>
-                <li><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>">My Auctions</a>
+                <li><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=1">My Auctions</a>
                 <li><a href="#">About us</a></li>
                 <li><a href="./../BBservlet?action=logout">Log out</a></li>
             </ul>

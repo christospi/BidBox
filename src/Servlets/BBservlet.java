@@ -107,6 +107,9 @@ public class BBservlet extends HttpServlet {
                 case "send_msg":
                     request.getRequestDispatcher("/user/send_msg.jsp").include(request,response);
                     break;
+                case "profile":
+                    request.getRequestDispatcher("/user/profile.jsp").include(request,response);
+                    break;
 
             }
 
@@ -124,6 +127,7 @@ public class BBservlet extends HttpServlet {
             String city = request.getParameter("city");
             String address = request.getParameter("address");
             String role = request.getParameter("roles");
+            String query=null;
             db.openConn();
 
             String query3 = "SELECT COUNT(*) AS total FROM user where username='" + UserName + "'";   //check if username already exists
@@ -151,7 +155,7 @@ public class BBservlet extends HttpServlet {
 
             if(exists == 0 && exists2 ==0 ) {   //user entered valid username and email
 
-                String query = "INSERT INTO user VALUES(0, '" + UserName + "',"
+                query = "INSERT INTO user VALUES(0, '" + UserName + "',"
                         + "'" + Password + "',"
                         + "'" + FirstName + "',"
                         + "'" + LastName + "',"
@@ -159,9 +163,16 @@ public class BBservlet extends HttpServlet {
                         + "'" + Phone+ "',"
                         + "'" + address + "',"
                         + "'" + city + "',"
-                        + "'" + afm + "', 0,'" + role + "')";
+                        + "'" + afm + "',"
+                        + "'" + role + "',"
+                        + "0,"
+                        + "0,"
+                        + "0)";
 
-                Integer i = db.executeUpdate(query);
+                System.out.println(query);
+                System.out.println(query);
+
+                db.executeUpdate(query);
 
                 //String roles_in="";
                 //String role[]=request.getParameterValues("roles");
@@ -858,6 +869,16 @@ public class BBservlet extends HttpServlet {
             }
 
             db.closeConnection();
+
+        }
+        else if (action.equals("profile")) {
+
+            //TODO den kserw an xreiazontai giati to user einai hdh sto session
+            String uname = request.getParameter("username");
+            User user = User.getUser(uname);
+            session.setAttribute("user", user);
+
+            response.sendRedirect("/BBservlet?page=profile");
 
         }
 

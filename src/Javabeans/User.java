@@ -20,6 +20,7 @@ public class User {
     public String address;
     public String city;
     public String afm;
+    public String role;
 
     public static User getUser(String username) throws FileNotFoundException {
         DataBase db = new DataBase();
@@ -43,6 +44,7 @@ public class User {
                 user.address = rs.getString("address");
                 user.city = rs.getString("city");
                 user.afm = rs.getString("afm");
+                user.role = rs.getString("roles");
 
                 //TODO Roles mpla mpla
             }
@@ -74,6 +76,8 @@ public class User {
                 user.address = rs.getString("address");
                 user.city = rs.getString("city");
                 user.afm = rs.getString("afm");
+                user.role = rs.getString("roles");
+
 
                 //TODO Roles mpla mpla
             }
@@ -111,6 +115,8 @@ public class User {
                 user2.address = rs.getString("address");
                 user2.city = rs.getString("city");
                 user2.afm = rs.getString("afm");
+                user2.role = rs.getString("roles");
+
                 uList.add((User) user2);
             }
 

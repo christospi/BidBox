@@ -25,7 +25,7 @@
 </ul>
 
 <ul class="pagination">
-    <%for(int i=1;i<=total/2;i++){
+    <%for(int i=1;i<=((total+1)/2);i++){
         if(page_num==i){%>
             <li class="active"><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=<%=i%>"><%=i%></a></li>
         <%}else{%>

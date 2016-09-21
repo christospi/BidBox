@@ -108,6 +108,7 @@ public class Auction {
         }
         return auction;
     }
+
     public  static ArrayList<Auction> Auctionlist(String seller) throws FileNotFoundException, SQLException {
 
         ArrayList<Auction> aList = null;
@@ -175,14 +176,13 @@ public class Auction {
 
         return  noOfRecords;
     }
+
     public  static ArrayList<Auction> search_auction(String query) throws FileNotFoundException, SQLException {
 
         ArrayList<Auction> aList = null;
 
         DataBase db = new DataBase();
         db.openConn();
-
-
 
         ResultSet rs = db.executeQuery(query);
 

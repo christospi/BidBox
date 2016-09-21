@@ -38,6 +38,7 @@
                 <li><a href="./../BBservlet?action=addpage">Add Auction</a></li>
                 <li><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=1">My Auctions</a>
                 <li><a href="./../BBservlet?action=msglist&username=<%=user2.username%>">Messages<%if(count!=0){%><span class="badge"><%=count%></span><%}%></a></li>
+                <li><a href="./../BBservlet?action=profile&username=<%=user2.username%>">My Profile</a>
                 <li><a href="#">About us</a></li>
                 <li><a href="./../BBservlet?action=logout">Log out</a></li>
             </ul>
