@@ -11,6 +11,7 @@ public class xmlBids {
     public List<xmlBid> getBids() {
         return bids;
     }
+
     @XmlElement(name="Bid")
     public void setBids(List<xmlBid> bids) {
         this.bids = bids;

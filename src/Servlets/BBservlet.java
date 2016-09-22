@@ -3,6 +3,7 @@ package Servlets;
 import Javabeans.*;
 import xmlClasses.xmlAuction;
 import xmlClasses.xmlAuctions;
+import xmlClasses.xmlFunctions;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -364,6 +365,7 @@ public class BBservlet extends HttpServlet {
             prest = db.getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             prest.executeUpdate();
             ResultSet rs = prest.getGeneratedKeys();
+
             if(rs.next())
             {
                 int last_inserted_id = rs.getInt(1);
@@ -896,16 +898,18 @@ public class BBservlet extends HttpServlet {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             xmlAuctions auctions = (xmlAuctions) jaxbUnmarshaller.unmarshal(file);
 
-            File fileout = new File("/home/chris/Desktop/out.xml");
-
-            JAXBContext jaxbContext2 = JAXBContext.newInstance(xmlAuction.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-            // output pretty printed
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-            jaxbMarshaller.marshal(auctions, fileout);
-            jaxbMarshaller.marshal(auctions, System.out);
+            auctions.sendauctions();
+//
+//            File fileout = new File("/home/chris/Desktop/out.xml");
+//
+//            JAXBContext jaxbContext2 = JAXBContext.newInstance(xmlAuction.class);
+//            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+//
+//            // output pretty printed
+//            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//
+//            jaxbMarshaller.marshal(auctions, fileout);
+//            jaxbMarshaller.marshal(auctions, System.out);
 
             response.sendRedirect("/BBservlet?page=admin");
 

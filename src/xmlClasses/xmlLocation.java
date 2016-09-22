@@ -7,25 +7,25 @@ import javax.xml.bind.annotation.XmlValue;
 
 @XmlRootElement( name = "Location" )
 public class xmlLocation {
-    Double longt;
-    Double lat;
+    float longt;
+    float lat;
     String city;
 
-    public Double getLongt() {
+    public float getLongt() {
         return longt;
     }
 
     @XmlAttribute(name="Longitude")
-    public void setLongt(Double longt) {
+    public void setLongt(float longt) {
         this.longt = longt;
     }
 
-    public Double getLat() {
+    public float getLat() {
         return lat;
     }
 
     @XmlAttribute(name="Latitude")
-    public void setLat(Double lat) {
+    public void setLat(float lat) {
         this.lat = lat;
     }
 

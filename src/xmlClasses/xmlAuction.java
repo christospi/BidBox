@@ -18,10 +18,10 @@ public class xmlAuction {
     int id;
     String name;
 
-    List categories;
-    float curr;
-    float buy_pr;
-    float first_bid;
+    List<String> categories;
+    String curr;
+    String buy_pr;
+    String first_bid;
     int num_bid;
 
     xmlLocation location;
@@ -52,30 +52,30 @@ public class xmlAuction {
         this.name = name;
     }
 
-    public float getCurr() {
+    public String getCurr() {
         return curr;
     }
 
     @XmlElement(name="Currently")
-    public void setCurr(float curr) {
+    public void setCurr(String curr) {
         this.curr = curr;
     }
 
-    public float getBuy_pr() {
+    public String getBuy_pr() {
         return buy_pr;
     }
 
     @XmlElement(name="Buy_Price")
-    public void setBuy_pr(float buy_pr) {
+    public void setBuy_pr(String buy_pr) {
         this.buy_pr = buy_pr;
     }
 
-    public float getFirst_bid() {
+    public String getFirst_bid() {
         return first_bid;
     }
 
     @XmlElement(name="First_Bid")
-    public void setFirst_bid(float first_bid) {
+    public void setFirst_bid(String first_bid) {
         this.first_bid = first_bid;
     }
 
@@ -124,12 +124,12 @@ public class xmlAuction {
         this.description = description;
     }
 
-    public List getCategories() {
+    public List<String> getCategories() {
         return categories;
     }
 
     @XmlElement(name="Category")
-    public void setCategories(List categories) {
+    public void setCategories(List<String> categories) {
         this.categories = categories;
     }
 
