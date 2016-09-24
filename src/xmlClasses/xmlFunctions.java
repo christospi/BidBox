@@ -26,16 +26,16 @@ public class xmlFunctions {
 
     List<String> categories = new ArrayList<String>();
 
-    xmlBids xmlbids;
-    List<xmlBid> bids;
+    xmlBids xmlbids = new xmlBids();
+    List<xmlBid> bids  = new ArrayList<xmlBid>();
 
-    List<String> bid_time = new ArrayList<String>();
-    List<Float> bid_amount = new ArrayList<Float>();
+    List<String> bid_time;
+    List<Float> bid_amount;
 
-    List<Integer> bidder_rating = new ArrayList<Integer>();
-    List<String> bidder_username = new ArrayList<String>();
-    List<String> bidder_location = new ArrayList<String>();
-    List<String> bidder_country = new ArrayList<String>();
+    List<Integer> bidder_rating;
+    List<String> bidder_username;
+    List<String> bidder_location;
+    List<String> bidder_country;
 
     float loc_latitude;
     float loc_longitude;
@@ -44,7 +44,18 @@ public class xmlFunctions {
     String seller_username;
     int seller_rating;
 
+    //Functions for object transformations
+
     public void xmltodb(xmlAuction auction) throws FileNotFoundException, SQLException {
+
+        bid_time = new ArrayList<String>();
+        bid_amount = new ArrayList<Float>();
+
+        bidder_rating = new ArrayList<Integer>();
+        bidder_username = new ArrayList<String>();
+        bidder_location = new ArrayList<String>();
+        bidder_country = new ArrayList<String>();
+
         itemID=auction.getId();
         name=auction.getName();
 
@@ -59,6 +70,7 @@ public class xmlFunctions {
         float buy_price_dbl = 0;
 
         buy_price= auction.getBuy_pr();
+
         if(buy_price!= null && !buy_price.isEmpty()){
             buy_price=buy_price.replace("$","");
             buy_price_dbl = Float.parseFloat(buy_price);
@@ -265,6 +277,138 @@ public class xmlFunctions {
         db.closeConnection();
 
 
+    }
+
+    /*********************************************************************************/
+    /*********************************************************************************/
+
+    public xmlAuction dbtoxml(int givenID) throws FileNotFoundException, SQLException {
+
+        xmlAuction xmlauction = new xmlAuction();
+        xmlLocation loc = new xmlLocation();
+        xmlSeller seller = new xmlSeller();
+
+        DataBase db = new DataBase();
+        db.openConn();
+
+        ResultSet rs1;
+        ResultSet rs2;
+        ResultSet rs3;
+
+        //Get Auction from database
+        String query = "SELECT * FROM auction WHERE itemID = ?";
+        PreparedStatement state = db.getConn().prepareStatement(query);
+        state.setInt (1, givenID);
+
+        rs1 = state.executeQuery();
+        if(rs1.next()){
+
+            float buy_price_float = 0;
+
+            xmlauction.setId( rs1.getInt("itemID") );
+            xmlauction.setName( rs1.getString("name") );
+            xmlauction.setCurr( "$" + Float.toString(rs1.getFloat("curr")) );
+            xmlauction.setFirst_bid( "$" + Float.toString(rs1.getFloat("first_bid")) );
+
+            buy_price_float = rs1.getFloat("buy_pr");
+            if( buy_price_float == 0){
+                xmlauction.setBuy_pr("N/A");
+            }
+            else{
+                xmlauction.setBuy_pr( "$" + Float.toString(buy_price_float) );
+            }
+
+            xmlauction.setNum_bid( rs1.getInt("num_bid") );
+            xmlauction.setCountry( rs1.getString("country") );
+            xmlauction.setSt( rs1.getString("st") );
+            xmlauction.setEnd( rs1.getString("end") );
+            xmlauction.setDescription( rs1.getString("description") );
+
+            loc.setCity( rs1.getString("city") );
+            loc.setLat( rs1.getFloat("latitude") );
+            loc.setLongt( rs1.getFloat("longtitude") );
+            xmlauction.setLocation( loc );
+
+            //We hit a query to obtain more info for auction's seller
+            query = "SELECT * FROM user WHERE username = ?";
+            state = db.getConn().prepareStatement(query);
+            state.setString (1, rs1.getString("seller") );
+
+            rs2 = state.executeQuery();
+            if(rs2.next()){
+                seller.setRating( (int) rs2.getFloat("rating_seller") );
+                seller.setUserid( rs2.getString("username") );
+
+                xmlauction.setSeller( seller );
+            }
+
+            //Now we want to obtain all the auction's categories
+            query = "SELECT * FROM auction_has_cat WHERE itemID = ?";
+            state = db.getConn().prepareStatement(query);
+            state.setInt (1, rs1.getInt("itemID") );
+
+            rs2 = state.executeQuery();
+
+            while(rs2.next()){
+
+                int catid = rs2.getInt("catID");
+
+                //Now we want to obtain the names of its categories
+                query = "SELECT * FROM category WHERE catID = ?";
+                state = db.getConn().prepareStatement(query);
+                state.setInt (1, catid);
+
+                rs3 = state.executeQuery();
+                if(rs3.next()){
+                    categories.add( rs3.getString("cat_name") );
+                }
+            }
+
+            xmlauction.setCategories( categories );
+
+            //Now we want to obtain all the bids related to this auction
+            query = "SELECT * FROM bid WHERE itemID = ?";
+            state = db.getConn().prepareStatement(query);
+            state.setInt (1, rs1.getInt("itemID") );
+
+            rs2 = state.executeQuery();
+
+            while(rs2.next()){
+                xmlBid newbid = new xmlBid();
+                xmlBidder newbidder = new xmlBidder();
+
+                newbid.setAmount( "$" + Float.toString(rs2.getFloat("amount")) );
+                newbid.setTime(rs2.getString("date"));
+
+                int bidderid = rs2.getInt("userID");
+
+                query = "SELECT * FROM user WHERE userID = ?";
+                state = db.getConn().prepareStatement(query);
+                state.setInt (1, bidderid);
+
+                rs3 = state.executeQuery();
+
+                //If user exists (obviously exists)
+                if(rs3.next()){
+
+                    newbidder.setUserid( rs3.getString("username") );
+                    //TODO we dont have country
+                    //newbidder.setCountry(rs3.getString("country"));
+                    newbidder.setCountry("Greece");
+                    newbidder.setLocation( rs3.getString("city") );
+                    newbidder.setRating( (int) rs3.getFloat(("rating_bidder")));
+
+                    newbid.setBidder(newbidder);
+                    bids.add(newbid);
+                }
+            }
+
+            xmlbids.setBids( bids );
+            xmlauction.setBids( xmlbids );
+
+        }
+
+        return xmlauction;
     }
 
 

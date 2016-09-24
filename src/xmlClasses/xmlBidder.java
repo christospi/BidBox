@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType( propOrder = {"location", "country"})
 @XmlRootElement( name = "Bidder" )
 public class xmlBidder {
+
     int rating;
     String username;
     String location;

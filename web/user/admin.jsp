@@ -13,6 +13,7 @@
 <body>
     <li><a href="/BBservlet?action=userlist">User List</a></li>
 
-    <li><a href="/BBservlet?action=marshall">EMINEM</a></li>
+    <li><a href="/BBservlet?action=unmarshall">EMINEM</a></li>
+    <li><a href="/BBservlet?action=marshall">2-PAC</a></li>
 </body>
 </html>

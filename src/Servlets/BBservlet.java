@@ -890,7 +890,7 @@ public class BBservlet extends HttpServlet {
             response.sendRedirect("/BBservlet?page=profile");
 
         }
-        else if (action.equals("marshall")) {
+        else if (action.equals("unmarshall")) {
 
             File file = new File("/home/chris/Desktop/items-0.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
@@ -899,17 +899,25 @@ public class BBservlet extends HttpServlet {
             xmlAuctions auctions = (xmlAuctions) jaxbUnmarshaller.unmarshal(file);
 
             auctions.sendauctions();
-//
-//            File fileout = new File("/home/chris/Desktop/out.xml");
-//
-//            JAXBContext jaxbContext2 = JAXBContext.newInstance(xmlAuction.class);
-//            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-//
-//            // output pretty printed
-//            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//
-//            jaxbMarshaller.marshal(auctions, fileout);
+
+            response.sendRedirect("/BBservlet?page=admin");
+
+        }
+        else if (action.equals("marshall")) {
+
+            File file = new File("/home/chris/Desktop/unmars.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            xmlAuctions auctions = new xmlAuctions();
+            auctions.getauction( 1043749860 );
+
+            jaxbMarshaller.marshal(auctions, file);
+
 //            jaxbMarshaller.marshal(auctions, System.out);
+
 
             response.sendRedirect("/BBservlet?page=admin");
 

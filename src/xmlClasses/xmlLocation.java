@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlValue;
 
 @XmlRootElement( name = "Location" )
 public class xmlLocation {
+
     float longt;
     float lat;
     String city;

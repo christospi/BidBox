@@ -29,6 +29,11 @@ public class xmlAuction {
     xmlSeller seller;
 
     String country;
+
+    public xmlAuction() {
+        categories = new ArrayList<String>();
+    }
+
     String st;
     String end;
     String description;

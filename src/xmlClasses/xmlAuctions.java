@@ -12,6 +12,10 @@ public class xmlAuctions {
 
     List<xmlAuction> auctions;
 
+    public xmlAuctions() {
+        auctions = new ArrayList<xmlAuction>();
+    }
+
     public List<xmlAuction> getAuctions() {
         return auctions;
     }
@@ -37,6 +41,17 @@ public class xmlAuctions {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void getauction(int itemid) throws FileNotFoundException, SQLException {
+        xmlAuction auction = new xmlAuction();
+
+        xmlFunctions xmlfuncs = new xmlFunctions();
+
+        //TODO an kanoume gia polla items tha thelei loop,gia kathe itemID
+        auction = xmlfuncs.dbtoxml(itemid);
+
+        auctions.add(auction);
     }
 
 }
