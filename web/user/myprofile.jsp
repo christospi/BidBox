@@ -58,12 +58,9 @@
 
             <div>
                 <form method="post" action="">
-                    <button type="submit" class="btn btn-warning"  id="edit"> Edit it </button>
+                    <button type="submit" class="btn btn-warning"  id="edit"> Edit personal info </button>
                 </form>
 
-                <form method="post" action="">
-                    <button type="submit" class="btn btn-danger"  id="Delete"> Delete it </button>
-                </form>
             </div>
         </center>
     </div>

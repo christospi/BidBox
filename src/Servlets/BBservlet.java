@@ -74,7 +74,7 @@ public class BBservlet extends HttpServlet {
 
             switch (page){
                 case "admin":
-                    request.getRequestDispatcher("/user/admin.jsp").include(request, response);
+                    request.getRequestDispatcher("/admin/admin.jsp").include(request, response);
                     break;
                 case "userlist":
                     request.getRequestDispatcher("/admin/user_list.jsp").include(request, response);
@@ -115,8 +115,8 @@ public class BBservlet extends HttpServlet {
                 case "send_msg":
                     request.getRequestDispatcher("/user/send_msg.jsp").include(request,response);
                     break;
-                case "profile":
-                    request.getRequestDispatcher("/user/profile.jsp").include(request,response);
+                case "myprofile":
+                    request.getRequestDispatcher("/user/myprofile.jsp").include(request,response);
                     break;
 
             }
@@ -455,10 +455,9 @@ public class BBservlet extends HttpServlet {
             int total=Auction.getnum(seller);
             session.setAttribute("page_num",page_num);
             session.setAttribute("total",total);
-           String query ="SELECT * FROM auction WHERE seller='"+ seller +"' LIMIT " + (page_num-1) * 2 + ", " + 2 + "";
+            String query ="SELECT * FROM auction WHERE seller='"+ seller +"' LIMIT " + (page_num-1) * 2 + ", " + 2 + "";
             ArrayList<Auction> aList= Auction.search_auction(query);
             session.setAttribute("aList",aList);
-
 
             response.sendRedirect("/BBservlet?page=auctionlist");
         }
@@ -600,34 +599,44 @@ public class BBservlet extends HttpServlet {
             String seller = request.getParameter("seller");
             String choice = request.getParameter("choice");
             String terms = request.getParameter("terms");
-            int from;
-            int to;
-            if(!"".equals(request.getParameter("from"))) {
-                 from = Integer.parseInt(request.getParameter("from"));
-            }
-            if(!"".equals(request.getParameter("to"))) {
+            int from_pr;
+            int to_pr;
 
-                 to = Integer.parseInt(request.getParameter("to"));
+            String query;
+            int inactive = 0;
+
+            if(!"".equals(request.getParameter("from_pr"))) {
+                 from_pr = Integer.parseInt(request.getParameter("from_pr"));
             }
-            String query="SELECT * FROM auction WHERE seller!='"+ seller +"' AND expired=0 AND sold=0 ";
+            if(!"".equals(request.getParameter("to_pr"))) {
+                 to_pr = Integer.parseInt(request.getParameter("to_pr"));
+            }
+
+            if( request.getParameter("inactive") == null ) {
+                query="SELECT * FROM auction WHERE seller!='"+ seller +"' AND expired=0 AND sold=0 ";
+            }
+            else{
+                inactive = Integer.parseInt(request.getParameter("inactive"));
+                query="SELECT * FROM auction WHERE seller!='"+ seller +"'";
+            }
 
 
             if(!choice.equals("any")) {
                 query=query+" AND cat = '"+ choice +"'";
             }
-            if(!"".equals(request.getParameter("from")) && !"".equals(request.getParameter("to"))) {
-                from = Integer.parseInt(request.getParameter("from"));
-                to = Integer.parseInt(request.getParameter("to"));
-                query=query+"AND curr BETWEEN '"+from+"' AND '"+ to +"'";
-            }else{
-                if(!"".equals(request.getParameter("from"))){
-                    from = Integer.parseInt(request.getParameter("from"));
-                    query=query+"AND curr >= '"+from+"' ";
-                }else if(!"".equals(request.getParameter("to"))){
-                    to = Integer.parseInt(request.getParameter("to"));
-                    query=query+"AND curr <= '"+to+"' ";
-                }
 
+            if(!"".equals(request.getParameter("from_pr")) && !"".equals(request.getParameter("to_pr"))) {
+                from_pr = Integer.parseInt(request.getParameter("from_pr"));
+                to_pr = Integer.parseInt(request.getParameter("to_pr"));
+                query=query+"AND curr BETWEEN "+from_pr+" AND "+ to_pr +"";
+            }else{
+                if(!"".equals(request.getParameter("from_pr"))){
+                    from_pr = Integer.parseInt(request.getParameter("from_pr"));
+                    query=query+"AND curr >= "+from_pr+" ";
+                }else if(!"".equals(request.getParameter("to_pr"))){
+                    to_pr = Integer.parseInt(request.getParameter("to_pr"));
+                    query=query+"AND curr <= "+to_pr+" ";
+                }
             }
 
             ArrayList<Auction> aList =Auction.search_auction(query);
@@ -802,7 +811,7 @@ public class BBservlet extends HttpServlet {
 
             db.closeConnection();
 
-            response.sendRedirect("/BBservlet?action=auctionlist&username="+uname+"");
+            response.sendRedirect("/BBservlet?action=auctionlist&username="+uname+"&page_num=1");
 
         }
         else if (action.equals("edit_item")) {
@@ -880,19 +889,19 @@ public class BBservlet extends HttpServlet {
             db.closeConnection();
 
         }
-        else if (action.equals("profile")) {
+        else if (action.equals("myprofile")) {
 
             //TODO den kserw an xreiazontai giati to user einai hdh sto session
             String uname = request.getParameter("username");
             User user = User.getUser(uname);
             session.setAttribute("user", user);
 
-            response.sendRedirect("/BBservlet?page=profile");
+            response.sendRedirect("/BBservlet?page=myprofile");
 
         }
         else if (action.equals("unmarshall")) {
 
-            File file = new File("/home/chris/Desktop/items-0.xml");
+            File file = new File("/home/chris/Desktop/custom.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -917,7 +926,6 @@ public class BBservlet extends HttpServlet {
             jaxbMarshaller.marshal(auctions, file);
 
 //            jaxbMarshaller.marshal(auctions, System.out);
-
 
             response.sendRedirect("/BBservlet?page=admin");
 

@@ -8,45 +8,47 @@ import java.io.FileNotFoundException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class xmlFunctions {
-    int itemID;
-    String name;
-    String currently;
-    String first_bid;
-    String buy_price;
-    int number_of_bids;
-    String country;
-    String started;
-    String ends;
-    String description;
-
-    List<String> categories = new ArrayList<String>();
-
-    xmlBids xmlbids = new xmlBids();
-    List<xmlBid> bids  = new ArrayList<xmlBid>();
-
-    List<String> bid_time;
-    List<Float> bid_amount;
-
-    List<Integer> bidder_rating;
-    List<String> bidder_username;
-    List<String> bidder_location;
-    List<String> bidder_country;
-
-    float loc_latitude;
-    float loc_longitude;
-    String loc_city;
-
-    String seller_username;
-    int seller_rating;
 
     //Functions for object transformations
 
-    public void xmltodb(xmlAuction auction) throws FileNotFoundException, SQLException {
+    public void xmltodb(xmlAuction auction) throws FileNotFoundException, SQLException, ParseException {
+
+        int itemID;
+        String name;
+        String currently;
+        String first_bid;
+        String buy_price;
+        int number_of_bids;
+        String country;
+        String started;
+        String ends;
+        String description;
+
+        List<String> categories = new ArrayList<String>();
+
+        xmlBids xmlbids = new xmlBids();
+        List<xmlBid> bids  = new ArrayList<xmlBid>();
+
+        List<String> bid_time;
+        List<Float> bid_amount;
+
+        List<Integer> bidder_rating;
+        List<String> bidder_username;
+        List<String> bidder_location;
+        List<String> bidder_country;
+
 
         bid_time = new ArrayList<String>();
         bid_amount = new ArrayList<Float>();
@@ -58,6 +60,12 @@ public class xmlFunctions {
 
         itemID=auction.getId();
         name=auction.getName();
+        float loc_latitude;
+        float loc_longitude;
+        String loc_city;
+
+        String seller_username;
+        int seller_rating;
 
         currently=auction.getCurr();
         currently=currently.replace("$","");
@@ -79,8 +87,19 @@ public class xmlFunctions {
 
         number_of_bids=auction.getNum_bid();
         country=auction.getCountry();
+
+        //DateTime fix from xml file format to db format
         started=auction.getSt();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM-dd-yy HH:mm:ss");
+        LocalDateTime date = LocalDateTime.parse(started,formatter);
+        started = date.toString();
+        started = (started.replace("T"," "));
+
         ends=auction.getEnd();
+        date = LocalDateTime.parse(ends,formatter);
+        ends = date.toString();
+        ends = (ends.replace("T"," "));
+
         description=auction.getDescription();
 
         categories=auction.getCategories();
@@ -180,7 +199,13 @@ public class xmlFunctions {
         state.setInt (16, 1);
         state.setInt (17, 0);
 
-        state.executeUpdate();
+        //if 0 then auction already exists,else 1 auction does not exist
+        int check = state.executeUpdate();
+
+        if(check == 0){
+            db.closeConnection();
+            return;
+        }
 
         //Insert User (seller) from xml file
         query = "INSERT IGNORE INTO user VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -287,6 +312,12 @@ public class xmlFunctions {
         xmlAuction xmlauction = new xmlAuction();
         xmlLocation loc = new xmlLocation();
         xmlSeller seller = new xmlSeller();
+
+        List<String> categories = new ArrayList<String>();
+
+        xmlBids xmlbids = new xmlBids();
+        List<xmlBid> bids  = new ArrayList<xmlBid>();
+
 
         DataBase db = new DataBase();
         db.openConn();
