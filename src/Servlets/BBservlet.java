@@ -930,6 +930,15 @@ public class BBservlet extends HttpServlet {
             response.sendRedirect("/BBservlet?page=admin");
 
         }
+        else if(action.equals("show_profile") ){
+            String uname = request.getParameter("username");
+            String sellerun = request.getParameter("sellerun");
+
+            User seller = User.getUser(sellerun);
+
+            request.setAttribute("seller",seller);
+            request.getRequestDispatcher("/welcome/show_profile.jsp").include(request, response);
+        }
 
     }
 }

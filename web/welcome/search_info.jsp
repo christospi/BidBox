@@ -76,8 +76,9 @@
                         x = aList.get(point); %>
                     <tbody>
                     <tr>
+                        <%--TODO PROSOXH EDW AN EINAI GUEST DE THA PERNAEI H PARAMETROS USERNAME--%>
 
-                        <td><%=x.seller%></td>
+                        <td><a href="./BBservlet?action=show_profile&username=<%=user2.username%>&sellerun=<%=x.seller%>"><%=x.seller%></a></td>
                         <td><%=x.name%></td>
                         <td><%=x.country%></td>
                         <td><%=x.city%></td>

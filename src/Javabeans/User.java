@@ -33,6 +33,7 @@ public class User {
 
         try{
             if(rs.next()){
+
                 user.userID = rs.getInt("userID");
                 user.username = rs.getString("username");
                 user.name = rs.getString("name");
