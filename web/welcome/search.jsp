@@ -1,4 +1,6 @@
 <%@ page import="Javabeans.User" %>
+<%@ page import="Javabeans.Category" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -7,6 +9,7 @@
     <link rel="stylesheet" href="./../css/search.css">
     <title>Search Auctions</title>
     <%User user2 = (User) request.getSession().getAttribute("user");
+        ArrayList<Category> cList = (ArrayList<Category>) request.getAttribute("cList");
 
     %>
 </head>
@@ -23,8 +26,8 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-6">
-                    <label>Search filters:</label>
-                        <input type="checkbox" name="inactive" value=1> Include inactive auctions<br>
+                    <label>Search filters: </label><br>
+                        <input type="checkbox" name="inactive" value=1> Include inactive auctions <br>
                             <label>Choose:</label><br>
                             <select name = "choice" id="ddlsearch" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" required>
                             <div class="dropdown-menu">
@@ -34,25 +37,21 @@
                             <option value="recommended">Recommended for you</option>
                             <div class="dropdown-divider"><hr></div>
                               <optgroup label="Category">
-                                  <option  value ="art"> Art </option>
-                                  <option  value ="books"> Books </option>
-                                  <option  value ="computers"> Computers & Tablets </option>
-                                  <option  value="electronics">Electronics</option>
-                                  <option  value ="fashion">Fashion</option>
-                                  <option  value ="gadgets"> Gadgets </option>
-                                  <option  value ="home"> Home & Garden </option>
-                                  <option  value ="jewelry"> Jewelry & Watches </option>
-                                  <option  value ="sports"> Sports </option>
-                                  <option  value ="videogame"> Video Games </option>
-                                  <option  value ="else"> Everything Else </option>
+                                  <%for (int i=0; i<cList.size(); i++)  {
+                                    Category a = new Category();
+                                    a = cList.get(i); %>
+                                      <option value="<%=a.catID%>"><%=a.name%></option>
+                                  <%}%>
                               </optgroup>
                           </div>
-
                         </select><br>
 
-                            <%--</div>--%>
-                            <label>Term:</label><br>
-                            <input id="txtkey" name="terms" type="text" class="form-control" placeholder="Enter a term" aria-describedby="ddlsearch"><br>
+                    <label>Location:</label><br>
+                    <input id="txtkey" name="location" type="text" class="form-control" placeholder="Enter location" aria-describedby="ddlsearch"><br>
+
+                <%--</div>--%>
+                            <label>Keywords:</label><br>
+                            <input id="txtkey" name="keywords" type="text" class="form-control" placeholder="Enter keywords" aria-describedby="ddlsearch"><br>
 
                             <div class="col-xs-3">
                                 <label for="ex2"> From :</label>

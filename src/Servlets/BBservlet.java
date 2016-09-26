@@ -596,48 +596,68 @@ public class BBservlet extends HttpServlet {
 
         }
         else if (action.equals("searchres")){
+
+            //TODO thelei doulitsa akoma den to xw dokimasei katholou
+
             String seller = request.getParameter("seller");
             String choice = request.getParameter("choice");
             String terms = request.getParameter("terms");
+            String location = request.getParameter("location");
             int from_pr;
             int to_pr;
 
-            String query;
             int inactive = 0;
 
             if(!"".equals(request.getParameter("from_pr"))) {
-                 from_pr = Integer.parseInt(request.getParameter("from_pr"));
+                from_pr = Integer.parseInt(request.getParameter("from_pr"));
             }
             if(!"".equals(request.getParameter("to_pr"))) {
-                 to_pr = Integer.parseInt(request.getParameter("to_pr"));
+                to_pr = Integer.parseInt(request.getParameter("to_pr"));
             }
 
+            String query = "SELECT * FROM ";
+
+            String from = "auction WHERE";
+            String from_where_cat =
+                    "auction,auction_has_cat,category WHERE auction.itemID="
+                    + "auction_has_cat.itemID AND auction_has_cat.catID = category.catID AND"
+                    + "category.cat_name = '" + choice + " AND ";
+
+            String where = "seller !='"+ seller + "'";
+
             if( request.getParameter("inactive") == null ) {
-                query="SELECT * FROM auction WHERE seller!='"+ seller +"' AND expired=0 AND sold=0 ";
+                where = where +"' AND expired=0 AND sold=0 ";
             }
             else{
                 inactive = Integer.parseInt(request.getParameter("inactive"));
-                query="SELECT * FROM auction WHERE seller!='"+ seller +"'";
+                where = "seller!='"+ seller +"'";
             }
 
-
-            if(!choice.equals("any")) {
-                query=query+" AND cat = '"+ choice +"'";
+            if( location != null && !location.isEmpty()) {
+                where = where + "AND (auction.city ='" + location +"' OR auction.country = '"
+                + location + "') ";
             }
 
             if(!"".equals(request.getParameter("from_pr")) && !"".equals(request.getParameter("to_pr"))) {
                 from_pr = Integer.parseInt(request.getParameter("from_pr"));
                 to_pr = Integer.parseInt(request.getParameter("to_pr"));
-                query=query+"AND curr BETWEEN "+from_pr+" AND "+ to_pr +"";
+
+                where = where +"AND curr BETWEEN " + from_pr + " AND " + to_pr + "";
             }else{
                 if(!"".equals(request.getParameter("from_pr"))){
                     from_pr = Integer.parseInt(request.getParameter("from_pr"));
-                    query=query+"AND curr >= "+from_pr+" ";
+                    where  = where + "AND curr >= " + from_pr + " ";
                 }else if(!"".equals(request.getParameter("to_pr"))){
                     to_pr = Integer.parseInt(request.getParameter("to_pr"));
-                    query=query+"AND curr <= "+to_pr+" ";
+                    where = where + "AND curr <= " + to_pr + " ";
                 }
             }
+
+            if( terms != null && !terms.isEmpty()) {
+                where = where + "AND (name LIKE '%" + terms + "%' OR description LIKE '%" + terms + "%'";
+            }
+
+
 
             ArrayList<Auction> aList =Auction.search_auction(query);
             session.setAttribute("aList",aList);
@@ -899,8 +919,14 @@ public class BBservlet extends HttpServlet {
             response.sendRedirect("/BBservlet?page=myprofile");
 
         }
+        else if(action.equals("searchpage")){
+            ArrayList<Category> cList = Category.get_all_cat();
+            request.setAttribute("cList", cList);
+            request.getRequestDispatcher("/welcome/search.jsp").include(request, response);
+        }
         else if (action.equals("unmarshall")) {
 
+            //TODO edw allakse to bale kati diko sou
             File file = new File("/home/chris/Desktop/custom.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
 
@@ -914,6 +940,7 @@ public class BBservlet extends HttpServlet {
         }
         else if (action.equals("marshall")) {
 
+            //TODO edw allakse to bale kati diko sou
             File file = new File("/home/chris/Desktop/unmars.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -921,6 +948,8 @@ public class BBservlet extends HttpServlet {
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             xmlAuctions auctions = new xmlAuctions();
+
+            //TODO edw vale ena itemid pou na uparxei sth vasi
             auctions.getauction( 1043749860 );
 
             jaxbMarshaller.marshal(auctions, file);
