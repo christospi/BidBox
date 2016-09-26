@@ -601,7 +601,7 @@ public class BBservlet extends HttpServlet {
 
             String seller = request.getParameter("seller");
             String choice = request.getParameter("choice");
-            String terms = request.getParameter("terms");
+            String terms = request.getParameter("keywords");
             String location = request.getParameter("location");
             int from_pr;
             int to_pr;
@@ -617,25 +617,31 @@ public class BBservlet extends HttpServlet {
 
             String query = "SELECT * FROM ";
 
-            String from = "auction WHERE";
-            String from_where_cat =
-                    "auction,auction_has_cat,category WHERE auction.itemID="
-                    + "auction_has_cat.itemID AND auction_has_cat.catID = category.catID AND"
-                    + "category.cat_name = '" + choice + " AND ";
-
+            String from = "auction WHERE ";
+            String from_where_cat;
             String where = "seller !='"+ seller + "'";
 
+            if( !choice.equals("any") ){
+                from_where_cat =
+                        "auction,auction_has_cat WHERE auction.itemID="
+                        + "auction_has_cat.itemID AND auction_has_cat.catID = " + choice + " AND ";
+
+                query = query + from_where_cat;
+            }
+            else{
+                query = query + from;
+            }
+
             if( request.getParameter("inactive") == null ) {
-                where = where +"' AND expired=0 AND sold=0 ";
+                where = where +" AND expired=0 AND sold=0 ";
             }
             else{
                 inactive = Integer.parseInt(request.getParameter("inactive"));
-                where = "seller!='"+ seller +"'";
             }
 
             if( location != null && !location.isEmpty()) {
-                where = where + "AND (auction.city ='" + location +"' OR auction.country = '"
-                + location + "') ";
+                where = where + " AND ( (auction.city LIKE '%" + location +"%') OR (auction.country LIKE '%"
+                + location + "%') ) ";
             }
 
             if(!"".equals(request.getParameter("from_pr")) && !"".equals(request.getParameter("to_pr"))) {
@@ -654,34 +660,41 @@ public class BBservlet extends HttpServlet {
             }
 
             if( terms != null && !terms.isEmpty()) {
-                where = where + "AND (name LIKE '%" + terms + "%' OR description LIKE '%" + terms + "%'";
+                where = where + " AND ( (name LIKE '%" + terms + "%') OR (description LIKE '%" + terms + "%') )";
             }
 
+            query = query + where;
+
+            System.out.println(query);
+            System.out.println(query);
 
 
             ArrayList<Auction> aList =Auction.search_auction(query);
-            session.setAttribute("aList",aList);
-            response.sendRedirect("/BBservlet?page=searchres");
+
+            request.setAttribute("aList", aList);
+            request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
+
+//            session.setAttribute("aList",aList);
+//            response.sendRedirect("");
 
         }
         else if (action.equals("auction_search")){
 
-            String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this estate
-            session.setAttribute("pointer", pointer);
+
+            int id = Integer.parseInt(request.getParameter("auctionid"));   //pointer, points arraylists position to have info only for this estate
+            Auction auction = Auction.getAuctionbyid(id);
+            request.setAttribute("auction", auction);
 
             String seller = request.getParameter("seller");
             session.setAttribute("seller", seller);
 
             ArrayList<Photo> pList = Photo.pdoSelectAll(seller); //get all photos this users uploaded
             session.setAttribute("pList", pList);
-            ArrayList<Auction> aList = Auction.Auctionlist("*");   //arraylist with all info for a user's estates
 
-            session.setAttribute("aList", aList);
-            response.sendRedirect("/BBservlet?page=auction_search");
+            request.getRequestDispatcher("/welcome/search_info.jsp").include(request, response);
+
         }
         else if (action.equals("place_bid")){
-            String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this estate
-            session.setAttribute("pointer", pointer);
 
             String seller = request.getParameter("seller");
             session.setAttribute("seller", seller);
@@ -722,7 +735,7 @@ public class BBservlet extends HttpServlet {
             i=db.executeUpdate(query);
             db.closeConnection();
 
-            response.sendRedirect("/BBservlet?action=auction_search&pointer="+pointer+"&seller="+seller+"");
+            response.sendRedirect("/BBservlet?action=auction_search&seller="+seller+"&auction="+auction+"");
         }
         else if (action.equals("check_username")) {
 
@@ -950,7 +963,7 @@ public class BBservlet extends HttpServlet {
             xmlAuctions auctions = new xmlAuctions();
 
             //TODO edw vale ena itemid pou na uparxei sth vasi
-            auctions.getauction( 1043749860 );
+            auctions.getauction( 1043397459 );
 
             jaxbMarshaller.marshal(auctions, file);
 

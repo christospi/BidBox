@@ -49,11 +49,8 @@
             <h3>Auction Info</h3>
             <%
                 User user2 = (User) request.getSession().getAttribute("user");
-                ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("aList");
+                Auction x = (Auction) request.getAttribute("auction");
                 ArrayList<Photo> pList = (ArrayList<Photo>) request.getSession().getAttribute("pList");%>
-
-            <% String pointer = (String) request.getSession().getAttribute("pointer");
-                int point = Integer.parseInt(pointer);%>
 
             <div class="table-responsive">
                 <table  class="table table-striped table-bordered table-condensed table-hover"  cellpadding="2" border="2">
@@ -64,16 +61,12 @@
                     <th>Country:</th>
                     <th>City:</th>
                     <th>Current bid:</th>
-                    <th>Category:</th>
+                    <%--<th>Category:</th>--%>
                     <th>End of auction : </th>
                     <th>Description: </th>
                     </tr>
                     </thead>
 
-
-
-                    <% Auction x = new Auction();
-                        x = aList.get(point); %>
                     <tbody>
                     <tr>
                         <%--TODO PROSOXH EDW AN EINAI GUEST DE THA PERNAEI H PARAMETROS USERNAME--%>
@@ -140,7 +133,7 @@
 
             <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item</a></b></h3>
             <% if(x.expired!=1 || x.sold==1){ %>
-            <form method="post" action="/BBservlet?action=place_bid&itemid=<%=x.id%>&bidderid=<%=user2.userID%>&seller=<%=x.seller%>&pointer=<%=pointer%>">
+            <form method="post" action="/BBservlet?action=place_bid&itemid=<%=x.id%>&bidderid=<%=user2.userID%>&seller=<%=x.seller%>">
                 <input type="number" step="any" name="amount" min="<%=x.curr%>" max="<%=x.buy_pr%>">
                 <input type="submit" value="Bid !"/>
             </form>

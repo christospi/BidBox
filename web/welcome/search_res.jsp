@@ -10,12 +10,12 @@
 <body>
 
 <h2>Your search results:</h2>
-<% ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("aList");
+<% ArrayList<Auction> aList = (ArrayList<Auction>) request.getAttribute("aList");
     for (int i=0; i<aList.size(); i++)  {
         Auction a = new Auction();
         int pointer = i;
         a = aList.get(i); %>
-<br><a href="./BBservlet?action=auction_search&pointer=<%=pointer%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a>
+<br><a href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a>
 <%}
 if(aList.size()==0){
 %><h3>Nothing to show...</h3><%}%>
