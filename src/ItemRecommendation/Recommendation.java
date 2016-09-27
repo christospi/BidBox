@@ -78,6 +78,31 @@ public class Recommendation {
             System.out.print("("+users.get(i).userID+","+ percentages[i]+")");
         }
 
+    ///Parallel Bubble Sort between matrix and percentages///
+
+            for(int j=0;j<users.size();j++){
+                for(int k=0;k<(users.size()-1)-j;k++){
+                    if(percentages[k]<percentages[k+1]){
+                        double temp = percentages[k];
+                        percentages[k]=percentages[k+1];
+                        percentages[k+1]=temp;
+
+                        for(int l=0; l<auctions.size();l++){
+                            int temp2 = matrix[k][l];
+                            matrix[k][l]=matrix[k+1][l];
+                            matrix[k+1][l]=temp2;
+                        }
+                    }
+                }
+            }
+
+//        for(int i=0;i<users.size();i++){
+//            System.out.println(percentages[i]);
+//            for(int j=0;j<auctions.size();j++){
+//                System.out.print(matrix[i][j]);
+//            }
+//            System.out.println();
+//        }
         db.closeConnection();
         return recommendations;
     }
