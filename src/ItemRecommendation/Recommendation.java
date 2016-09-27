@@ -10,13 +10,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Recommendation {
-    public static ArrayList<Integer> Similarity(int userid) throws FileNotFoundException, SQLException {
+    public static Double[] Similarity(int userid) throws FileNotFoundException, SQLException {
         DataBase db = new DataBase();
         db.openConn();
         ArrayList<Auction> auctions = Auction.Auctionlist("*");
         ArrayList<User> users= User.doSelectAll();
         int matrix[][] =  new int[users.size()][auctions.size()];
-        ArrayList<Integer> recommendations = new ArrayList<Integer>();
+        Double recommendations[] = new Double[auctions.size()];
         Double percentages[]= new Double[users.size()];
         String query = "SELECT * FROM bid ";
         ResultSet rs = db.executeQuery(query);
@@ -86,8 +86,13 @@ public class Recommendation {
                         double temp = percentages[k];
                         percentages[k]=percentages[k+1];
                         percentages[k+1]=temp;
-
+                        if(k==pos){
+                            pos=k+1;
+                        }else if(pos==k+1){
+                            pos=k;
+                        }
                         for(int l=0; l<auctions.size();l++){
+
                             int temp2 = matrix[k][l];
                             matrix[k][l]=matrix[k+1][l];
                             matrix[k+1][l]=temp2;
@@ -95,14 +100,60 @@ public class Recommendation {
                     }
                 }
             }
+        //  Make zero the items user has already made a bid for them//
+        for(int i=0;i<users.size();i++){
+            if (i==pos) continue;
+            for(int j=0;j<auctions.size();j++){
+                if (matrix[i][j]==1 && matrix[pos][j]==1){
+                    matrix[i][j]=0;
+                }
+            }
+        }
+        double sum=0.0;
+        for(int j=0;j<users.size();j++){
+            sum=sum+percentages[j];
+        }
+        System.out.println("sum"+sum);
+        for(int j=0;j<auctions.size();j++){
+            recommendations[j]=0.0;
+            for(int i=0;i<users.size();i++){
+                if(matrix[i][j]!=0 && percentages[i]!=0){
+                    recommendations[j]+= (((matrix[i][j]*percentages[i]*100)/sum));
+                }
+            }
+        }
+       Integer itemsids[] = new Integer[auctions.size()];
+        for(int j=0;j<auctions.size();j++){
+            System.out.print("itemid: "+auctions.get(j).id);
+            System.out.println(" rec"+j+": "+recommendations[j]);
+            itemsids[j]=auctions.get(j).id;
+        }
+        //Sorting ids from the best to the worst recommendation //
+        for(int i=0;i<auctions.size();i++){
+            for(int j=0;j<(auctions.size()-1)-i;j++){
+                if(recommendations[j]<recommendations[j+1]){
+                    double temp;
+                    temp=recommendations[j];
+                    recommendations[j]=recommendations[j+1];
+                    recommendations[j+1]=temp;
+                    int temp2;
+                    temp2=itemsids[j];
+                    itemsids[j]=itemsids[j+1];
+                    itemsids[j+1]=temp2;
 
-//        for(int i=0;i<users.size();i++){
-//            System.out.println(percentages[i]);
-//            for(int j=0;j<auctions.size();j++){
-//                System.out.print(matrix[i][j]);
-//            }
-//            System.out.println();
-//        }
+                }
+            }
+        }
+        for(int i=0;i<users.size();i++){
+            System.out.println(percentages[i]);
+            for(int j=0;j<auctions.size();j++){
+                System.out.print(matrix[i][j]);
+            }
+            System.out.println();
+        }
+        for(int j=0;j<auctions.size();j++){
+            System.out.println("ItemID:"+itemsids[j]+"normalised percentage:"+recommendations[j]);
+        }
         db.closeConnection();
         return recommendations;
     }

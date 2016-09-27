@@ -937,7 +937,7 @@ public class BBservlet extends HttpServlet {
             ArrayList<Category> cList = Category.get_all_cat();
             request.setAttribute("cList", cList);
 
-            ArrayList<Integer> auga = Recommendation.Similarity(24);
+           Double[] auga = Recommendation.Similarity(24);
             request.getRequestDispatcher("/welcome/search.jsp").include(request, response);
         }
         else if (action.equals("unmarshall")) {
