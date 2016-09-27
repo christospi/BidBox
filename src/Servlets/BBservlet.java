@@ -1,5 +1,6 @@
 package Servlets;
 
+import ItemRecommendation.Recommendation;
 import Javabeans.*;
 import xmlClasses.xmlAuction;
 import xmlClasses.xmlAuctions;
@@ -935,12 +936,14 @@ public class BBservlet extends HttpServlet {
         else if(action.equals("searchpage")){
             ArrayList<Category> cList = Category.get_all_cat();
             request.setAttribute("cList", cList);
+
+            ArrayList<Integer> auga = Recommendation.Similarity(24);
             request.getRequestDispatcher("/welcome/search.jsp").include(request, response);
         }
         else if (action.equals("unmarshall")) {
 
             //TODO edw allakse to bale kati diko sou
-            File file = new File("/home/chris/Desktop/custom.xml");
+            File file = new File("C:\\Users\\kwnst\\Desktop\\custom.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -954,7 +957,7 @@ public class BBservlet extends HttpServlet {
         else if (action.equals("marshall")) {
 
             //TODO edw allakse to bale kati diko sou
-            File file = new File("/home/chris/Desktop/unmars.xml");
+            File file = new File("C:\\Users\\kwnst\\Desktop\\custom2.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 

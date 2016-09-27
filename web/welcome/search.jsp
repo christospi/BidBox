@@ -16,7 +16,7 @@
 
 <body>
 
-<div class="container">
+<%--<div class="container">--%>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h2>Search auctions</h2>
@@ -81,7 +81,7 @@
 
    </form>
 
-</div>
+<%--</div>--%>
 
 
 <div id="push"></div>
@@ -92,4 +92,5 @@
 <%--</form>--%>
     <jsp:include page="./../basics/footer.jsp" />
 </body>
+
 </html>

@@ -40,7 +40,7 @@
             if (itemb.contains(b.name)) {
             } else {
                 String str = String.valueOf(b.id);
-                bidded.add(user2.username);
+                bidded.add(b.seller);
                 itemb.add(b.name);
                 itembid.add(str);
             }
