@@ -21,12 +21,12 @@
                     <input type="password" name="Password" placeholder="password" required>
                     <button class="btn btn-info btn-block login" type="submit">Login</button>
                     <%--<input type="submit" value="Login" />--%>
-                    <p>or <a href="welcome/signup.jsp" >Register here</a></p>
+                    <p>or <a href="BBservlet?action=signup_page">Register here</a></p>
                 </form>
                 <hr>
                 <h4>Wanna take a sneak peek ?</h4>
-                <form method="post" action="">
-                    <button type="button" class="btn btn-warning">Continue as Visitor</button>
+                <form method="post" action="./../BBservlet?action=guest_searchpage">
+                    <button type="submit" class="btn btn-warning">Continue as Visitor</button>
                 </form>
             </div>
         </div>

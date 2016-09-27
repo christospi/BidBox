@@ -22,7 +22,7 @@
             <h2>Search auctions</h2>
         </div>
 
-        <form method="post" action="/BBservlet?action=searchres&seller=<%=user2.username%>">
+        <form method="post" action="/BBservlet?action=searchres&seller=<%=user2.userID%>">
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-6">

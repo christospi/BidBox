@@ -3,7 +3,7 @@
 <html>
 <head>
     <jsp:include page="./../basics/maxcdn.jsp" />
-    <jsp:include page="./../basics/nav.jsp" />
+    <jsp:include page="./../basics/header.jsp" />
     <link rel="stylesheet" href="./../css/search.css">
     <title>User's info</title>
     <%User user2 = (User) request.getSession().getAttribute("user");

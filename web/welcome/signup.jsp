@@ -7,7 +7,15 @@
 <head>
     <jsp:include page="/basics/maxcdn.jsp" />
     <jsp:include page="/basics/register.jsp" />
+<% int id=-1;
+    String seller=null;
+    if ( request.getParameter("auctionid")!=null && !request.getParameter("auctionid").isEmpty() && request.getParameter("seller")!=null && !request.getParameter("seller").isEmpty()){
+     id = Integer.parseInt(request.getParameter("auctionid"));
+     seller = request.getParameter("seller");
 
+}else{
+   id=-1;
+}%>
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript">
         $(document).ready(function()
@@ -78,7 +86,9 @@
 <div class="container">
     <div class="login-container2">
         <div class="form-box2">
+
                     <form  action="./../BBservlet?action=signup" method="post" >
+
                         <div id="new_auctionform">
                                 <label>
                                     First Name:<input type="text" name ="name" required autocomplete="off" >

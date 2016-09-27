@@ -101,23 +101,33 @@ public class Recommendation {
                 }
             }
         //  Make zero the items user has already made a bid for them//
+        Integer count[] = new Integer[users.size()];
         for(int i=0;i<users.size();i++){
+            count[i]=0;
             if (i==pos) continue;
+
             for(int j=0;j<auctions.size();j++){
                 if (matrix[i][j]==1 && matrix[pos][j]==1){
                     matrix[i][j]=0;
+
+                }else{
+                    count[i]+=matrix[i][j];
                 }
             }
         }
         double sum=0.0;
         for(int j=0;j<users.size();j++){
-            sum=sum+percentages[j];
+            if(count[j]!=0 && pos!=j){
+                sum=sum+percentages[j];
+            }
+
         }
         System.out.println("sum"+sum);
         for(int j=0;j<auctions.size();j++){
             recommendations[j]=0.0;
             for(int i=0;i<users.size();i++){
                 if(matrix[i][j]!=0 && percentages[i]!=0){
+                    System.out.println("matrix"+matrix[i][j]+" percentages "+percentages[i]+" sum"+sum);
                     recommendations[j]+= (((matrix[i][j]*percentages[i]*100)/sum));
                 }
             }

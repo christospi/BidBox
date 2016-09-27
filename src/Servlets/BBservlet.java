@@ -73,7 +73,7 @@ public class BBservlet extends HttpServlet {
 
         if (action == null || action.equals("")) {
 
-            switch (page){
+             switch (page){
                 case "admin":
                     request.getRequestDispatcher("/admin/admin.jsp").include(request, response);
                     break;
@@ -122,8 +122,11 @@ public class BBservlet extends HttpServlet {
 
             }
 
+        }else if(action.equals("signup_page")){
+            request.getRequestDispatcher("/welcome/signup.jsp").include(request,response);
         }
         else if (action.equals("signup")) {   //SIGN UP
+
 
             String FirstName = request.getParameter("name");   //take all parameters from form
             String LastName = request.getParameter("surname");
@@ -183,19 +186,7 @@ public class BBservlet extends HttpServlet {
 
                 db.executeUpdate(query);
 
-                //String roles_in="";
-                //String role[]=request.getParameterValues("roles");
 
-//                for(int k=0;k<role.length;k++) {
-//
-//                    roles_in="";
-//                    roles_in+=role[k];
-//                    String query2 = "INSERT INTO roles VALUES (0, '"+roles_in+"', '"+UserName+"')";
-//                    Integer j = db.executeUpdate(query2);
-//                    //out.print(j);
-//                    //out.print(db.getConn().getWarnings());
-//
-//                }
 
                  request.getRequestDispatcher("/welcome/success_signup.jsp").include(request, response);
             }
@@ -242,29 +233,58 @@ public class BBservlet extends HttpServlet {
                             response.sendRedirect("/BBservlet?page=userlogin");
                         }
 
-                        /*
-                        String []user2 = new String[user.roles.length];
-                        for (int k=0;k<user.roles.length;k++) {
-                            user2[k]=user.roles[k];
-                            //System.out.println(user[k]);
+
+                    }
+
+                }else { //if user and pass dont exist in db then..
+
+//                    out.print("Invalid User: " + username + " " + password);
+                    request.getRequestDispatcher("./welcome/login_fail.jsp").include(request, response);
+
+                }
+
+                db.closeConnection();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }    else if (action.equals("login_guest")) {    //LOGIN
+
+            try {
+
+                String username = request.getParameter("Username"); //get user and pass from form
+                String password = request.getParameter("Password");
+                String query = "select * from user where username='" + username + "' and pass='" + password + "'";
+
+                db.openConn();
+
+                ResultSet rs = db.executeQuery(query);
+
+                if (rs.next()) {    //if user exists
+
+                    User user = User.getUser(username);
+                    session.setAttribute("user", user);
+
+                    if (user.ver == 0) {    //if he isnt verified yet display this
+                        request.getRequestDispatcher("/welcome/unverified.jsp").include(request, response);
+                    }
+                    else {  //else see his role and redirect him to the right page
+
+                        if(Objects.equals(user.username, "admin")){
+                            response.sendRedirect("/BBservlet?page=admin");
+                        }
+                        else{
+                            int id = Integer.parseInt(request.getParameter("auctionid"));   //pointer, points arraylists position to have info only for this estate
+
+
+
+                            String seller = request.getParameter("seller");
+                            session.setAttribute("seller", seller);
+                            response.sendRedirect("/BBservlet?action=auction_search&auctionid="+id+"&seller="+seller+"");
                         }
 
-                        if(user.hasRole(user2) == "Renter"){
-                            response.sendRedirect("/DiEstate/DbServlet?page=render");
-                        }
-                        else if(user.hasRole(user2) == "Tenant"){
-                            response.sendRedirect("/DiEstate/DbServlet?page=tenant");
-                        }
-                        else if(user.hasRole(user2) == "Visitor"){
-                            response.sendRedirect("/DiEstate/DbServlet?page=visitor");
-                        }
-                        else if(user.hasRole(user2) == "Admin"){
-                            response.sendRedirect("/DiEstate/DbServlet?page=admin");
-                        }
-                        else if(user.hasRole(user2) == "Combo"){
-                            response.sendRedirect("/DiEstate/DbServlet?page=combo");
-                        }
-                        */
+
                     }
 
                 }else { //if user and pass dont exist in db then..
@@ -600,10 +620,14 @@ public class BBservlet extends HttpServlet {
 
             //TODO thelei doulitsa akoma den to xw dokimasei katholou
 
-            String seller = request.getParameter("seller");
+            int seller = Integer.parseInt(request.getParameter("seller"));
             String choice = request.getParameter("choice");
             String terms = request.getParameter("keywords");
             String location = request.getParameter("location");
+            if(choice.equals("recommended")){
+                Double[] auga = Recommendation.Similarity(seller);
+                return;
+            }
             int from_pr;
             int to_pr;
 
@@ -673,7 +697,12 @@ public class BBservlet extends HttpServlet {
             ArrayList<Auction> aList =Auction.search_auction(query);
 
             request.setAttribute("aList", aList);
-            request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
+            if(seller!=-1) {
+                request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
+            }else{
+                request.getRequestDispatcher("/welcome/search_res_guest.jsp").include(request, response);
+            }
+
 
 //            session.setAttribute("aList",aList);
 //            response.sendRedirect("");
@@ -694,6 +723,21 @@ public class BBservlet extends HttpServlet {
 
             request.getRequestDispatcher("/welcome/search_info.jsp").include(request, response);
 
+        } else if (action.equals("auction_search_guest")){
+
+
+            int id = Integer.parseInt(request.getParameter("auctionid"));   //pointer, points arraylists position to have info only for this estate
+            Auction auction = Auction.getAuctionbyid(id);
+            request.setAttribute("auction", auction);
+
+            String seller = request.getParameter("seller");
+            session.setAttribute("seller", seller);
+
+            ArrayList<Photo> pList = Photo.pdoSelectAll(seller); //get all photos this users uploaded
+            session.setAttribute("pList", pList);
+
+            request.getRequestDispatcher("/welcome/search_info_guest.jsp").include(request, response);
+
         }
         else if (action.equals("place_bid")){
 
@@ -706,6 +750,7 @@ public class BBservlet extends HttpServlet {
 
             int bidderid = Integer.parseInt(request.getParameter("bidderid"));
             float amount = Float.parseFloat(request.getParameter("amount"));
+
 
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -736,7 +781,7 @@ public class BBservlet extends HttpServlet {
             i=db.executeUpdate(query);
             db.closeConnection();
 
-            response.sendRedirect("/BBservlet?action=auction_search&seller="+seller+"&auction="+auction+"");
+            response.sendRedirect("/BBservlet?action=auction_search&seller="+seller+"&auctionid="+itemid+"");
         }
         else if (action.equals("check_username")) {
 
@@ -856,7 +901,7 @@ public class BBservlet extends HttpServlet {
             session.setAttribute("cList", cList);
             Auction auction = Auction.getAuctionbyid(itemid);
 
-            //TODO mipws einai ligo vlaxiko na pigainei apo action se page xwris logo ??
+            //TODO mipws einai ligo vlaxiko na pigainei apo action se page xwris logo ?? XAXAXAXA
             //response.sendRedirect("/BBservlet?action=auctionlist&username="+uname+"");
 
             request.setAttribute("auction",auction);
@@ -937,13 +982,19 @@ public class BBservlet extends HttpServlet {
             ArrayList<Category> cList = Category.get_all_cat();
             request.setAttribute("cList", cList);
 
-           Double[] auga = Recommendation.Similarity(24);
+//           Double[] auga = Recommendation.Similarity(132);
             request.getRequestDispatcher("/welcome/search.jsp").include(request, response);
+        } else if(action.equals("guest_searchpage")){
+            ArrayList<Category> cList = Category.get_all_cat();
+            request.setAttribute("cList", cList);
+
+//           Double[] auga = Recommendation.Similarity(132);
+            request.getRequestDispatcher("/welcome/search_guest.jsp").include(request, response);
         }
         else if (action.equals("unmarshall")) {
 
             //TODO edw allakse to bale kati diko sou
-            File file = new File("C:\\Users\\kwnst\\Desktop\\custom.xml");
+            File file = new File("C:\\Users\\kwnst\\Desktop\\items-0.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
