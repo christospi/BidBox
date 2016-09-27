@@ -125,7 +125,7 @@ public class BBservlet extends HttpServlet {
         }else if(action.equals("signup_page")){
             request.getRequestDispatcher("/welcome/signup.jsp").include(request,response);
         }
-        else if (action.equals("signup")) {   //SIGN UP
+        else if (action.equals("signup")) { //SIGN UP
 
 
             String FirstName = request.getParameter("name");   //take all parameters from form
