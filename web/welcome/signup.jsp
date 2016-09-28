@@ -7,15 +7,7 @@
 <head>
     <jsp:include page="/basics/maxcdn.jsp" />
     <jsp:include page="/basics/register.jsp" />
-<% int id=-1;
-    String seller=null;
-    if ( request.getParameter("auctionid")!=null && !request.getParameter("auctionid").isEmpty() && request.getParameter("seller")!=null && !request.getParameter("seller").isEmpty()){
-     id = Integer.parseInt(request.getParameter("auctionid"));
-     seller = request.getParameter("seller");
 
-}else{
-   id=-1;
-}%>
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript">
         $(document).ready(function()
@@ -150,23 +142,13 @@
 
 
                             <label>
-                                Address:  <input type="text" name="address" required autocomplete="off"/>
+                                Country:  <input type="text" name="country" required autocomplete="off"/>
                             </label>
 
 
 
 
-                            <label>Type of registration:
 
-
-                                <select name="roles">
-                                    <option  value="bidder">Bidder</option>
-                                    <option  value ="seller">Seller</option>
-                                    <option  value ="combo"> Both </option>
-
-                                </select>
-
-                            </label>
 
                             <label><button class="btn btn-success btn-block login" type="submit" >Sign up </button></label>
                         </div>

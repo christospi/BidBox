@@ -45,30 +45,30 @@
 <body>
 <div class="container">
     <div class="row">
-            <center>
+        <center>
             <h3>Auction Info</h3>
-            <% ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("aList");
-                ArrayList<Photo> pList = (ArrayList<Photo>) request.getSession().getAttribute("pList");
-                ArrayList<Category> cList = (ArrayList<Category>) request.getSession().getAttribute("cList");%>
+            <% ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("boughtList");
+                ArrayList<Photo> pList = (ArrayList<Photo>) request.getSession().getAttribute("boughtpList");
+                ArrayList<Category> cList = (ArrayList<Category>) request.getSession().getAttribute("boughtcList");%>
 
             <% String pointer = (String) request.getSession().getAttribute("pointer");
                 int point = Integer.parseInt(pointer);
-               %>
+            %>
 
             <div class="table-responsive">
                 <table  class="table table-striped table-bordered table-condensed table-hover"  cellpadding="2" border="2">
-                <thead class="thead-default">
+                    <thead class="thead-default">
                     </tr>
-                        <th>Owner Name:</th>
-                        <th>Item name:</th>
-                        <th>Country:</th>
-                        <th>City:</th>
-                        <th>Current bid:</th>
-                        <th>Category:</th>
-                        <th>End of auction : </th>
-                        <th>Description: </th>
-                     </tr>
-                </thead>
+                    <th>Owner Name:</th>
+                    <th>Item name:</th>
+                    <th>Country:</th>
+                    <th>City:</th>
+                    <th>Current bid:</th>
+                    <th>Category:</th>
+                    <th>End of auction : </th>
+                    <th>Description: </th>
+                    </tr>
+                    </thead>
 
 
 
@@ -91,8 +91,8 @@
 
                     </tr>
 
-                <%for (int i=1; i<cList.size(); i++)  {
-                    a = new Category();
+                    <%for (int i=1; i<cList.size(); i++)  {
+                        a = new Category();
                         a = cList.get(i); %>
                     <tr>
                         <td></td>
@@ -106,7 +106,7 @@
                         <td></td>
                         <td></td>
                     </tr>
-                <%}%>
+                    <%}%>
 
 
                     </tbody>
@@ -166,38 +166,18 @@
             <br>
 
             <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item <span class="glyphicon glyphicon-eye-open"></span></a></b></h3>
-            <%if (x.sold==1 || x.sold==3){%>
+            <%if (x.sold==1 || x.sold==2){%>
 
-                <form method="post" action="./../BBservlet?action=rate&buyer_id=<%=x.buyerID%>&auctionID=<%=x.id%>&pointer=<%=point%>&sold=<%=x.sold%>">
-                    <button type="submit" class="btn btn-info" name="up" id="up">Rate up buyer!</button>
-                </form>
-                <form method="post" action="./../BBservlet?action=rate&buyer_id=<%=x.buyerID%>&auctionID=<%=x.id%>&pointer=<%=point%>&sold=<%=x.sold%>">
-                    <button type="submit" class="btn btn-danger"  name="down" id="down">Rate down buyer!</button>
-                </form>
+            <form method="post" action="./../BBservlet?action=rate2&seller_name=<%=x.seller%>&auctionID=<%=x.id%>&pointer=<%=point%>&sold=<%=x.sold%>">
+                <button type="submit" class="btn btn-info" name="up" id="up">Rate up buyer!</button>
+            </form>
+            <form method="post" action="./../BBservlet?action=rate2&buyer_id=<%=x.buyerID%>&auctionID=<%=x.id%>&pointer=<%=point%>&sold=<%=x.sold%>">
+                <button type="submit" class="btn btn-danger"  name="down" id="down">Rate down buyer!</button>
+            </form>
 
-                <%}%>
-            <div class="panel panel-warning">
-                <div class="panel-heading"><h3>Upload a photo </h3></div>
-                <div class="panel-body">
-                    <form method="post" action="./../BBservlet?action=upload&seller=<%=x.seller%>&id=<%=x.id%>" enctype="multipart/form-data">
-                        <table border="0" class="forms">
-                            <tr>
+            <%}%>
 
-                                <td><input type="file" class="btn btn-default btn-file" name="photo_file" accept="image/gif, image/jpeg, image/png" size="50"/></td>
-
-                            </tr>
-
-                            <tr>
-                                <td colspan="2">
-                                    <center>
-                                    <button type="submit" class="btn btn-info"  id="send2"> Upload </button></center>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
-            </div>
-            </center>
+        </center>
 
     </div>
 </div>

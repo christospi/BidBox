@@ -25,12 +25,11 @@
                     <th>Surname:</th>
                     <th>e-mail:</th>
                     <th>Phone no.:</th>
-                    <th>Address:</th>
+                    <th>Country:</th>
                     <th>City:</th>
                     <th>A.F.M.:</th>
-                    <th>Role (Seller/Bidder):</th>
-                    <th>Rating-B:</th>
-                    <th>Rating-S:</th>
+                    <th>Rating as Buyer:</th>
+                    <th>Rating as Seller:</th>
                     </tr>
                     </thead>
 
@@ -42,12 +41,12 @@
                         <td><%=user.surname%></td>
                         <td><%=user.email%></td>
                         <td><%=user.phone%></td>
-                        <td><%=user.address%></td>
+                        <td><%=user.country%></td>
                         <td><%=user.city%></td>
                         <td><%=user.afm%></td>
-                        <td>DEN TO KRATAME</td>
-                        <td>DEN TO KRATAME</td>
-                        <td>DEN TO KRATAME</td>
+                        <td><%=user.rating_bidder%></td>
+                        <td><%=user.rating_seller%></td>
+
 
                     </tr>
 

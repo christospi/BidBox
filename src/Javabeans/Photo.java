@@ -49,14 +49,14 @@ public class Photo{
     }
 
 
-    public static ArrayList<Photo> pdoSelectAll(String owner) throws FileNotFoundException {
+    public static ArrayList<Photo> pdoSelectAll(int itemID) throws FileNotFoundException {
 
         ArrayList<Photo> pList = null;
 
         DataBase db = new DataBase();
         db.openConn();
 
-        String query = "select * from photo where owner='" + owner + "'";
+        String query = "select * from photo where itemID='" + itemID + "'";
         ResultSet rs = db.executeQuery(query);
 
         try {

@@ -208,22 +208,21 @@ public class xmlFunctions {
         }
 
         //Insert User (seller) from xml file
-        query = "INSERT IGNORE INTO user VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        query = "INSERT IGNORE INTO user VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         state = db.getConn().prepareStatement(query);
         state.setInt (1, 0);
         state.setString (2, seller_username);
-        state.setString (3, "dummy");
+        state.setString (3, "bidbox");
         state.setString (4, "John");
         state.setString (5, "Doe");
-        state.setString (6, "johndoe@email.com");
+        state.setString (6, seller_username + "@bidbox.com");
         state.setString (7, "1234567890");
-        state.setString (8, "Address 21");
+        state.setString (8, "USA");
         state.setString (9, "Gotham City");
         state.setString (10, "999999");
-        state.setString (11, "combo");
-        state.setFloat (12, seller_rating/2);
-        state.setFloat (13, seller_rating);
-        state.setInt (14, 1);
+        state.setFloat (11, seller_rating/2);
+        state.setFloat (12, seller_rating);
+        state.setInt (13, 1);
 
         state.executeUpdate();
 
@@ -260,22 +259,21 @@ public class xmlFunctions {
         int bidder_id = 0;
         for(int i=0; i<number_of_bids; i++){
 
-            query = "INSERT IGNORE INTO user VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            query = "INSERT IGNORE INTO user VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
             state = db.getConn().prepareStatement(query);
             state.setInt (1, 0);
             state.setString (2, bidder_username.get(i));
-            state.setString (3, "dummy");
+            state.setString (3, "bidbox");
             state.setString (4, "John");
             state.setString (5, "Doe");
-            state.setString (6, "johndoe@email.com");
+            state.setString (6, bidder_username.get(i) + "@bidbox.com");
             state.setString (7, "1234567890");
             state.setString (8, bidder_country.get(i));
             state.setString (9, bidder_location.get(i));
             state.setString (10, "999999");
-            state.setString (11, "combo");
-            state.setFloat (12, bidder_rating.get(i));
-            state.setFloat (13, bidder_rating.get(i)/2);
-            state.setInt (14, 1);
+            state.setFloat (11, bidder_rating.get(i));
+            state.setFloat (12, bidder_rating.get(i)/2);
+            state.setInt (13, 1);
             state.executeUpdate();
 
             query = "SELECT * FROM user WHERE username = ?";
@@ -423,9 +421,9 @@ public class xmlFunctions {
                 if(rs3.next()){
 
                     newbidder.setUserid( rs3.getString("username") );
-                    //TODO we dont have country
-                    //newbidder.setCountry(rs3.getString("country"));
-                    newbidder.setCountry("Greece");
+
+                    newbidder.setCountry(rs3.getString("country"));
+
                     newbidder.setLocation( rs3.getString("city") );
                     newbidder.setRating( (int) rs3.getFloat(("rating_bidder")));
 

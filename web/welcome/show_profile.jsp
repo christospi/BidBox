@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./../css/search.css">
     <title>User's info</title>
     <%User user2 = (User) request.getSession().getAttribute("user");
-        User seller = (User) request.getAttribute("seller");
+    User seller = (User) request.getAttribute("seller");
     %>
 </head>
 
@@ -21,12 +21,10 @@
         <th>Surname:</th>
         <th>e-mail:</th>
         <th>Phone no.:</th>
-        <th>Address:</th>
+        <th>Country:</th>
         <th>City:</th>
-        <th>A.F.M.:</th>
-        <th>Role (Seller/Bidder):</th>
-        <th>Rating-B:</th>
-        <th>Rating-S:</th>
+        <th>Rating as Buyer:</th>
+        <th>Rating as Seller:</th>
         </tr>
         </thead>
 
@@ -38,12 +36,11 @@
             <td><%=seller.surname%></td>
             <td><%=seller.email%></td>
             <td><%=seller.phone%></td>
-            <td><%=seller.address%></td>
+            <td><%=seller.country%></td>
             <td><%=seller.city%></td>
-            <td><%=seller.afm%></td>
-            <td>DEN TO KRATAME</td>
-            <td>DEN TO KRATAME</td>
-            <td>DEN TO KRATAME</td>
+            <td><%=seller.rating_bidder%></td>
+            <td><%=seller.rating_seller%></td>
+
 
         </tr>
 

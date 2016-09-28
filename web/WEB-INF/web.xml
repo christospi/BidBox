@@ -20,20 +20,29 @@
     <listener>
         <listener-class>Listener</listener-class>
     </listener>
+    <!--<security-constraint>-->
+        <!--<display-name>BidBox</display-name>-->
+        <!--<web-resource-collection>-->
+            <!--<web-resource-name>BidBox</web-resource-name>-->
+            <!--<description/>-->
+            <!--<url-pattern>/*</url-pattern>-->
+            <!--<http-method>POST</http-method>-->
+        <!--</web-resource-collection>-->
+
+        <!--&lt;!&ndash;<user-data-constraint>&ndash;&gt;-->
+            <!--&lt;!&ndash;<description/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<transport-guarantee>CONFIDENTIAL</transport-guarantee>&ndash;&gt;-->
+        <!--&lt;!&ndash;</user-data-constraint>&ndash;&gt;-->
+
+    <!--</security-constraint>-->
     <security-constraint>
-        <display-name>BidBox</display-name>
         <web-resource-collection>
             <web-resource-name>BidBox</web-resource-name>
-            <description/>
             <url-pattern>/*</url-pattern>
-            <http-method>POST</http-method>
         </web-resource-collection>
-
-        <!--<user-data-constraint>-->
-            <!--<description/>-->
-            <!--<transport-guarantee>CONFIDENTIAL</transport-guarantee>-->
-        <!--</user-data-constraint>-->
-
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
     </security-constraint>
 
 

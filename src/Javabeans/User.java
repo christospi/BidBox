@@ -17,10 +17,11 @@ public class User {
     public String surname;
     public String email;
     public String phone;
-    public String address;
+    public String country;
     public String city;
     public String afm;
-    public String role;
+    public int rating_seller;
+    public int rating_bidder;
 
     public static User getUser(String username) throws FileNotFoundException {
         DataBase db = new DataBase();
@@ -42,10 +43,12 @@ public class User {
                 user.phone = rs.getString("phone");
                 user.ver = rs.getInt("verified");
                 user.pass = rs.getString("pass");
-                user.address = rs.getString("address");
+                user.country = rs.getString("country");
                 user.city = rs.getString("city");
                 user.afm = rs.getString("afm");
-                user.role = rs.getString("roles");
+                user.rating_bidder = rs.getInt("rating_bidder");
+                user.rating_seller = rs.getInt("rating_seller");
+
 
                 //TODO Roles mpla mpla
             }
@@ -74,10 +77,12 @@ public class User {
                 user.phone = rs.getString("phone");
                 user.ver = rs.getInt("verified");
                 user.pass = rs.getString("pass");
-                user.address = rs.getString("address");
+                user.country = rs.getString("country");
                 user.city = rs.getString("city");
                 user.afm = rs.getString("afm");
-                user.role = rs.getString("roles");
+                user.rating_bidder = rs.getInt("rating_bidder");
+                user.rating_seller = rs.getInt("rating_seller");
+
 
 
                 //TODO Roles mpla mpla
@@ -113,10 +118,12 @@ public class User {
                 user2.phone = rs.getString("phone");
                 user2.ver = rs.getInt("verified");
                 user2.pass = rs.getString("pass");
-                user2.address = rs.getString("address");
+                user2.country = rs.getString("country");
                 user2.city = rs.getString("city");
                 user2.afm = rs.getString("afm");
-                user2.role = rs.getString("roles");
+                user2.rating_bidder = rs.getInt("rating_bidder");
+                user2.rating_seller = rs.getInt("rating_seller");
+
 
                 uList.add((User) user2);
             }
