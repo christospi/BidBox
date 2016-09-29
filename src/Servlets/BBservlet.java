@@ -467,7 +467,9 @@ public class BBservlet extends HttpServlet {
             session.setAttribute("total", total);
             String query = "SELECT * FROM auction WHERE seller='" + seller + "' LIMIT " + (page_num - 1) * 10 + ", " + 10 + "";
             ArrayList<Auction> aList = Auction.search_auction(query);
+            ArrayList<Photo> photos = Photo.PhotoPerItem(aList);
             session.setAttribute("aList", aList);
+            session.setAttribute("photos", photos);
 
             response.sendRedirect("/BBservlet?page=auctionlist");
         } else if (action.equals("auctioninfo")) { //ESTATE INFO

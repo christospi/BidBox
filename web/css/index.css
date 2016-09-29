@@ -17,9 +17,10 @@ h1{
     /*background: linear-gradient(-90deg, #e56a14,#FFA54F); !* Standard syntax (must be last) *!*/
     /*background: linear-gradient(-90deg, rgba(255, 233, 78, 0.88), rgba(229, 106, 20, 0.92)); !* Standard syntax (must be last) *!*/
     background: linear-gradient( rgba(0, 0, 0, 0.73), rgba(43, 206, 255, 0.65));
+    /*background: linear-gradient( rgba(43, 206, 255, 0.73), rgba(39, 181, 226, 0.65));*/
 }
 
-body{background: #eee url(http://subtlepatterns.com/patterns/sativa.png);}
+body{background: #eee url(./../img/background.png);}
 html,body{
     position: relative;
     height: 100%;

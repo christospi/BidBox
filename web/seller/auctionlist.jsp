@@ -2,6 +2,7 @@
 <%@page import="Javabeans.Auction"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Javabeans.User"%>
+<%@ page import="Javabeans.Photo" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -18,6 +19,7 @@
 
         <% User user2 = (User) request.getSession().getAttribute("user");
             ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("aList");
+            ArrayList<Photo> photos = (ArrayList<Photo>) request.getSession().getAttribute("photos");
             int total= (int) request.getSession().getAttribute("total");
             total = total/10;
             if(total%10 !=0) total+=1;
@@ -27,26 +29,37 @@
                 int pointer = i;
                 a = aList.get(i);
         %>
-            <div class="item  list-group-item col-xs-4 col-lg-4">
-                <div class="thumbnail">
-                  <a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>&itemID=<%=a.id%>"> <img  class="group list-group-image" src="./../img/item2.jpg " height="220" width="220" alt="" /></a>
-                    <div class="caption">
+            <div class="item  list-group-item col-xs-4 col-lg-4 ">
+                <div class="thumbnail ">
+                    <div class="photo">
+
+                        <% Photo p = new Photo();
+                            p=photos.get(i);
+                            if (p.id==-1){
+                        %>
+                      <a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>&itemID=<%=a.id%>"> <img  class="group list-group-image" src="./../img/item2.jpg "  alt="" /></a>
+                        <%}else{%>
+                        <a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>&itemID=<%=a.id%>"> <img class="group list-group-image " src="./../BBservlet?action=viewphoto2&pic_name=<%=p.pic_name%>"  ></a>
+
+                        <%}%>
+                    </div>
+                    <div class="caption ">
                     <br><h4 class="group inner list-group-item-heading"><a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>&itemID=<%=a.id%>" ><%out.println(a.name);%></a></h4>
                         <p class="group inner list-group-item-text">
 
                             <%--<ul style="list-style: none;">--%>
                                 <b>Seller:</b> <%=a.seller%> <br>
-                                <b>Seller rating:</b> Pending....<br>
+                                <b>Description:</b> <%=a.description.substring(0, Math.min(100,a.description.length() /2) )%>...<br>
                                 <b>Ends:</b> <%=a.end%><br>
 
                              <%--</ul>--%>
                         </p>
-                        <div class="row">
-                            <div class="col-xs-12 col-md-6">
-                                <p class="lead">
+                        <div class="row ">
+                            <div class="col-xs-4 col-md-8 pull-right">
+                                <p class="lead ">
                                   Current Bid: <%=a.curr%> $ </p>
                             </div>
-                            <div class="col-xs-4 col-md-8">
+                            <div class="col-xs-4 col-md-8 pull-right">
                                 <a class="btn btn-success pull-right" href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>&itemID=<%=a.id%>">More info...</a>
                             </div>
 
