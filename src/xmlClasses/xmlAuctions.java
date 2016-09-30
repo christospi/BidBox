@@ -46,23 +46,18 @@ public class xmlAuctions {
         }
     }
 
-    public void getauction(int itemid) throws FileNotFoundException, SQLException {
+    public void getauctions(Integer[] itemids) throws FileNotFoundException, SQLException {
         xmlAuction auction = new xmlAuction();
 
         xmlFunctions xmlfuncs = new xmlFunctions();
 
-        //TODO an kanoume gia polla items tha thelei loop,gia kathe itemID
 
-        auction = xmlfuncs.dbtoxml(1043374545);
-        auctions.add(auction);
-        auction = xmlfuncs.dbtoxml(1043397459);
-        auctions.add(auction);
-        auction = xmlfuncs.dbtoxml(1043402767);
-        auctions.add(auction);
-        auction = xmlfuncs.dbtoxml(1043402785);
-        auctions.add(auction);
-        auction = xmlfuncs.dbtoxml(1043495702);
-        auctions.add(auction);
+        for(int i=0;i<itemids.length;i++){
+            auction = xmlfuncs.dbtoxml(itemids[i]);
+            auctions.add(auction);
+        }
+
+
 
 
     }

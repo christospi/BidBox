@@ -24,16 +24,16 @@
 <ul style="list-style: none;">
 <%
     if(page_num!=total){
-
-    for (int i=10*(page_num-1); i< (aList.size()/((total-page_num)*10))*10; i++) {
+    System.out.println("alist.size:"+aList.size()+"total"+total);
+    for (int i=10*(page_num-1); i< page_num*10 ; i++) {
 
         Auction a = new Auction();
         int pointer = i;
         a = aList.get(i); %>
         <%if (guest!=-1){%>
-            <br><a href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a>
+            <br><a href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>" ><%out.println(a.name);%>hahahah</a>
         <%}else{%>
-            <br><a href="./BBservlet?action=auction_search_guest&auctionid=<%=a.id%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a>
+            <br><a href="./BBservlet?action=auction_search_guest&auctionid=<%=a.id%>&seller=<%=a.seller%>" ><%out.println(a.name);%>hahaha</a>
         <%}%>
 <%}
 }else{
@@ -61,15 +61,33 @@ if(aList.size()==0){
 <%}%>
 
 
-            <ul class="pagination">
-                <%for(int i=1;i<=total;i++){
-                    if(page_num==i){%>
-                <li class="active"><a href="./../BBservlet?action=search_paging&page_num=<%=i%>"><%=i%></a></li>
+            <ul class="pagination pagination-lg">
 
-                <%}else{%>
-                <li ><a href="./../BBservlet?action=search_paging&page_num=<%=i%>"><%=i%></a></li>
+
+
+                <%if(page_num!=1){%>
+                <li class="page-item">
+                    <a class="page-link" href="./../BBservlet?action=search_paging&page_num=<%=page_num-1%>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+
                 <%}%>
+                    <li class="page-item"><a  class="page-link" href="./../BBservlet?action=search_paging&page_num=<%=page_num%>"><%=page_num%> of <%=total%></a></li>
+                <%if(page_num!=total){%>
+
+
+                <li class="page-item">
+                    <a class="page-link" href="./../BBservlet?action=search_paging&page_num=<%=page_num+1%>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+
                 <%}%>
+
+
             </ul>
 
 

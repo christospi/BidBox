@@ -170,7 +170,12 @@ public class Auction {
         DataBase db = new DataBase();
         db.openConn();
         int noOfRecords=0;
-        String query = "SELECT COUNT(*) from auction where seller='" + seller + "'";
+        String query=null;
+        if(!seller.equals("*")){
+             query = "SELECT COUNT(*) from auction where seller='" + seller + "'";
+        }else{
+            query = "SELECT COUNT(*) from auction ";
+        }
         ResultSet rs = db.executeQuery(query);
         if (rs.next()) {
             noOfRecords = rs.getInt(1);

@@ -115,7 +115,7 @@ public class Listener implements ServletContextListener,
     // HttpSessionListener implementation
     // -------------------------------------------------------
     public void sessionCreated(HttpSessionEvent se) {
-        System.out.println("geiaa");
+
       /* Session is created. */
     }
 

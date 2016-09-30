@@ -6,6 +6,7 @@ import xmlClasses.xmlAuction;
 import xmlClasses.xmlAuctions;
 import xmlClasses.xmlFunctions;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -112,6 +114,9 @@ public class BBservlet extends HttpServlet {
                     break;
                 case "auction_search":
                     request.getRequestDispatcher("/welcome/search_info.jsp").include(request, response);
+                    break;
+                case "auctionsformarsh":
+                    request.getRequestDispatcher("/admin/auctions_marshall.jsp").include(request, response);
                     break;
                 case "purchasedlist":
                     request.getRequestDispatcher("/seller/purchased.jsp").include(request, response);
@@ -704,7 +709,7 @@ public class BBservlet extends HttpServlet {
             String terms = request.getParameter("keywords");
             String location = request.getParameter("location");
             if(choice.equals("recommended")){
-                Double[] auga = Recommendation.Similarity(seller);
+               ArrayList<Integer> auga = Recommendation.Similarity(seller);
                 return;
             }
             int from_pr;
@@ -1070,31 +1075,73 @@ public class BBservlet extends HttpServlet {
 
 //           Double[] auga = Recommendation.Similarity(132);
             request.getRequestDispatcher("/welcome/search.jsp").include(request, response);
+
         } else if(action.equals("guest_searchpage")){
             ArrayList<Category> cList = Category.get_all_cat();
             request.setAttribute("cList", cList);
 
 //           Double[] auga = Recommendation.Similarity(132);
             request.getRequestDispatcher("/welcome/search_guest.jsp").include(request, response);
+        }else if(action.equals("auctions_unmarshall")){
+            ServletContext context = request.getServletContext();
+           String file = context.getRealPath("/XMLfiles");
+            File f = new File(file);
+            String [] filenames = f.list();
+            File [] fileobjects = f.listFiles();
+            for(int i=0;i<fileobjects.length;i++){
+
+                System.out.println(filenames[i]);
+
+
+            }
+            session.setAttribute("filenames",filenames);
+
+
+            request.getRequestDispatcher("/admin/auctions_unmarshall.jsp").include(request,response);
+
         }
         else if (action.equals("unmarshall")) {
+            ServletContext context = request.getServletContext();
+            String filename=request.getParameter("item_option");
+            String file = context.getRealPath("/XMLfiles/"+filename);
+
 
             //TODO edw allakse to bale kati diko sou
-            File file = new File("C:\\Users\\kwnst\\Desktop\\items-0.xml");
+            File f = new File(file);
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
 
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            xmlAuctions auctions = (xmlAuctions) jaxbUnmarshaller.unmarshal(file);
+            xmlAuctions auctions = (xmlAuctions) jaxbUnmarshaller.unmarshal(f);
 
             auctions.sendauctions();
 
-            response.sendRedirect("/BBservlet?page=admin");
+            request.getRequestDispatcher("/admin/auctions_unmarshall.jsp").include(request, response);
+
+        }
+        else if (action.equals("auctions_marsh")){
+
+            int page_num = Integer.parseInt(request.getParameter("page_num"));
+            int total = Auction.getnum("*");
+            session.setAttribute("page_num", page_num);
+            session.setAttribute("total", total);
+            String query = "SELECT * FROM auction LIMIT " + (page_num - 1) * 10 + ", " + 10 + "";
+            ArrayList<Auction> allauctions = Auction.search_auction(query);
+            session.setAttribute("allauctions", allauctions);
+            ArrayList<Photo> photos = Photo.PhotoPerItem(allauctions);
+            session.setAttribute("photos", photos);
+            response.sendRedirect("/BBservlet?page=auctionsformarsh");
 
         }
         else if (action.equals("marshall")) {
+            String checkboxValues[] = request.getParameterValues("item_option");
+            int page_num = Integer.parseInt(request.getParameter("page_num"));
+            Integer[] itemIDs=new Integer[checkboxValues.length];
+            for(int i=0;i<checkboxValues.length;i++){
+                itemIDs[i]=Integer.parseInt(checkboxValues[i]);
 
+            }
             //TODO edw allakse to bale kati diko sou
-            File file = new File("C:\\Users\\kwnst\\Desktop\\custom2.xml");
+            File file = new File("C:\\Users\\kwnst\\Desktop\\custom3.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
@@ -1103,13 +1150,13 @@ public class BBservlet extends HttpServlet {
             xmlAuctions auctions = new xmlAuctions();
 
             //TODO edw vale ena itemid pou na uparxei sth vasi
-            auctions.getauction( 1043397459 );
+            auctions.getauctions( itemIDs );
 
             jaxbMarshaller.marshal(auctions, file);
 
 //            jaxbMarshaller.marshal(auctions, System.out);
 
-            response.sendRedirect("/BBservlet?page=admin");
+            response.sendRedirect("/BBservlet?action=auctions_marsh&page_num="+page_num);
 
         }
         else if(action.equals("show_profile") ){

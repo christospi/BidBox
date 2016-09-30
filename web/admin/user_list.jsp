@@ -4,6 +4,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <jsp:include page="/basics/maxcdn.jsp" />
+    <jsp:include page="/basics/admin_head.jsp" />
     <title>User-List</title>
 </head>
 <body>

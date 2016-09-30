@@ -3,14 +3,17 @@ package ItemRecommendation;
 import Javabeans.Auction;
 import Javabeans.DataBase;
 import Javabeans.User;
+import com.sun.org.apache.xml.internal.utils.res.IntArrayWrapper;
 
 import java.io.FileNotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Recommendation {
-    public static Double[] Similarity(int userid) throws FileNotFoundException, SQLException {
+    public static ArrayList<Integer> Similarity(int userid) throws FileNotFoundException, SQLException {
         DataBase db = new DataBase();
         db.openConn();
         ArrayList<Auction> auctions = Auction.Auctionlist("*");
@@ -59,7 +62,7 @@ public class Recommendation {
             magnitude2=0;
             for(int j=0;j<auctions.size();j++){
                 dotProduct += (matrix[i][j] * matrix[pos][j]);
-                System.out.println("dot===="+dotProduct);
+//                System.out.println("dot===="+dotProduct);
                 magnitude1 += Math.pow(matrix[pos][j], 2);
                 magnitude2 += Math.pow(matrix[i][j], 2);
             }
@@ -164,8 +167,30 @@ public class Recommendation {
         for(int j=0;j<auctions.size();j++){
             System.out.println("ItemID:"+itemsids[j]+"normalised percentage:"+recommendations[j]);
         }
+        ArrayList<Integer>  final_list = new ArrayList<>(10);
+
+        int count2=0;
+        for(int i=0;i<itemsids.length;i++){
+            if(recommendations[i]==0) break;
+            final_list.add(itemsids[i]);
+            count2++;
+        }
+        Random rand = new Random();
+
+        int  n = rand.nextInt(itemsids.length) + 1;
+
+            for(int i=count2;i<10;i++){
+               while(final_list.contains(itemsids[n])){
+                   n = rand.nextInt(itemsids.length) + 1;
+                }
+                final_list.add(itemsids[n]);
+            }
+
+        for(int j=0;j<10;j++){
+            System.out.println("ItemID:"+final_list.get(j));
+        }
         db.closeConnection();
-        return recommendations;
+        return final_list;
     }
 }
 
