@@ -2,6 +2,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="Javabeans.Photo" %>
 <%@ page import="Javabeans.User" %>
+<%@ page import="java.util.Objects" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -132,14 +133,13 @@
             <br>
 
             <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item</a></b></h3>
-            <% if(x.expired!=1 || x.sold==1){ %>
+            <%if(x.expired!=1 && x.sold!=1 && !(x.seller.equalsIgnoreCase(user2.username))){ %>
             <form method="post" action="/BBservlet?action=place_bid&itemid=<%=x.id%>&bidderid=<%=user2.userID%>&seller=<%=x.seller%>">
                 <input type="number" step="any" name="amount" min="<%=x.curr%>" max="<%=x.buy_pr%>">
                 <input type="submit" value="Bid !"/>
             </form>
             <%}%>
         </center>
-
     </div>
 </div>
 <jsp:include page="/basics/footer.jsp" />

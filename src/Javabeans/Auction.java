@@ -231,7 +231,63 @@ public class Auction {
 
     }
 
+    public static ArrayList<Auction> recommended_auctions(ArrayList<Integer> recs) throws FileNotFoundException {
+        DataBase db = new DataBase();
+        db.openConn();
+        ArrayList<Auction> aList = null;
+        String query=null;
+        String q2=null;
 
+            query="SELECT * FROM auction where itemID in (";
+          for(int i=0;i<recs.size();i++){
+              if(i!=recs.size()-1){
+                  q2=""+recs.get(i)+",";
+                  query=query+q2;
+
+              }else{
+                  q2=""+recs.get(i)+")";
+                  query=query+q2;
+              }
+
+          }
+          System.out.println(query);
+
+
+            ResultSet rs = db.executeQuery(query);
+
+            try {
+
+                aList = new ArrayList<Auction>();
+                while (rs.next()) {
+
+                    Auction auction = new Auction();
+                    auction.id = rs.getInt("itemID");
+                    auction.lat = rs.getFloat("latitude");
+                    auction.longt = rs.getFloat("longtitude");
+                    auction.seller = rs.getString("seller");
+                    auction.city = rs.getString("city");
+                    auction.name = rs.getString("name");
+                    auction.curr = rs.getFloat("curr");
+                    auction.buy_pr = rs.getFloat("buy_pr");
+                    auction.first_bid = rs.getFloat("first_bid");
+                    auction.country = rs.getString("country");
+                    auction.num_bid = rs.getInt("num_bid");
+                    auction.st = rs.getDate("st");
+                    auction.end = rs.getDate("end");
+                    auction.description = rs.getString("description");
+                    auction.expired = rs.getInt("expired");
+                    auction.sold = rs.getInt("sold");
+                    auction.buyerID = rs.getInt("buyerID");
+                    aList.add((Auction) auction);
+
+                }
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return aList;
+    }
     public int getId() {
         return id;
     }

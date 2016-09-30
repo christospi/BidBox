@@ -13,12 +13,27 @@ import java.util.List;
 import java.util.Random;
 
 public class Recommendation {
+    public static ArrayList<Integer> getfromDB(int userid) throws FileNotFoundException, SQLException {
+        ArrayList<Integer> itemlist = new ArrayList<>();
+        DataBase db = new DataBase();
+        db.openConn();
+        String query = "SELECT * FROM recommendations WHERE userID='" + userid +"' ";
+        ResultSet rs = db.executeQuery(query);
+        while(rs.next()){
+            itemlist.add(rs.getInt("itemID"));
+
+        }
+        db.closeConnection();
+        return itemlist;
+    }
     public static ArrayList<Integer> Similarity(int userid) throws FileNotFoundException, SQLException {
         DataBase db = new DataBase();
         db.openConn();
         ArrayList<Auction> auctions = Auction.Auctionlist("*");
         ArrayList<User> users= User.doSelectAll();
+        User user = User.getusername(userid);
         int matrix[][] =  new int[users.size()][auctions.size()];
+        ArrayList<Integer>  user_items = new ArrayList<>(); //items user has bid , we need it in case of random choices
         Double recommendations[] = new Double[auctions.size()];
         Double percentages[]= new Double[users.size()];
         String query = "SELECT * FROM bid ";
@@ -37,10 +52,24 @@ public class Recommendation {
                 for(int j=0;j<auctions.size();j++){
                     if(itemid==auctions.get(j).id && users.get(i).userID == bidderid){
                         matrix[i][j]=1;
+                        if(userid==users.get(i).userID ){
+                            user_items.add(auctions.get(j).id);
+                        }
                     }
+
                 }
             }
 
+        }
+        for (int i=0;i< auctions.size();i++){
+            if(user.username.equals(auctions.get(i).seller)){
+
+               if(!user_items.contains(auctions.get(i).id)) user_items.add(auctions.get(i).id);
+            }
+        }
+        System.out.println(user.username);
+        for(int i=0;i<user_items.size();i++){
+            System.out.println(user_items.get(i));
         }
 //        for (int i=0;i<users.size();i++){
 //            for(int j=0;j<auctions.size();j++){
@@ -172,23 +201,50 @@ public class Recommendation {
         int count2=0;
         for(int i=0;i<itemsids.length;i++){
             if(recommendations[i]==0) break;
-            final_list.add(itemsids[i]);
-            count2++;
+            if(!user_items.contains(itemsids[i])) {
+                final_list.add(itemsids[i]);
+                count2++;
+            }
         }
         Random rand = new Random();
 
-        int  n = rand.nextInt(itemsids.length) + 1;
-
-            for(int i=count2;i<10;i++){
-               while(final_list.contains(itemsids[n])){
-                   n = rand.nextInt(itemsids.length) + 1;
+        int  n = rand.nextInt(itemsids.length) ;
+        System.out.println(itemsids.length-user_items.size());
+//            if(itemsids.length-user_items.size()>=10) {
+//                for (int i = count2; i < 10; i++) {
+//                    while (final_list.contains(itemsids[n]) || user_items.contains(itemsids[n])) {
+//                        n = rand.nextInt(itemsids.length);
+//                    }
+//                    final_list.add(itemsids[n]);
+//                }
+//            }else if(itemsids.length-user_items.size()>=count2){
+//                for (int i = count2; i < itemsids.length-user_items.size(); i++) {
+//                    while (final_list.contains(itemsids[n]) || user_items.contains(itemsids[n])) {
+//                        n = rand.nextInt(itemsids.length);
+//                    }
+//                    final_list.add(itemsids[n]);
+//                }
+//            }
+        if(itemsids.length-user_items.size()>=10) {
+            for (int i = count2; i < 10; i++) {
+                while (final_list.contains(itemsids[n]) || user_items.contains(itemsids[n])) {
+                    n = rand.nextInt(itemsids.length);
                 }
                 final_list.add(itemsids[n]);
             }
+        }else if(itemsids.length-user_items.size()>=count2){
+            for (int i = count2; i < itemsids.length-user_items.size(); i++) {
+                while (final_list.contains(itemsids[n]) || user_items.contains(itemsids[n])) {
+                    n = rand.nextInt(itemsids.length);
+                }
+                final_list.add(itemsids[n]);
+            }
+        }
 
-        for(int j=0;j<10;j++){
+        for(int j=0;j<final_list.size();j++){
             System.out.println("ItemID:"+final_list.get(j));
         }
+
         db.closeConnection();
         return final_list;
     }

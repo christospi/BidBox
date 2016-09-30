@@ -61,9 +61,7 @@
                         <input id="ex" name="to_pr" type="number" step="any" class="form-control" min="0"   placeholder="Price" aria-describedby="ddlsearch" ><br>
                     </div>
 
-                    <span class="input-group-btn">
-                <button id="btn-search" class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"></span> Search </button>
-              </span>
+
                     <%--</div>--%>
                     <%--</div>--%>
                 </div>
@@ -76,6 +74,9 @@
             <%--</redirect></div>--%>
             <%--</div>--%>
             <%--</div>--%>
+            <span class="input-group-btn">
+                <button id="btn-search" class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"></span> Search </button>
+              </span>
         </div>
 
     </form>

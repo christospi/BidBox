@@ -34,7 +34,6 @@
                             <option selected value="" data-hidden="true" class="ddl-title" disabled>Choose Category: </option>
                             <option value="any" >Any</option>
                             <option value="popular">Popular</option>
-                            <option value="recommended">Recommended for you</option>
                             <div class="dropdown-divider"><hr></div>
                               <optgroup label="Category">
                                   <%for (int i=0; i<cList.size(); i++)  {
@@ -62,9 +61,7 @@
                                 <input id="ex" name="to_pr" type="number" step="any" class="form-control" min="0"   placeholder="Price" aria-describedby="ddlsearch" ><br>
                             </div>
 
-                                <span class="input-group-btn">
-                <button id="btn-search" class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"></span> Search </button>
-              </span>
+
                         <%--</div>--%>
                     <%--</div>--%>
                 </div>
@@ -77,6 +74,10 @@
                     <%--</redirect></div>--%>
             <%--</div>--%>
         <%--</div>--%>
+            <span class="input-group-btn">
+                <button id="btn-search" class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"></span> Search </button>
+              </span>
+            <a href="/BBservlet?action=recommendations&seller=<%=user2.userID%>">    <b>or see our recommendations for you...</b></a>
     </div>
 
    </form>

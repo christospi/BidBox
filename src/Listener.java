@@ -1,4 +1,5 @@
 
+import ItemRecommendation.Recommendation;
 import Javabeans.Auction;
 import Javabeans.DataBase;
 
@@ -11,8 +12,10 @@ import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.swing.*;
 import java.io.FileNotFoundException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,11 +40,8 @@ public class Listener implements ServletContextListener,
          initialized(when the Web application is deployed). 
          You can initialize servlet context related data here.
       */
-
-
-
-
         Timer timer = new Timer();
+
         TimerTask myTask = new TimerTask() {
 
             @Override
@@ -99,8 +99,69 @@ public class Listener implements ServletContextListener,
                 db.closeConnection();
             }
         };
+        Timer timer2 = new Timer();
+        TimerTask myTask2 = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    db.openConn();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Connection conn = db.getConn();
+
+
+                Statement statement2 = null;
+                try {
+                    statement2 = conn.createStatement();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                Statement statement1 = null;
+                try {
+                    statement1 = conn.createStatement();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                String query="DELETE from recommendations"; //svinoume ta pada wste na balume ta nea recommendations
+                int l=db.executeUpdate(query);
+                query="select * from user where userID>1"; //de theloume ton admin
+//                ResultSet rs = db.executeQuery(query);
+                ResultSet rs = null;
+                try {
+                    rs = statement1.executeQuery(query);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    while (rs.next()) {
+                        int userID=rs.getInt("userID");
+                        System.out.println(userID);
+                       ArrayList<Integer> recommended = Recommendation.Similarity(userID);
+
+                        for(int i=0;i<recommended.size();i++) {
+                            query = "INSERT INTO recommendations VALUES(0, '" + userID + "','" + recommended.get(i) + "')";
+                           int k= statement2.executeUpdate(query);
+
+                        }
+                    }
+                    db.closeConnection();
+                } catch (SQLException e) {
+                    e.printStackTrace();}
+                 catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        };
 
         timer.schedule(myTask, 2000,2000 );
+        timer2.schedule(myTask2,0,7200000 ); //every two hours
+
+
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

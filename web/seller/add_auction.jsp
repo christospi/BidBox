@@ -119,7 +119,7 @@
         <form  action="./../BBservlet?action=addauction" method="post" >
             <div id="new_auctionform">
                 <label>
-                Seller : <input type="text" readonly name="seller" value="<%=user2.username%>   ">
+                Seller : <input type="text" readonly name="seller" value="<%=user2.username%>">
                 </label>
                 <label>
                 Item name:  <input type="text" name="name" placeholder="Item Name">

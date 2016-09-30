@@ -146,7 +146,7 @@ public class BBservlet extends HttpServlet {
             String Phone = request.getParameter("phone");
             String afm = request.getParameter("afm");
             String city = request.getParameter("city");
-            String country = request.getParameter("country");
+            String Country = request.getParameter("country");
 
             String query = null;
             db.openConn();
@@ -176,21 +176,20 @@ public class BBservlet extends HttpServlet {
 
             if (exists == 0 && exists2 == 0) {   //user entered valid username and email
 
-                query = "INSERT INTO user VALUES(0, '" + UserName + "',"
+
+
+               query = "INSERT INTO user VALUES(0, '" +UserName+ "',"
                         + "'" + Password + "',"
                         + "'" + FirstName + "',"
                         + "'" + LastName + "',"
                         + "'" + Email + "',"
                         + "'" + Phone + "',"
-                        + "'" + country + "',"
+                        + "'" + Country + "',"
                         + "'" + city + "',"
                         + "'" + afm + "',"
-                        + "0,"
-                        + "0,"
-                        + "0)";
-
-                System.out.println(query);
-                System.out.println(query);
+                        + "'" + 0 + "',"
+                        + 0 + ","
+                        + "'" + 0 + "') ";
 
                 db.executeUpdate(query);
 
@@ -701,6 +700,17 @@ public class BBservlet extends HttpServlet {
 
             response.sendRedirect("/BBservlet?action=msglist&username="+username+"");
 
+        }else if (action.equals("recommendations")){
+            int seller = Integer.parseInt(request.getParameter("seller"));
+            session.setAttribute("guest",seller);
+            ArrayList<Integer> recommended_items = Recommendation.getfromDB(seller);
+            ArrayList<Auction> aList = Auction.recommended_auctions(recommended_items);
+            session.setAttribute("search_list",aList);
+            ArrayList<Photo> photos = Photo.PhotoPerItem(aList);
+            session.setAttribute("photos", photos);
+            request.setAttribute("page_num", 1);
+            request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
+
         }
         else if (action.equals("searchres")){
 
@@ -711,10 +721,7 @@ public class BBservlet extends HttpServlet {
             String choice = request.getParameter("choice");
             String terms = request.getParameter("keywords");
             String location = request.getParameter("location");
-            if(choice.equals("recommended")){
-               ArrayList<Integer> auga = Recommendation.Similarity(seller);
-                return;
-            }
+
             int from_pr;
             int to_pr;
 
@@ -785,7 +792,8 @@ public class BBservlet extends HttpServlet {
             ArrayList<Auction> aList =Auction.search_auction(query);
 
             session.setAttribute("search_list", aList);
-
+            ArrayList<Photo> photos = Photo.PhotoPerItem(aList);
+            session.setAttribute("photos", photos);
             request.setAttribute("page_num", 1);
 
             request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
@@ -1178,8 +1186,6 @@ public class BBservlet extends HttpServlet {
             start = dateFormat.format(date);
 
             db.openConn();
-            String query="UPDATE auction SET st = '" +start+"' WHERE itemID='"+ itemid + "'";
-            db.executeUpdate(query);
             db.closeConnection();
 
             response.sendRedirect("/BBservlet?action=auctionlist&page_num=1&username=" + uname);
