@@ -142,7 +142,6 @@ public class BBservlet extends HttpServlet {
             String LastName = request.getParameter("surname");
             String UserName = request.getParameter("username");
             String Password = request.getParameter("pass");
-            //String RPassword = request.getParameter("RPassword");
             String Email = request.getParameter("email");
             String Phone = request.getParameter("phone");
             String afm = request.getParameter("afm");
@@ -331,34 +330,39 @@ public class BBservlet extends HttpServlet {
         } else if (action.equals("addpage")) {
             ArrayList<Category> cList = Category.get_all_cat(); //arraylist with all info fro all users in db
             session.setAttribute("cList", cList);
-
             response.sendRedirect("/BBservlet?page=addauction");
+
         } else if (action.equals("addauction")) {
 
             String seller = request.getParameter("seller");
             String name = request.getParameter("name");
-
             String cats[] = request.getParameterValues("category");
 
             float latitude = Float.parseFloat(request.getParameter("latitude"));
             float longtitude = Float.parseFloat(request.getParameter("longtitude"));
             String country = request.getParameter("country");
             String city = request.getParameter("city");
-            // float curr = Float.parseFloat(request.getParameter("curr"));
             float buy_pr = Float.parseFloat(request.getParameter("buy_price"));
             float first_bid = Float.parseFloat(request.getParameter("first_bid"));
             float curr;
             curr = first_bid;
-
-            //int num_bid = Integer.parseInt(request.getParameter("num_bid"));
             int num_bid;
             num_bid = 0;
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            String st = dateFormat.format(date);
-            String end = request.getParameter("end");
 
+            String st;
+            String end = request.getParameter("end");
             end = (end.replace("T", " "));
+
+            if( request.getParameter("start") == null ) {
+                st = null;
+            }
+            else{
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date();
+                st = dateFormat.format(date);
+                st = "'" + st + "'";
+            }
+
             String description = request.getParameter("description");
 
             db.openConn();
@@ -373,7 +377,7 @@ public class BBservlet extends HttpServlet {
                     + "'" + first_bid + "',"
                     + "'" + curr + "',"
                     + "'" + num_bid + "',"
-                    + "'" + st + "',"
+                    + st + ","
                     + "'" + end + "',"
                     + "'" + description + "',"
                     + "'" + 0 + "',"
@@ -462,7 +466,7 @@ public class BBservlet extends HttpServlet {
                 db.closeConnection();
             }
 
-        } else if (action.equals("auctionlist")) { //ESTATE LIST
+        } else if (action.equals("auctionlist")) { //Auction LIST
 
             String seller = request.getParameter("username");
             int page_num = Integer.parseInt(request.getParameter("page_num"));
@@ -481,7 +485,6 @@ public class BBservlet extends HttpServlet {
 
             String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this estate
             session.setAttribute("pointer", pointer);
-
 
             int itemID = Integer.parseInt(request.getParameter("itemID"));
             ArrayList<Category> cList = Category.get_its_cat(itemID);
@@ -772,6 +775,7 @@ public class BBservlet extends HttpServlet {
                 where = where + " AND ( (name LIKE '%" + terms + "%') OR (description LIKE '%" + terms + "%') )";
             }
 
+            where = where + " AND st IS NOT NULL";
             query = query + where;
 
             System.out.println(query);
@@ -784,7 +788,7 @@ public class BBservlet extends HttpServlet {
 
             request.setAttribute("page_num", 1);
 
-                request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
+            request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
 
 
 
@@ -910,20 +914,14 @@ public class BBservlet extends HttpServlet {
             String query3 = "SELECT COUNT(*) AS total FROM user where email='" + email + "'";
             ResultSet rs3 = db.executeQuery(query3);
             response.setContentType("text/html;charset=UTF-8");
+
             while (rs3.next()) {
+
                 if (rs3.getInt("total") > 0) {
-
-
                     out.println("<font color=red><b>" + email + "</b> is already in use</font>");
-
-
-
                 } else {
-
                     out.println("<font color=green><b>" + email + "</b> is available!</font>");
-
                 }
-
             }
         }
         else if (action.equals("send_msg")) {
@@ -932,6 +930,7 @@ public class BBservlet extends HttpServlet {
 
         }
         else if (action.equals("send_msgf")) {
+
             db.openConn();
             String user = request.getParameter("user");
             String receiver = request.getParameter("receiver");
@@ -1000,6 +999,7 @@ public class BBservlet extends HttpServlet {
             request.getRequestDispatcher("/seller/edit_auction.jsp").include(request, response);
         }
         else if (action.equals("do_edit_auction")) {
+
             String seller = request.getParameter("seller");
             String name = request.getParameter("name");
             String cats[] = request.getParameterValues("category");
@@ -1013,9 +1013,6 @@ public class BBservlet extends HttpServlet {
             curr= first_bid;
             int itemid = Integer.parseInt(request.getParameter("itemid"));
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            String st = dateFormat.format(date);
             String end = request.getParameter("end");
 
             end = (end.replace("T"," "));
@@ -1032,7 +1029,6 @@ public class BBservlet extends HttpServlet {
                     + "buy_pr='" + buy_pr + "',"
                     + "first_bid='" + first_bid + "',"
                     + "curr='" + curr + "',"
-                    + "st='" + st + "',"
                     + "end='" + end + "',"
                     + "description='" + description + "' WHERE itemID='"+itemid+"'";
 
@@ -1046,17 +1042,19 @@ public class BBservlet extends HttpServlet {
                 i=db.executeUpdate(query);
             }
 
+            db.closeConnection();
 
             //TODO thelei veltiwsh,den mporw na to steilw sto auctioinfo giati to exoume
             //TODO kanei na pernaei pointer (psaxnei oli ti lista) kai oxi itemid
-            if (i>0) {
-                request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
-            }
-            else {
-                request.getRequestDispatcher("/seller/fail_add.jsp").include(request, response);
-            }
+//            if (i>0) {
+//                request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
+//            }
+//            else {
+//                request.getRequestDispatcher("/seller/fail_add.jsp").include(request, response);
+//            }
 
-            db.closeConnection();
+            response.sendRedirect("/BBservlet?action=auctionlist&page_num=1&username=" + seller);
+
 
         }
         else if (action.equals("myprofile")) {
@@ -1084,7 +1082,7 @@ public class BBservlet extends HttpServlet {
             request.getRequestDispatcher("/welcome/search_guest.jsp").include(request, response);
         }else if(action.equals("auctions_unmarshall")){
             ServletContext context = request.getServletContext();
-           String file = context.getRealPath("/XMLfiles");
+            String file = context.getRealPath("/XMLfiles");
             File f = new File(file);
             String [] filenames = f.list();
             File [] fileobjects = f.listFiles();
@@ -1167,6 +1165,53 @@ public class BBservlet extends HttpServlet {
 
             request.setAttribute("seller",seller);
             request.getRequestDispatcher("/welcome/show_profile.jsp").include(request, response);
+        }
+        else if(action.equals("start_auction") ){
+
+            String uname = request.getParameter("username");
+            int itemid = Integer.parseInt(request.getParameter("id"));
+
+            String start;
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            start = dateFormat.format(date);
+
+            db.openConn();
+            String query="UPDATE auction SET st = '" +start+"' WHERE itemID='"+ itemid + "'";
+            db.executeUpdate(query);
+            db.closeConnection();
+
+            response.sendRedirect("/BBservlet?action=auctionlist&page_num=1&username=" + uname);
+        }
+        else if(action.equals("pending_bids") ){
+
+            String username =(String) request.getSession().getAttribute("username");
+            int page_num = Integer.parseInt( request.getParameter("page_num") );
+            ArrayList<Auction> pendlist = new ArrayList<Auction>();
+
+            String query = "SELECT DISTINCT(auction.itemID) FROM user,bid,auction WHERE user.username='" + username + "'" +
+                    "AND user.userID = bid.userID AND bid.itemID = auction.itemID "+
+                    "AND auction.sold = 0 AND auction.expired = 0";
+            db.openConn();
+            System.out.println( query );
+            ResultSet rs = db.executeQuery( query );
+
+            while( rs.next() ){
+                pendlist.add( Auction.getAuctionbyid( rs.getInt("itemID") ) );
+            }
+            db.closeConnection();
+
+            ArrayList<Photo> photos = Photo.PhotoPerItem( pendlist );
+
+
+            request.setAttribute("pendlist",pendlist);
+            request.setAttribute("photos",photos);
+
+            if( page_num == 1) request.setAttribute("page_num",1);
+            else request.setAttribute("page_num",page_num);
+
+            request.getRequestDispatcher("/user/pending_bids.jsp").include(request,response);
         }
 
     }

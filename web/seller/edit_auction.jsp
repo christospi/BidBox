@@ -111,9 +111,7 @@
         User user2 = (User) request.getSession().getAttribute("user");
         Auction auction = (Auction)request.getAttribute("auction");
         ArrayList<Category> cList = (ArrayList<Category>) request.getSession().getAttribute("cList");
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
-        Date date = new Date();
-        String st = dateFormat.format(date);%>
+        %>
     <center></center><h2>Edit your Auction:</h2></center>
 <div class="container">
     <div class="login-container2">
@@ -144,7 +142,6 @@
                     <label>Longtitude: <input type="text" id="longtitude" name="longtitude" value="<%=auction.longt%>"></label>
                     <label>Starting Price: <input type="number" step="any" name="first_bid" value="<%=auction.first_bid%>"></label>
                     <label>Maximum Price: <input type="number" step="any" name="buy_price" value="<%=auction.buy_pr%>"></label>
-                    <label>Bids starting date: <input type="text" readonly name="st" value="<%=st%>"></label>
                     <label>Bids ending date: <input type="datetime-local" id="end"  name="end" placeholder=" Ending Date " ></label>
 
                     <label>Item description : <textarea name="description" rows="4" cols="120 "maxlength="120"><%=auction.description%></textarea></label>

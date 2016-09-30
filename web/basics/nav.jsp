@@ -40,7 +40,7 @@
                 <li><a href="./../BBservlet?action=msglist&username=<%=user2.username%>">Messages<%if(count!=0){%><span class="badge"><%=count%></span><%}%></a></li>
                 <li><a href="./../BBservlet?action=myprofile&username=<%=user2.username%>">My Profile</a>
                 <li><a href="./../BBservlet?action=bought_items&page_num=1" >Purchased Items</a></li>
-                <li><a href="./../BBservlet?action=pending_bids" >Pending Bids</a></li>
+                <li><a href="./../BBservlet?action=pending_bids&page_num=1" >Pending Bids</a></li>
                 <li><a href="#">About us</a></li>
                 <li><a href="./../BBservlet?action=logout">Log out</a></li>
             </ul>

@@ -136,16 +136,17 @@
                 </label>
                 <label>
                 <div id="map" ></div></label>
-                <label> Country: <input type="text" readonly id = "country" name="country" placeholder="ex.Greece"></label>
+                <label>Country: <input type="text" readonly id = "country" name="country" placeholder="ex.Greece"></label>
                 <label>City: <input type="text" readonly id="city" name="city" placeholder="ex.Athens"></label>
                 <label>Latitude: <input type="text" readonly id="latitude" name="latitude" placeholder="Latitude"></label>
                 <label>Longtitude : <input type="text" readonly id="longtitude" name="longtitude" placeholder="Longtitude"></label>
                 <label>Starting Price: <input type="number" step="any" name="first_bid" placeholder="Starting Price"></label>
-                <label> Maximum Price:  <input type="number" step="any" name="buy_price" placeholder="Max Price"></label>
-                <label>Bids starting date : <input type="text" readonly name="st" value="<%=st%>"></label>
-                <label> Bids ending date : <input type="datetime-local" id="end"  name="end" placeholder=" Ending Date " ></label>
-
-                <label>Item description : <textarea name="description" rows="4" cols="120 "maxlength="120">Maximum characters 120</textarea></label>
+                <label>Maximum Price:  <input type="number" step="any" name="buy_price" placeholder="Max Price"></label>
+                <%--<label>Bids starting date : <input type="text" readonly name="st" value="<%=st%>"></label>--%>
+                <label>Bids ending date : <input type="datetime-local" id="end"  name="end" placeholder=" Ending Date " ></label>
+                <label>Item description :</label><textarea name="description" rows="4" cols="120 "maxlength="500" placeholder="Maximum characters 500"></textarea>
+                <label>Do you want to start it immediately ?<br>(NOTE: If not, you can start it later
+                in its edit page )</label><input type="checkbox" name="start" value=1> Yes, start it now! <br>
                 <label><button class="btn btn-info btn-block login" type="submit" >Add auction </button></label>
             </div>
         </form>

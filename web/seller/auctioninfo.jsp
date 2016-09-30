@@ -153,20 +153,34 @@
             <div id="clockdiv">
             </div>
 
+            <% if(x.st == null){ %>
             <div>
-                <form method="post" action="./../BBservlet?action=edit_item&id=<%=x.id%>&username=<%=x.seller%>">
-                    <button type="submit" class="btn btn-warning"  id="edit"> Edit it </button>
-                </form>
-
-                <form method="post" action="./../BBservlet?action=delete_item&id=<%=x.id%>&username=<%=x.seller%>">
-                    <button type="submit" class="btn btn-danger"  id="Delete"> Delete it </button>
+                <h4> Your auction is not started yet ! </h4>
+                <form method="post" action="./../BBservlet?action=start_auction&id=<%=x.id%>&username=<%=x.seller%>">
+                    <button type="submit" class="btn btn-success"  id="startit"> Start it ! </button>
                 </form>
             </div>
+            <%}%>
+
+            <% if(x.num_bid == 0){ %>
+                <div>
+                    <h4>No one has bidden yes ! That's awful...</h4>
+                    <form method="post" action="./../BBservlet?action=edit_item&id=<%=x.id%>&username=<%=x.seller%>">
+                        <button type="submit" class="btn btn-warning"  id="edit"> Edit it </button>
+                    </form>
+
+                    <form method="post" action="./../BBservlet?action=delete_item&id=<%=x.id%>&username=<%=x.seller%>">
+                        <button type="submit" class="btn btn-danger"  id="Delete"> Delete it </button>
+                    </form>
+                </div>
+            <%}%>
+
+
 
             <br>
 
             <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item <span class="glyphicon glyphicon-eye-open"></span></a></b></h3>
-            <%if (x.sold==1 || x.sold==3){%>
+            <%if ( (x.sold==1 || x.sold==3) && x.buyerID!=0 ){%>
 
                 <form method="post" action="./../BBservlet?action=rate&buyer_id=<%=x.buyerID%>&auctionID=<%=x.id%>&pointer=<%=point%>&sold=<%=x.sold%>">
                     <button type="submit" class="btn btn-info" name="up" id="up">Rate up buyer!</button>
