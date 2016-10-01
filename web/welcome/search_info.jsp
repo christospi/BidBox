@@ -9,7 +9,9 @@
 <head>
     <jsp:include page="/basics/maxcdn.jsp" />
     <jsp:include page="/basics/auct_inf.jsp" />
+
     <title>Auction Info</title>
+
     <style>
 
 
@@ -50,6 +52,7 @@
             <h3>Auction Info</h3>
             <%
                 User user2 = (User) request.getSession().getAttribute("user");
+
                 Auction x = (Auction) request.getAttribute("auction");
                 ArrayList<Photo> pList = (ArrayList<Photo>) request.getSession().getAttribute("pList");%>
 
@@ -140,8 +143,16 @@
             </form>
             <%}%>
         </center>
+
+
+
+
     </div>
+
 </div>
+<center>
+    <jsp:include page="/seller/carousel.jsp" />
+</center>
 <jsp:include page="/basics/footer.jsp" />
 </body>
 </html>

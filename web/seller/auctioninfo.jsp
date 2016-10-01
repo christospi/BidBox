@@ -190,6 +190,7 @@
                 </form>
 
                 <%}%>
+                <jsp:include page="/seller/carousel.jsp" />
             <div class="panel panel-warning">
                 <div class="panel-heading"><h3>Upload a photo </h3></div>
                 <div class="panel-body">

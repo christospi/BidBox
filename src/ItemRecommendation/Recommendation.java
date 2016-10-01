@@ -210,21 +210,7 @@ public class Recommendation {
 
         int  n = rand.nextInt(itemsids.length) ;
         System.out.println(itemsids.length-user_items.size());
-//            if(itemsids.length-user_items.size()>=10) {
-//                for (int i = count2; i < 10; i++) {
-//                    while (final_list.contains(itemsids[n]) || user_items.contains(itemsids[n])) {
-//                        n = rand.nextInt(itemsids.length);
-//                    }
-//                    final_list.add(itemsids[n]);
-//                }
-//            }else if(itemsids.length-user_items.size()>=count2){
-//                for (int i = count2; i < itemsids.length-user_items.size(); i++) {
-//                    while (final_list.contains(itemsids[n]) || user_items.contains(itemsids[n])) {
-//                        n = rand.nextInt(itemsids.length);
-//                    }
-//                    final_list.add(itemsids[n]);
-//                }
-//            }
+
         if(itemsids.length-user_items.size()>=10) {
             for (int i = count2; i < 10; i++) {
                 while (final_list.contains(itemsids[n]) || user_items.contains(itemsids[n])) {

@@ -1,6 +1,7 @@
 <%@page import="Javabeans.User"%>
 <%@ page import="Javabeans.Message" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="Javabeans.Auction" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -64,7 +65,31 @@
         <%}%>
 
     </table>
-    <h3><a href="./BBservlet?action=send_msg"> Send a new message</a> </h3>
+<style>
+    .modal-admin{
+        width:800px;
+
+    }
+    .modal {
+        text-align: center;
+    }
+
+    .modal-admin{
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+    .modal-body {
+        max-height: 1800px;
+
+        padding:50px;
+    }
+</style>
+    <br>
+    <br>
+
+    <jsp:include page="/user/send_msg.jsp" />
+    <%--<h3><a href="./BBservlet?action=send_msg"> Send a new message</a> </h3>--%>
 
 <jsp:include page="/basics/footer.jsp" />
 </body>

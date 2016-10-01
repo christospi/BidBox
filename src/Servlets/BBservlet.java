@@ -585,8 +585,7 @@ public class BBservlet extends HttpServlet {
 
 
         }
-        else if (action.equals("viewphoto")) {   //SEE ESTATE'S PHOTOS
-
+        else if (action.equals("viewphoto")) {
             String id = request.getParameter("id");
 
             int itemID=Integer.parseInt(id);
