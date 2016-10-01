@@ -99,6 +99,9 @@ public class Listener implements ServletContextListener,
                 db.closeConnection();
             }
         };
+
+
+
         Timer timer2 = new Timer();
         TimerTask myTask2 = new TimerTask() {
             @Override

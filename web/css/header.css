@@ -1,0 +1,35 @@
+
+h1{
+    font-family: 'Dosis';
+}
+
+.jumbotron {
+    /*background-color: #FFA54F;*/
+    /*height: 140px;*/
+    /*background-color:  #FFA54F;*/
+    /*background-image: -webkit-linear-gradient(35deg,  #FFA54F 50%, rgba(212, 116, 21, 0.78) 50%);*/
+    /*max-height: 140px;*/
+    background: #FFA54F; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(-90deg,#e56a14,#FFA54F); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(-90deg, #e56a14,#FFA54F); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(-90deg, #e56a14,#FFA54F); /* For Firefox 3.6 to 15 */
+    /*background: linear-gradient(-90deg, #e56a14,#FFA54F); !* Standard syntax (must be last) *!*/
+    /*background: linear-gradient(-90deg, rgba(255, 233, 78, 0.88), rgba(229, 106, 20, 0.92)); !* Standard syntax (must be last) *!*/
+    background: linear-gradient( rgba(0, 0, 0, 0.73), rgba(43, 206, 255, 0.65));
+    /*background: linear-gradient( rgba(43, 206, 255, 0.73), rgba(39, 181, 226, 0.65));*/
+    margin-bottom: 0;
+    height: 30%;
+
+}
+
+.navbar {
+    margin-bottom: 50px;
+    border-radius: 0;
+}
+
+body{background: #eee url(./../img/background.png);}
+html,body{
+    position: relative;
+    height: 100%;
+    font-family: 'Raleway';
+}

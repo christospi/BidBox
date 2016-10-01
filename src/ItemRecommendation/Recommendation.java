@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Recommendation {
+
     public static ArrayList<Integer> getfromDB(int userid) throws FileNotFoundException, SQLException {
         ArrayList<Integer> itemlist = new ArrayList<>();
         DataBase db = new DataBase();
@@ -26,6 +27,7 @@ public class Recommendation {
         db.closeConnection();
         return itemlist;
     }
+
     public static ArrayList<Integer> Similarity(int userid) throws FileNotFoundException, SQLException {
         DataBase db = new DataBase();
         db.openConn();
