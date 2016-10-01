@@ -10,7 +10,16 @@
     <jsp:include page="/basics/auct_inf.jsp" />
     <title>Auctions</title>
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height:344px;
+            width:803px;
 
+        }
 
 
         #clockdiv{
@@ -41,10 +50,83 @@
             font-size: 12px;
         }
     </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfp9V-7Zc4O_YtJFxAtw8mmy8Dd_XVD-Y&libraries=geometry"></script>
+
+    <script>
+
+
+        var marker1;
+
+
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: {lat: 37.97, lng: 23.73}
+            });
+            var geocoder = new google.maps.Geocoder;
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+                    document.getElementById('info'));
+
+            marker1 = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                position: {lat: 37.97, lng: 23.73}
+            });
+
+//            google.maps.event.addListener(marker1, 'dragend', function(event) {
+//                // alert( 'Lat: ' + event.latLng.lat() + ' and Longitude is: ' + event.latLng.lng() );
+//                document.getElementById('latitude').value = event.latLng.lat();
+//                document.getElementById('longtitude').value=event.latLng.lng();
+//                var latlng = {lat: event.latLng.lat(), lng: event.latLng.lng()};
+//                geocoder.geocode({'location': latlng}, function(results, status) {
+//                    if (status === 'OK') {
+//                        if (results[1]) {
+//
+//                            for(var i = 0; i < results[0].address_components.length; i++) {
+//                                if (results[0].address_components[i].types[0] == "country") {
+//                                    country=results[0].address_components[i];
+//                                }
+//                            }
+//                            for (var i=0; i<results[0].address_components.length; i++) {
+//                                for (var b=0;b<results[0].address_components[i].types.length;b++) {
+//
+//
+//                                    if (results[0].address_components[i].types[b] == "administrative_area_level_5") {
+//                                        //this is the object you are looking for
+//                                        city= results[0].address_components[i];
+//                                        break;
+//                                    }
+//                                }
+//                            }
+//                            //city data
+//                            //alert(city.short_name + " " + city.long_name)
+//
+//
+//                        }
+//                        //window.alert( results[1].formatted_address );
+//                        document.getElementById('city').value =city.long_name ;
+//                        document.getElementById('country').value =country.long_name ;
+//                    }
+//                });
+//
+//            });
+
+
+
+        }
+
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiStlX5yVBGYb6sDGA7VHax7rb8BcgblM&language=en&callback=initMap">
+    </script>
 </head>
 <body>
+
 <div class="container">
+
     <div class="row">
+
             <center>
             <h3>Auction Info</h3>
             <% ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("aList");
@@ -112,7 +194,8 @@
                     </tbody>
                 </table>
             </div>
-
+                <label>
+                    <div id="map" ></div></label>
             <script >
 
                 var end = new Date("<%=x.end%>");
@@ -190,6 +273,7 @@
                 </form>
 
                 <%}%>
+
                 <jsp:include page="/seller/carousel.jsp" />
             <div class="panel panel-warning">
                 <div class="panel-heading"><h3>Upload a photo </h3></div>
