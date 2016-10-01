@@ -9,6 +9,7 @@
     <jsp:include page="/basics/maxcdn.jsp" />
     <jsp:include page="/basics/nav.jsp" />
     <title>Messages</title>
+
 </head>
 <body>
     <% User user2 = (User) request.getSession().getAttribute("user");

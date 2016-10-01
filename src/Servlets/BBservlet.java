@@ -107,7 +107,7 @@ public class BBservlet extends HttpServlet {
                     request.getRequestDispatcher("index.jsp").include(request, response);
                     break;
                 case "msglist":
-                    request.getRequestDispatcher("/user/messages.jsp").include(request, response);
+                    request.getRequestDispatcher("/user/msg2.jsp").include(request, response);
                     break;
                 case "searchres":
                     request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
@@ -687,6 +687,14 @@ public class BBservlet extends HttpServlet {
             db.closeConnection();
 
             response.sendRedirect("/BBservlet?page=msglist");
+        }else if (action.equals("read")){
+            int pointer = Integer.parseInt(request.getParameter("pointer"));
+            int flag = Integer.parseInt(request.getParameter("flag"));
+
+            session.setAttribute("point",pointer);
+            session.setAttribute("flag",flag);
+            request.getRequestDispatcher("/user/readmsg.jsp").include(request, response);
+
         }
         else if (action.equals("deletemsg")){
             String username = request.getParameter("username");

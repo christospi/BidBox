@@ -5,7 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head></head>
-<button type="button" class="btn btn-info " data-toggle="modal" data-target="#myModal">Send a message</button>
+<button type="button" class="btn btn-danger"  role="button" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-edit"></i> Compose</button>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
@@ -134,12 +134,13 @@
                         <br>
                         <label><button class="btn btn-info btn-block login" type="submit" >Send message </button></label>
                     </form>
-
+                    <div class="form-group"> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                       <br><br></div>
                     <%--<jsp:include page="/user/send_msg.jsp" />--%>
                 </center>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-default  " data-dismiss="modal">Close</button>
             </div>
         </div>
 
