@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="./../css/header.css">
 
+
 </head>
 <body>
 
@@ -36,7 +37,7 @@
                 <li><a href="./../BBservlet?action=searchpage"> Search Auctions</a></li>
                 <li><a href="./../BBservlet?action=addpage"> Add Auction</a></li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"> My Box
+                    <a class="dropdown-toggle" data-toggle="dropdown" > My Box
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=1"> My Auctions</a>

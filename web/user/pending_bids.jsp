@@ -17,7 +17,7 @@
     <div id="products" class="row list-group">
 
         <% User user2 = (User) request.getSession().getAttribute("user");
-            ArrayList<Auction> aList = (ArrayList<Auction>) request.getAttribute("pendlist");
+            ArrayList<Auction> aList = (ArrayList<Auction>) request.getAttribute("aList");
             ArrayList<Photo> photos = (ArrayList<Photo>) request.getAttribute("photos");
             int total= (int) request.getAttribute("total");
             int page_num= (int) request.getAttribute("page_num");

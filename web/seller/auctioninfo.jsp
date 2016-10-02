@@ -20,34 +20,6 @@
 
         }
 
-
-        #clockdiv{
-            font-family: sans-serif;
-            color: #fff;
-            display: inline-block;
-            font-weight: 100;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        #clockdiv > div{
-            padding: 4px;
-            border-radius: 3px;
-            background: #17aaa6;
-            display: inline-block;
-        }
-
-        #clockdiv div > span{
-            padding: 10px;
-            border-radius: 3px;
-            background: rgba(57, 211, 207, 0.4);
-            display: inline-block;
-        }
-
-        .smalltext{
-            padding-top: 3px;
-            font-size: 12px;
-        }
     </style>
 
 

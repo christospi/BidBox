@@ -11,7 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="./../basics/user_header.jsp"/>
+
     <link rel="stylesheet" href="./../css/carousel.css">
 </head>
 <body>
@@ -56,6 +56,13 @@
 
         }
         %>
+        <%if (pList.size()==0){%>
+        <div class="item peopleCarouselImg active">
+
+            <img class="peopleCarouselImg" src="./../img/item2.jpg "   >
+
+        </div>
+        <%}%>
     </div>
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>

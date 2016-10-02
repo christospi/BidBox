@@ -29,13 +29,13 @@
             <button type="button" class="btn btn-default" data-toggle="tooltip" title="Refresh">
                 &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;</button>
 
-
+            <jsp:include page="/user/send_msg.jsp" />
         </div>
     </div>
     <hr>
     <div class="row">
 
-                <jsp:include page="/user/send_msg.jsp" />
+
             <hr>
 
         <div class="col-sm-9 col-md-10">
@@ -60,14 +60,20 @@
                         <a id="trigger" class="list-group-item" value="<%=i%>">
 
 
-                            <span class="glyphicon glyphicon-star-empty"></span><span class="name" style="min-width: 120px;
-                                display: inline-block;"><%=m.from%></span>  <span class=""><%=m.itemID%>    </span><span class=""><%=m.message%></span>
+                            <span class="glyphicon glyphicon-chevron-right"></span><span class="name" style="min-width: 120px;
+                                display: inline-block;"><%=m.from%></span><b>Item:</b>  <span class=""><%=m.itemID%>  |  </span><span class=""><%=m.message%></span>
                             <form method="post" action="./BBservlet?action=deletemsg&msgid=<%=m.msgID%>&username=<%=user2.username%>">
-                            <input type="submit" class="btn btn-default " value="Delete message"/>
-                            </form>
+                            <button type="submit" class="btn btn-default pull-right" value=""><span class="glyphicon glyphicon-trash"></span></button></form>
+                            <br>
                             </a>
                         <%}%>
+                        <%if (mList.size()==0){%>
+                        <a href="#" class="list-group-item">
+                                <span class="name" style="width:240px; height:240px;
+                                       "><center><b>No Messages</b></center></span>
 
+                        </a>
+                        <%}%>
                     </div>
                 </div>
                 <div class="tab-pane fade in" id="profile">
@@ -77,12 +83,20 @@
                             m = mList2.get(i);%>
                         <a href="#" class="list-group-item">
 
-                            <span class="glyphicon glyphicon-star-empty"></span><span class="name" style="min-width: 120px;
-                                display: inline-block;"><%=m.from%></span>  <span class=""><%=m.itemID%>    </span><span class=""><%=m.message%></span>
-                            <span class="text-muted" style="font-size: 11px;">- More content here</span> <form method="post" action="./BBservlet?action=deletemsg&msgid=<%=m.msgID%>&username=<%=user2.username%>">
-                            <input type="submit" value="delete message"/>
-                        </form></span>
+                            <span class="glyphicon glyphicon-chevron-right"></span><span class="name" style="min-width: 120px;
+                                display: inline-block;"><%=m.from%></span><b>Item:</b>  <span class=""><%=m.itemID%>  <b>| </b> </span><span class=""><%=m.message%></span>
+                        <form method="post" action="./BBservlet?action=deletemsg&msgid=<%=m.msgID%>&username=<%=user2.username%>">
+                            <button type="submit" class="btn btn-default pull-right " value=""><span class="glyphicon glyphicon-trash"></span></button>
+                            <br>
+                        </form>
                         </a>
+                        <%}%>
+                        <%if (mList2.size()==0){%>
+                            <a href="#" class="list-group-item">
+                                <span class="name" style="width:240px; height:240px;
+                                       "><center><b>No Messages</b></center></span>
+
+                             </a>
                         <%}%>
 
                     </div>
@@ -94,6 +108,6 @@
         </div>
     </div>
 </div>
-
+<jsp:include page="/basics/footer.jsp" />
 </body>
 </html>

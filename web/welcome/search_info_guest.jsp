@@ -7,40 +7,9 @@
 <html>
 <head>
     <jsp:include page="/basics/maxcdn.jsp" />
-    <jsp:include page="/basics/header.jsp" />
+    <jsp:include page="/basics/guest_header.jsp" />
     <title>Auction Info</title>
-    <style>
 
-
-
-        #clockdiv{
-            font-family: sans-serif;
-            color: #fff;
-            display: inline-block;
-            font-weight: 100;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        #clockdiv > div{
-            padding: 4px;
-            border-radius: 3px;
-            background: #17aaa6;
-            display: inline-block;
-        }
-
-        #clockdiv div > span{
-            padding: 10px;
-            border-radius: 3px;
-            background: rgba(57, 211, 207, 0.4);
-            display: inline-block;
-        }
-
-        .smalltext{
-            padding-top: 3px;
-            font-size: 12px;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -89,6 +58,7 @@
 
                 var end = new Date("<%=x.end%>");
 
+
                 var _second = 1000;
                 var _minute = _second * 60;
                 var _hour = _minute * 60;
@@ -98,6 +68,7 @@
 
                 function showRemaining() {
                     var now = new Date();
+
                     var distance = end - now;
                     if (distance < 0) {
 

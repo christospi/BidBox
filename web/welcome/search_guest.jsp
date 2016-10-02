@@ -4,9 +4,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="./../basics/maxcdn.jsp" />
-    <jsp:include page="/basics/header.jsp" />
-    <link rel="stylesheet" href="./../css/search.css">
+
+    <jsp:include page="/basics/guest_header.jsp" />
+
     <title>Search Auctions</title>
     <%
         ArrayList<Category> cList = (ArrayList<Category>) request.getAttribute("cList");

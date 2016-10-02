@@ -52,7 +52,7 @@ public class Listener implements ServletContextListener,
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                String query="select * from auction where expired = 0 ";
+                String query="select * from auction where expired = 0 AND st IS NOT NULL";
                 ResultSet rs = db.executeQuery(query);
                 try {
                     if (rs.last()) {
@@ -77,8 +77,9 @@ public class Listener implements ServletContextListener,
                         int id=rs.getInt("itemID");
                         int buyerID = rs.getInt("buyerID");
                         long diff = (end.getTime() - now.getTime());
+
                         long distance = diff /(1000);
-//                        System.out.println(distance);
+
                         if (distance <= 0) {
 //                            System.out.println("mpikaa");
                             if(buyerID!=0){

@@ -8,18 +8,19 @@
     <link rel="stylesheet" href="./../css/itemlist.css">
     <%
         ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("search_list");
-        int guest = (Integer)request.getSession().getAttribute("guest");
+        String guest = (String) request.getSession().getAttribute("guest");
 
         int page_num = (Integer) request.getAttribute("page_num");
-        int total = aList.size()/10;
-        if(aList.size()%10 !=0) total+=1;
 
-        if(guest!=-1){
+        int total = aList.size()/10;
+        if(aList.size()%10 !=0 || aList.size()==0) total+=1;
+
+        if(guest.equals("-1")){
     %>
 
-    <jsp:include page="/basics/nav.jsp" />
+    <jsp:include page="/basics/guest_header.jsp" />
     <%}else{%>
-    <jsp:include page="/basics/header.jsp" />
+    <jsp:include page="/basics/user_header.jsp" />
     <%}%>
     <title>Search Results</title>
 </head>
@@ -48,13 +49,13 @@
                         p=photos.get(i);
                         if (p.id==-1){
                     %>
-                    <%if (guest!=-1){%>
+                    <%if (!guest.equals("-1")){%>
                     <a href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>"> <img  class="group list-group-image" src="./../img/item2.jpg "  alt="" /></a>
                     <%}else{%>
                     <a href="./BBservlet?action=auction_search_guest&auctionid=<%=a.id%>&seller=<%=a.seller%>"> <img  class="group list-group-image" src="./../img/item2.jpg "  alt="" /></a>
                     <%}%>
                     <%}else{%>
-                    <%if (guest!=-1){%>
+                    <%if (!guest.equals("-1")){%>
                     <a href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>"> <img class="group list-group-image " src="./../BBservlet?action=viewphoto2&pic_name=<%=p.pic_name%>"  ></a>
                     <%}else{%>
                     <a href="./BBservlet?action=auction_search_guest&auctionid=<%=a.id%>&seller=<%=a.seller%>"> <img class="group list-group-image " src="./../BBservlet?action=viewphoto2&pic_name=<%=p.pic_name%>"  ></a>
@@ -62,7 +63,7 @@
                     <%}%>
                 </div>
                 <div class="caption ">
-                    <%if (guest!=-1){%>
+                    <%if (!guest.equals("-1")){%>
                     <br><h4 class="group inner list-group-item-heading"><a href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a></h4>
                     <%}else{%>
                     <br><h4 class="group inner list-group-item-heading"><a href="./BBservlet?action=auction_search_guest&auctionid=<%=a.id%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a></h4>
@@ -80,7 +81,7 @@
                             <p class="lead ">
                                 Current Bid: <%=a.curr%> $ </p>
                         </div>
-                        <%if (guest!=-1){%>
+                        <%if(!guest.equals("-1")){%>
                         <div class="col-xs-4 col-md-8 pull-right">
                             <a class="btn btn-success pull-right" href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>">More info...</a>
                         </div>
@@ -110,13 +111,13 @@
                         p=photos.get(i);
                         if (p.id==-1){
                     %>
-                    <%if (guest!=-1){%>
+                    <%if (!guest.equals("-1")){%>
                     <a href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>"> <img  class="group list-group-image" src="./../img/item2.jpg "  alt="" /></a>
                     <%}else{%>
                     <a href="./BBservlet?action=auction_search_guest&auctionid=<%=a.id%>&seller=<%=a.seller%>"> <img  class="group list-group-image" src="./../img/item2.jpg "  alt="" /></a>
                     <%}%>
                     <%}else{%>
-                    <%if (guest!=-1){%>
+                    <%if (!guest.equals("-1")){%>
                     <a href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>"> <img class="group list-group-image " src="./../BBservlet?action=viewphoto2&pic_name=<%=p.pic_name%>"  ></a>
                     <%}else{%>
                     <a href="./BBservlet?action=auction_search_guest&auctionid=<%=a.id%>&seller=<%=a.seller%>"> <img class="group list-group-image " src="./../BBservlet?action=viewphoto2&pic_name=<%=p.pic_name%>"  ></a>
@@ -124,7 +125,7 @@
                     <%}%>
                 </div>
                 <div class="caption ">
-                    <%if (guest!=-1){%>
+                    <%if(!guest.equals("-1")){%>
                     <br><h4 class="group inner list-group-item-heading"><a href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a></h4>
                     <%}else{%>
                     <br><h4 class="group inner list-group-item-heading"><a href="./BBservlet?action=auction_search_guest&auctionid=<%=a.id%>&seller=<%=a.seller%>" ><%out.println(a.name);%></a></h4>
@@ -142,7 +143,7 @@
                             <p class="lead ">
                                 Current Bid: <%=a.curr%> $ </p>
                         </div>
-                        <%if (guest!=-1){%>
+                        <%if (!guest.equals("-1")){%>
                         <div class="col-xs-4 col-md-8 pull-right">
                             <a class="btn btn-success pull-right" href="./BBservlet?action=auction_search&auctionid=<%=a.id%>&seller=<%=a.seller%>">More info...</a>
                         </div>

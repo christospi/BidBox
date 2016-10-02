@@ -5,8 +5,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="./../basics/user_header.jsp"/>
+
 </head>
+<body>
 <button type="button" class="btn btn-danger"  role="button" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-edit"></i> Compose</button>
 
 <!-- Modal -->
@@ -80,7 +81,7 @@
                     </head>
                     <body>
 
-                    <form class="form-inline pull-left" action="./../BBservlet?action=send_msgf" method="post" >
+                    <form class="form-inline " action="./../BBservlet?action=send_msgf" method="post" >
 
                         <div class="form-group ">
 
@@ -91,20 +92,20 @@
                         <div class="form-group">
 
                             <label>Receiver: </label>
-                            <input class="form-control" id="receiver" type="text" name="receiver" >
+                            <input class="form-control" id="receiver" type="text" readonly name="receiver"  placeholder="To">
 
                         </div>
                         <div class="form-group">
 
                             <label >Item: </label>
-                            <input class="form-control" name="itemID" id="itemID" type="text" name="itemID">
+                            <input class="form-control" name="itemID" id="itemID" readonly type="text" name="itemID" placeholder="Item">
 
                         </div>
 
                         <br>
                         <br>
                         <select class="form-control " onchange="takeid(this.value)" required>
-                            <option value="">Choose a receiver:</option>
+                            <option value="">Choose a Receiver/Item:</option>
                             <optgroup label="Buyers"></optgroup>
                             <%--<optgroup value="" data-hidden="true" class="ddl-title" label="Receivers">--%>
 
@@ -136,10 +137,10 @@
                         <br>
                         <label><button class="btn btn-info btn-block login" type="submit" >Send message </button></label>
                     </form>
-                    <div class="form-group"> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                       <br><br></div>
+                    <div class="form-group">
+                      </div>
                     <%--<jsp:include page="/user/send_msg.jsp" />--%>
-                </center>
+               </center>
             </div>
             <div class="modal-footer ">
                 <button type="button" class="btn btn-default  " data-dismiss="modal">Close</button>

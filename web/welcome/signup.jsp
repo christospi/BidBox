@@ -1,12 +1,12 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="stylesheet" type="text/css" href="./../css/signup.css" />
+<link rel="stylesheet" type="text/css" href="./../css/header.css" />
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <html>
 <head>
     <jsp:include page="/basics/maxcdn.jsp" />
-    <jsp:include page="/basics/register.jsp" />
+    <jsp:include page="/basics/guest_header.jsp" />
 
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript">

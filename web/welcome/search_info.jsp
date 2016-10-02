@@ -7,43 +7,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="/basics/maxcdn.jsp" />
-    <jsp:include page="/basics/auct_inf.jsp" />
+
+    <jsp:include page="/basics/user_header.jsp" />
 
     <title>Auction Info</title>
 
-    <style>
 
-
-
-        #clockdiv{
-            font-family: sans-serif;
-            color: #fff;
-            display: inline-block;
-            font-weight: 100;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        #clockdiv > div{
-            padding: 4px;
-            border-radius: 3px;
-            background: #17aaa6;
-            display: inline-block;
-        }
-
-        #clockdiv div > span{
-            padding: 10px;
-            border-radius: 3px;
-            background: rgba(57, 211, 207, 0.4);
-            display: inline-block;
-        }
-
-        .smalltext{
-            padding-top: 3px;
-            font-size: 12px;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -138,9 +107,10 @@
             <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item</a></b></h3>
             <%if(x.expired!=1 && x.sold!=1 && !(x.seller.equalsIgnoreCase(user2.username))){ %>
             <form method="post" action="/BBservlet?action=place_bid&itemid=<%=x.id%>&bidderid=<%=user2.userID%>&seller=<%=x.seller%>">
-                <input type="number" step="any" name="amount" min="<%=x.curr%>" max="<%=x.buy_pr%>">
-                <input type="submit" value="Bid !"/>
-            </form>
+                <input type="number" step="any" name="amount" min="<%=x.curr+1%>" required>
+                <%--<input type="submit" value="Bid !"/>--%>
+                <input type="button" data-toggle="modal" data-target="#myModal" value="Bid !"/>
+
             <%}%>
         </center>
 
@@ -153,6 +123,30 @@
 <center>
     <jsp:include page="/seller/carousel.jsp" />
 </center>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    <center>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Bid Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to make this bid?</p>
+
+
+
+                    <button  class="btn btn-success login" type="submit">Yes</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                </form>
+            </div>
+
+        </div>
+    </center>
+    </div>
+</div>
 <jsp:include page="/basics/footer.jsp" />
 </body>
 </html>

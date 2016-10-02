@@ -3,7 +3,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="./../css/footer.css">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <script src="https://use.fontawesome.com/7afd968963.js"></script>
 </head>
 <body>
 

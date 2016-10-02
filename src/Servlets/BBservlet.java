@@ -223,7 +223,10 @@ public class BBservlet extends HttpServlet {
                 if (rs.next()) {    //if user exists
 
                     User user = User.getUser(username);
+                    ArrayList<Category> cList = Category.get_all_cat();
+                    session.setAttribute("cList",cList);
                     session.setAttribute("user", user);
+                    session.setAttribute("guest",user.username);
                     session.setAttribute("username", user.username);
 
                     if (user.ver == 0) {    //if he isnt verified yet display this
@@ -496,13 +499,14 @@ public class BBservlet extends HttpServlet {
             session.setAttribute("photos", photos);
 
             response.sendRedirect("/BBservlet?page=auctionlist");
-        } else if (action.equals("auctioninfo")) { //ESTATE INFO
+        } else if (action.equals("auctioninfo")) {
 
             String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this estate
             session.setAttribute("pointer", pointer);
 
             int itemID = Integer.parseInt(request.getParameter("itemID"));
             ArrayList<Category> cList = Category.get_its_cat(itemID);
+
             session.setAttribute("cList", cList);
             //TODO fusiologiki sunartisi gia photografies
             ArrayList<Photo> pList = Photo.pdoSelectAll(itemID); //get all photos this users uploaded
@@ -711,8 +715,12 @@ public class BBservlet extends HttpServlet {
 
         }else if (action.equals("recommendations")){
             int seller = Integer.parseInt(request.getParameter("seller"));
-            session.setAttribute("guest",seller);
+            session.setAttribute("guest","dummy");
             ArrayList<Integer> recommended_items = Recommendation.getfromDB(seller);
+            if(recommended_items.size()==0){
+                request.getRequestDispatcher("/user/check_later.jsp").include(request, response);
+                return;
+            }
             ArrayList<Auction> aList = Auction.recommended_auctions(recommended_items);
             session.setAttribute("search_list",aList);
             ArrayList<Photo> photos = Photo.PhotoPerItem(aList);
@@ -725,7 +733,7 @@ public class BBservlet extends HttpServlet {
 
             //TODO thelei doulitsa akoma den to xw dokimasei katholou
 
-            int seller = Integer.parseInt(request.getParameter("seller"));
+            String seller = request.getParameter("seller");
             session.setAttribute("guest",seller);
             String choice = request.getParameter("choice");
             String terms = request.getParameter("keywords");
@@ -736,10 +744,10 @@ public class BBservlet extends HttpServlet {
 
             int inactive = 0;
 
-            if(!"".equals(request.getParameter("from_pr"))) {
+            if(!"".equals(request.getParameter("from_pr")) && request.getParameter("from_pr")!=null) {
                 from_pr = Integer.parseInt(request.getParameter("from_pr"));
             }
-            if(!"".equals(request.getParameter("to_pr"))) {
+            if(!"".equals(request.getParameter("to_pr"))&& request.getParameter("to_pr")!=null) {
                 to_pr = Integer.parseInt(request.getParameter("to_pr"));
             }
 
@@ -772,16 +780,16 @@ public class BBservlet extends HttpServlet {
                 + location + "%') ) ";
             }
 
-            if(!"".equals(request.getParameter("from_pr")) && !"".equals(request.getParameter("to_pr"))) {
+            if((!"".equals(request.getParameter("from_pr"))&& request.getParameter("from_pr")!=null) && (!"".equals(request.getParameter("to_pr"))&& request.getParameter("to_pr")!=null)) {
                 from_pr = Integer.parseInt(request.getParameter("from_pr"));
                 to_pr = Integer.parseInt(request.getParameter("to_pr"));
 
                 where = where +"AND curr BETWEEN " + from_pr + " AND " + to_pr + "";
             }else{
-                if(!"".equals(request.getParameter("from_pr"))){
+                if(!"".equals(request.getParameter("from_pr"))&& request.getParameter("from_pr")!=null){
                     from_pr = Integer.parseInt(request.getParameter("from_pr"));
                     where  = where + "AND curr >= " + from_pr + " ";
-                }else if(!"".equals(request.getParameter("to_pr"))){
+                }else if(!"".equals(request.getParameter("to_pr"))&& request.getParameter("to_pr")!=null){
                     to_pr = Integer.parseInt(request.getParameter("to_pr"));
                     where = where + "AND curr <= " + to_pr + " ";
                 }
@@ -806,6 +814,7 @@ public class BBservlet extends HttpServlet {
             session.setAttribute("photos", photos);
             request.setAttribute("page_num", 1);
 
+
             request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
 
 //            session.setAttribute("aList",aList);
@@ -815,6 +824,7 @@ public class BBservlet extends HttpServlet {
 
             int i=Integer.parseInt(request.getParameter("page_num")) ;
             request.setAttribute("page_num", i);
+
 
             request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
 
@@ -1200,6 +1210,7 @@ public class BBservlet extends HttpServlet {
 
             String username =(String) request.getSession().getAttribute("username");
             int page_num = Integer.parseInt( request.getParameter("page_num") );
+
             ArrayList<Auction> pendlist = new ArrayList<Auction>();
 
             String query = "SELECT DISTINCT(auction.itemID) FROM user,bid,auction WHERE user.username='" + username + "'" +
@@ -1227,8 +1238,9 @@ public class BBservlet extends HttpServlet {
 //            System.out.println("##############################");
 
             ArrayList<Photo> photos = Photo.PhotoPerItem( pendlist );
+            session.setAttribute("aList",pendlist);
+            request.setAttribute("aList",pendlist);
 
-            request.setAttribute("pendlist",pendlist);
             request.setAttribute("photos",photos);
             request.setAttribute("total",total);
 

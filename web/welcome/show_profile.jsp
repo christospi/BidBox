@@ -3,12 +3,21 @@
 <html>
 <head>
     <jsp:include page="./../basics/maxcdn.jsp" />
-    <jsp:include page="./../basics/header.jsp" />
+
+
     <link rel="stylesheet" href="./../css/search.css">
     <title>User's info</title>
     <%User user2 = (User) request.getSession().getAttribute("user");
+        String guest = (String) request.getSession().getAttribute("guest");
     User seller = (User) request.getAttribute("seller");
     %>
+    <%if(guest.equals("-1")){
+    %>
+
+    <jsp:include page="/basics/guest_header.jsp" />
+    <%}else{%>
+    <jsp:include page="/basics/user_header.jsp" />
+    <%}%>
 </head>
 
 <body>
