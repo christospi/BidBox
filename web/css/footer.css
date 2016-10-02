@@ -1,11 +1,6 @@
-.footer {
-    position: fixed;
-    bottom:0;
-}
 
 .footer-distributed{
-
-    background-color: #292c2f;
+    background-color: #101010;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
     box-sizing: border-box;
     width: 100%;
@@ -58,6 +53,14 @@
     line-height: 35px;
 
     margin-left: 3px;
+
+    padding: 8px;
+}
+
+.footer-distributed .footer-right a:hover {
+    color: blue;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
 }
 
 /* If you don't want the footer to be responsive, remove these media queries */
@@ -77,8 +80,4 @@
     .footer-distributed .footer-left p.footer-links{
         line-height: 1.8;
     }
-}
-
-@media (max-height: 800px) {
-    footer{ position: static; }
 }

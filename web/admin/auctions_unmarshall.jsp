@@ -2,8 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="/basics/maxcdn.jsp" />
-    <jsp:include page="/basics/admin_head.jsp" />
+    <jsp:include page="/basics/admin_header.jsp"/>
+
     <link rel="stylesheet" href="./../css/itemlist.css">
     <title>Import Auctions</title>
 </head>

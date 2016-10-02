@@ -100,7 +100,49 @@ public class User {
         DataBase db = new DataBase();
         db.openConn();
 
-        String query = "select * from user";
+        String query = "SELECT * FROM user";
+        ResultSet rs = db.executeQuery(query);
+
+        try {
+            uList = new ArrayList<User>();
+            while (rs.next()) {
+
+                User user2 = new User();
+
+                user2.userID = rs.getInt("userID");
+                user2.username = rs.getString("username");
+                user2.name = rs.getString("name");
+                user2.surname = rs.getString("surname");
+                user2.email = rs.getString("email");
+                user2.phone = rs.getString("phone");
+                user2.ver = rs.getInt("verified");
+                user2.pass = rs.getString("pass");
+                user2.country = rs.getString("country");
+                user2.city = rs.getString("city");
+                user2.afm = rs.getString("afm");
+                user2.rating_bidder = rs.getInt("rating_bidder");
+                user2.rating_seller = rs.getInt("rating_seller");
+
+
+                uList.add((User) user2);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return uList;
+    }
+
+    public static ArrayList<User> usersPerPage(int page_num) throws FileNotFoundException {
+
+        ArrayList<User> uList = null;
+
+        DataBase db = new DataBase();
+        db.openConn();
+
+        String query = "SELECT * FROM user LIMIT " + (page_num - 1) * 10 + ", " + 10 + "";
         ResultSet rs = db.executeQuery(query);
 
         try {
@@ -134,6 +176,73 @@ public class User {
         }
 
         return uList;
+    }
+
+    public static ArrayList<User> unverUsersPerPage(int page_num) throws FileNotFoundException {
+
+        ArrayList<User> uList = null;
+
+        DataBase db = new DataBase();
+        db.openConn();
+
+        String query = "SELECT * FROM user WHERE verified=0 LIMIT " + (page_num - 1) * 10 + ", " + 10 + "";
+        ResultSet rs = db.executeQuery(query);
+
+        try {
+
+            uList = new ArrayList<User>();
+            while (rs.next()) {
+
+                User user2 = new User();
+
+                user2.userID = rs.getInt("userID");
+                user2.username = rs.getString("username");
+                user2.name = rs.getString("name");
+                user2.surname = rs.getString("surname");
+                user2.email = rs.getString("email");
+                user2.phone = rs.getString("phone");
+                user2.ver = rs.getInt("verified");
+                user2.pass = rs.getString("pass");
+                user2.country = rs.getString("country");
+                user2.city = rs.getString("city");
+                user2.afm = rs.getString("afm");
+                user2.rating_bidder = rs.getInt("rating_bidder");
+                user2.rating_seller = rs.getInt("rating_seller");
+
+
+                uList.add((User) user2);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return uList;
+    }
+
+    public static int usersCounter() throws FileNotFoundException, SQLException {
+        int count = 0;
+        DataBase db = new DataBase();
+        db.openConn();
+        ResultSet rs = db.executeQuery(" SELECT * FROM user");
+
+        while (rs.next()){
+            count += 1;
+        }
+        return count;
+    }
+
+    public static int unverUsersCounter() throws FileNotFoundException, SQLException {
+        int count = 0;
+        DataBase db = new DataBase();
+        db.openConn();
+        ResultSet rs = db.executeQuery(" SELECT * FROM user WHERE verified=0");
+
+        while (rs.next()){
+            count += 1;
+        }
+        return count;
     }
 
 }

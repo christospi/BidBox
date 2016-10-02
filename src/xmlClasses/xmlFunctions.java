@@ -341,7 +341,7 @@ public class xmlFunctions {
 
             buy_price_float = rs1.getFloat("buy_pr");
             if( buy_price_float == 0){
-                xmlauction.setBuy_pr("N/A");
+                xmlauction.setBuy_pr("0");
             }
             else{
                 xmlauction.setBuy_pr( "$" + Float.toString(buy_price_float) );

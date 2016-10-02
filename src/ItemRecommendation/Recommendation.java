@@ -69,9 +69,9 @@ public class Recommendation {
                if(!user_items.contains(auctions.get(i).id)) user_items.add(auctions.get(i).id);
             }
         }
-        System.out.println(user.username);
+//        System.out.println(user.username);
         for(int i=0;i<user_items.size();i++){
-            System.out.println(user_items.get(i));
+//            System.out.println(user_items.get(i));
         }
 //        for (int i=0;i<users.size();i++){
 //            for(int j=0;j<auctions.size();j++){
@@ -109,7 +109,7 @@ public class Recommendation {
 
         }
         for(int i=0;i<users.size();i++){
-            System.out.print("("+users.get(i).userID+","+ percentages[i]+")");
+//            System.out.print("("+users.get(i).userID+","+ percentages[i]+")");
         }
 
     ///Parallel Bubble Sort between matrix and percentages///
@@ -156,20 +156,20 @@ public class Recommendation {
             }
 
         }
-        System.out.println("sum"+sum);
+//        System.out.println("sum"+sum);
         for(int j=0;j<auctions.size();j++){
             recommendations[j]=0.0;
             for(int i=0;i<users.size();i++){
                 if(matrix[i][j]!=0 && percentages[i]!=0){
-                    System.out.println("matrix"+matrix[i][j]+" percentages "+percentages[i]+" sum"+sum);
+//                    System.out.println("matrix"+matrix[i][j]+" percentages "+percentages[i]+" sum"+sum);
                     recommendations[j]+= (((matrix[i][j]*percentages[i]*100)/sum));
                 }
             }
         }
        Integer itemsids[] = new Integer[auctions.size()];
         for(int j=0;j<auctions.size();j++){
-            System.out.print("itemid: "+auctions.get(j).id);
-            System.out.println(" rec"+j+": "+recommendations[j]);
+//            System.out.print("itemid: "+auctions.get(j).id);
+//            System.out.println(" rec"+j+": "+recommendations[j]);
             itemsids[j]=auctions.get(j).id;
         }
         //Sorting ids from the best to the worst recommendation //
@@ -189,14 +189,14 @@ public class Recommendation {
             }
         }
         for(int i=0;i<users.size();i++){
-            System.out.println(percentages[i]);
+//            System.out.println(percentages[i]);
             for(int j=0;j<auctions.size();j++){
-                System.out.print(matrix[i][j]);
+//                System.out.print(matrix[i][j]);
             }
-            System.out.println();
+//            System.out.println();
         }
         for(int j=0;j<auctions.size();j++){
-            System.out.println("ItemID:"+itemsids[j]+"normalised percentage:"+recommendations[j]);
+//            System.out.println("ItemID:"+itemsids[j]+"normalised percentage:"+recommendations[j]);
         }
         ArrayList<Integer>  final_list = new ArrayList<>(10);
 
@@ -211,7 +211,7 @@ public class Recommendation {
         Random rand = new Random();
 
         int  n = rand.nextInt(itemsids.length) ;
-        System.out.println(itemsids.length-user_items.size());
+//        System.out.println(itemsids.length-user_items.size());
 
         if(itemsids.length-user_items.size()>=10) {
             for (int i = count2; i < 10; i++) {
@@ -230,7 +230,7 @@ public class Recommendation {
         }
 
         for(int j=0;j<final_list.size();j++){
-            System.out.println("ItemID:"+final_list.get(j));
+//            System.out.println("ItemID:"+final_list.get(j));
         }
 
         db.closeConnection();

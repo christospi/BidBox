@@ -4,7 +4,9 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head></head>
+<head>
+    <jsp:include page="./../basics/user_header.jsp"/>
+</head>
 <button type="button" class="btn btn-danger"  role="button" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-edit"></i> Compose</button>
 
 <!-- Modal -->

@@ -57,7 +57,7 @@ public class Listener implements ServletContextListener,
                 try {
                     if (rs.last()) {
                         int rows = rs.getRow();
-                        System.out.println(rows);
+//                        System.out.println(rows);
                         rs.beforeFirst();
 
 
@@ -69,7 +69,7 @@ public class Listener implements ServletContextListener,
                     while (rs.next()) {
 
                         String string = rs.getString("end");
-                        System.out.println(string);
+//                        System.out.println(string);
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                         Date end ;
                         end=df.parse(string);
@@ -78,9 +78,9 @@ public class Listener implements ServletContextListener,
                         int buyerID = rs.getInt("buyerID");
                         long diff = (end.getTime() - now.getTime());
                         long distance = diff /(1000);
-                        System.out.println(distance);
+//                        System.out.println(distance);
                         if (distance <= 0) {
-                            System.out.println("mpikaa");
+//                            System.out.println("mpikaa");
                             if(buyerID!=0){
                                 query="UPDATE auction SET expired=1 WHERE itemID='"+ id +"'";
                             }else{
@@ -141,7 +141,7 @@ public class Listener implements ServletContextListener,
                 try {
                     while (rs.next()) {
                         int userID=rs.getInt("userID");
-                        System.out.println(userID);
+//                        System.out.println(userID);
                        ArrayList<Integer> recommended = Recommendation.Similarity(userID);
 
                         for(int i=0;i<recommended.size();i++) {

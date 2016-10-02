@@ -74,6 +74,7 @@ public class Auction {
         }
         return auction;
     }
+
     public static Auction getAuctionbyid(int itemID) throws FileNotFoundException {
 
         DataBase db = new DataBase();
@@ -185,7 +186,7 @@ public class Auction {
         return  noOfRecords;
     }
 
-    public  static ArrayList<Auction> search_auction(String query) throws FileNotFoundException, SQLException {
+    public static ArrayList<Auction> search_auction(String query) throws FileNotFoundException, SQLException {
 
         ArrayList<Auction> aList = null;
 
@@ -287,6 +288,20 @@ public class Auction {
             }
 
             return aList;
+    }
+
+    public static int resultCounter(String query) throws FileNotFoundException, SQLException {
+        int count = 0;
+        DataBase db = new DataBase();
+        db.openConn();
+
+        ResultSet rs = db.executeQuery(query);
+
+        while( rs.next() ){
+            count += 1;
+        }
+
+        return count;
     }
     public int getId() {
         return id;

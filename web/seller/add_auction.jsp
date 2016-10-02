@@ -9,8 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="/basics/maxcdn.jsp" />
-    <jsp:include page="/basics/add_auct.jsp" />
+    <jsp:include page="./../basics/user_header.jsp"/>
     <title>Add Auction</title>
     <style>
         html, body {

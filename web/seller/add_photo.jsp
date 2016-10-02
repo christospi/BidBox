@@ -4,6 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <jsp:include page="./../basics/user_header.jsp"/>
     <title>Add photo</title>
         <% User user2 = (User) request.getSession().getAttribute("user");%>
 </head>
@@ -23,4 +24,5 @@
     </table>
 </form>
 </body>
+<jsp:include page="./../basics/footer.jsp"/>
 </html>

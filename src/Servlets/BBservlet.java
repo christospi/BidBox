@@ -130,7 +130,6 @@ public class BBservlet extends HttpServlet {
                 case "myprofile":
                     request.getRequestDispatcher("/user/myprofile.jsp").include(request, response);
                     break;
-
             }
 
         } else if (action.equals("signup_page")) {
@@ -303,10 +302,27 @@ public class BBservlet extends HttpServlet {
 
         } else if (action.equals("userlist")) {   //USER LIST
 
-            ArrayList<User> uList = User.doSelectAll(); //arraylist with all info fro all users in db
+            int page_num = Integer.parseInt(request.getParameter("page_num"));
+            int total = User.usersCounter();
+            ArrayList<User> uList = User.usersPerPage(page_num); //arraylist with all info fro all users in db
             session.setAttribute("uList", uList);
 
-            response.sendRedirect("/BBservlet?page=userlist");
+            request.setAttribute("page_num", page_num);
+            request.setAttribute("total", total);
+            request.getRequestDispatcher("/admin/user_list.jsp").include(request, response);
+//            response.sendRedirect("/BBservlet?page=userlist");
+
+        } else if (action.equals("verify_pend")) {   //USER LIST
+
+            int page_num = Integer.parseInt(request.getParameter("page_num"));
+            int total = User.unverUsersCounter();
+            ArrayList<User> uList = User.unverUsersPerPage(page_num); //arraylist with all info fro all users in db
+            session.setAttribute("uList", uList);
+
+            request.setAttribute("page_num", page_num);
+            request.setAttribute("total", total);
+            request.getRequestDispatcher("/admin/unver_user_list.jsp").include(request, response);
+
         } else if (action.equals("userinfo")) {   //USER INFO
 
             String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this user
@@ -321,7 +337,7 @@ public class BBservlet extends HttpServlet {
             int rs = db.executeUpdate(query);
             db.closeConnection();
 
-            ArrayList<User> uList = User.doSelectAll(); //arraylist with all info fro all users in db
+            ArrayList<User> uList = User.usersPerPage(1); //arraylist with all info fro all users in db
             session.setAttribute("uList", uList);
 
             response.sendRedirect("/BBservlet?page=verify");
@@ -516,19 +532,21 @@ public class BBservlet extends HttpServlet {
             response.sendRedirect("/BBservlet?page=purchasedinfo");
 
         }else if (action.equals("bought_items")) {
+
             User user = (User) request.getSession().getAttribute("user");
             int page_num = Integer.parseInt(request.getParameter("page_num"));
+
+            String countquery = "SELECT * FROM auction WHERE buyerID='" +user.userID+"' AND sold >=1";
+            int total = Auction.resultCounter( countquery );
+
             session.setAttribute("page_num", page_num);
             String query="SELECT * FROM auction WHERE buyerID='" +user.userID+"' AND sold >=1 LIMIT " + (page_num - 1) * 10 + ", " + 10 + "";
             ArrayList<Auction> bList = Auction.search_auction(query);
-            int total = bList.size();
+//            int total = bList.size();
             session.setAttribute("total", total);
             session.setAttribute("boughtList", bList);
 
-
-
             response.sendRedirect("/BBservlet?page=purchasedlist");
-
 
         }else if( action.equals("rate")){
             int pointer=Integer.parseInt(request.getParameter("pointer")) ;
@@ -650,22 +668,6 @@ public class BBservlet extends HttpServlet {
                     e.printStackTrace();
                 }
             }
-        }else if(action.equals("pagination")){
-//            int page2 = 1;
-//            int recordsPerPage = 5;
-//            if(request.getParameter("page") != null)
-//                page2 = Integer.parseInt(request.getParameter("page"));
-//           Auction a= new Auction();
-//            List<Auction> list = a.viewAllAuctions((page2-1)*recordsPerPage, //prp mallon n pername me get attr seller...
-//                    recordsPerPage);
-//            int noOfRecords = a.getNoOfRecords();
-//            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-//            request.setAttribute("employeeList", list);
-//            request.setAttribute("noOfPages", noOfPages);
-//            request.setAttribute("currentPage", page);
-//            RequestDispatcher view = request.getRequestDispatcher("auctionlist2.jsp");
-//            view.forward(request, response);
-
         }
         else if (action.equals("logout")) { //LOG OUT
 
@@ -800,12 +802,11 @@ public class BBservlet extends HttpServlet {
 
             session.setAttribute("search_list", aList);
             ArrayList<Photo> photos = Photo.PhotoPerItem(aList);
+
             session.setAttribute("photos", photos);
             request.setAttribute("page_num", 1);
 
             request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
-
-
 
 //            session.setAttribute("aList",aList);
 //            response.sendRedirect("");
@@ -875,8 +876,6 @@ public class BBservlet extends HttpServlet {
             db.openConn();
 
             Integer i = db.executeUpdate(query);
-
-
 
             Auction auction = Auction.getAuctionbyid(itemid);
 
@@ -1206,6 +1205,10 @@ public class BBservlet extends HttpServlet {
             String query = "SELECT DISTINCT(auction.itemID) FROM user,bid,auction WHERE user.username='" + username + "'" +
                     "AND user.userID = bid.userID AND bid.itemID = auction.itemID "+
                     "AND auction.sold = 0 AND auction.expired = 0";
+
+            int total = Auction.resultCounter( query );
+
+            query = query + " LIMIT " + (page_num - 1) * 10 + ", " + 10 + "";
             db.openConn();
             System.out.println( query );
             ResultSet rs = db.executeQuery( query );
@@ -1213,16 +1216,23 @@ public class BBservlet extends HttpServlet {
             while( rs.next() ){
                 pendlist.add( Auction.getAuctionbyid( rs.getInt("itemID") ) );
             }
+
             db.closeConnection();
+
+//            System.out.println("##############################");
+//            System.out.println("total--" + total + "sizelist--" + pendlist.size());
+//            System.out.println("total--" + total + "sizelist--" + pendlist.size());
+//            System.out.println("total--" + total + "sizelist--" + pendlist.size());
+//
+//            System.out.println("##############################");
 
             ArrayList<Photo> photos = Photo.PhotoPerItem( pendlist );
 
-
             request.setAttribute("pendlist",pendlist);
             request.setAttribute("photos",photos);
+            request.setAttribute("total",total);
 
-            if( page_num == 1) request.setAttribute("page_num",1);
-            else request.setAttribute("page_num",page_num);
+            request.setAttribute("page_num",page_num);
 
             request.getRequestDispatcher("/user/pending_bids.jsp").include(request,response);
         }

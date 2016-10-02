@@ -6,10 +6,9 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 </head>
 <body>
-<footer class="footer-distributed navbar-bottom">
 
+<footer class="footer-distributed">
     <div class="footer-right">
-
         <a href="#"><i class="fa fa-facebook"></i></a>
         <a href="#"><i class="fa fa-twitter"></i></a>
         <a href="#"><i class="fa fa-linkedin"></i></a>
@@ -33,10 +32,10 @@
             <a href="#">Contact</a>
         </p>
 
-        <p>Geia sou mairh</p>
+        <p>Company Name &copy; 2015</p>
     </div>
 
-</footer>
+</footer><!--End footer 2-->
 <%--<footer class="footer  navbar-bottom">--%>
     <%--<div class="container">--%>
         <%--<div class="foo"><img class="fooimg" src="./../img/2.png" align="right" width="40" height="43"><p class="developers"> © Developed by <b>C&K </b></p></div>--%>

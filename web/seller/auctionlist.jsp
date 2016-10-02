@@ -6,9 +6,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="/basics/maxcdn.jsp" />
+    <jsp:include page="./../basics/user_header.jsp"/>
     <link rel="stylesheet" href="./../css/itemlist.css">
-    <jsp:include page="/basics/nav.jsp" />
     <title>Auction list</title>
 </head>
 <body>
@@ -20,9 +19,12 @@
         <% User user2 = (User) request.getSession().getAttribute("user");
             ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("aList");
             ArrayList<Photo> photos = (ArrayList<Photo>) request.getSession().getAttribute("photos");
+
             int total= (int) request.getSession().getAttribute("total");
-            total = total/10;
-            if(total%10 !=0) total+=1;
+
+            if( total%10 == 0 && total != 0) total = total/10;
+            else total = total/10 + 1;
+
             int page_num= (int) request.getSession().getAttribute("page_num");
             for (int i=0; i<aList.size(); i++)  {
                 Auction a = new Auction();
@@ -71,15 +73,47 @@
         <%}%>
 
     </div>
-        <ul class="pagination">
-            <%for(int i=1;i<=total;i++){
-                if(page_num==i){%>
-                    <li class="active"><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=<%=i%>"><%=i%></a></li>
+
+    <%-- Pagination --%>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-5">
+            <ul class="pagination pagination-lg">
+                <%if(page_num!=1){%>
+                <li class="page-item">
+                    <a class="page-link" href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=<%=page_num-1%>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
                 <%}else{%>
-                    <li ><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=<%=i%>"><%=i%></a></li>
+                <li class="page-item disabled">
+                    <a class="page-link disabled" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
                 <%}%>
-            <%}%>
-        </ul>
+                <li class="page-item"><a  class="page-link" href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=<%=page_num%>"><%=page_num%> of <%=total%></a></li>
+                <%if(page_num!=total){%>
+                <li class="page-item">
+                    <a class="page-link" href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=<%=page_num+1%>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <%}else{%>
+                <li class="page-item disabled">
+                    <a class="disabled" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <%}%>
+            </ul>
+        </div>
+    </div>
+    <%-- Pagination over --%>
+
 </div>
 
 <jsp:include page="/basics/footer.jsp" />

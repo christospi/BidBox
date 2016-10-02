@@ -6,7 +6,8 @@
 <head>
     <jsp:include page="/basics/maxcdn.jsp" />
     <link rel="stylesheet" href="./../css/itemlist.css">
-    <% ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("search_list");
+    <%
+        ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("search_list");
         int guest = (Integer)request.getSession().getAttribute("guest");
 
         int page_num = (Integer) request.getAttribute("page_num");
@@ -159,34 +160,46 @@
         <%}
         }%>
     </div>
-    <ul class="pagination pagination-lg">
 
-
-
-        <%if(page_num!=1){%>
-        <li class="page-item">
-            <a class="page-link" href="./../BBservlet?action=search_paging&page_num=<%=page_num-1%>" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
-
-        <%}%>
-        <li class="page-item"><a  class="page-link" href="./../BBservlet?action=search_paging&page_num=<%=page_num%>"><%=page_num%> of <%=total%></a></li>
-        <%if(page_num!=total){%>
-
-
-        <li class="page-item">
-            <a class="page-link" href="./../BBservlet?action=search_paging&page_num=<%=page_num+1%>" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
-
-        <%}%>
-
-
-    </ul>
+    <%-- Pagination for results --%>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-5">
+            <ul class="pagination pagination-lg">
+                <%if(page_num!=1){%>
+                <li class="page-item">
+                    <a class="page-link" href="./../BBservlet?action=search_paging&page_num=<%=page_num-1%>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <%}else{%>
+                <li class="page-item disabled">
+                    <a class="page-link disabled" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <%}%>
+                <li class="page-item"><a  class="page-link" href="./../BBservlet?action=search_paging&page_num=<%=page_num%>"><%=page_num%> of <%=total%></a></li>
+                <%if(page_num!=total){%>
+                <li class="page-item">
+                    <a class="page-link" href="./../BBservlet?action=search_paging&page_num=<%=page_num+1%>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <%}else{%>
+                <li class="page-item disabled">
+                    <a class="page-link disabled" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <%}%>
+            </ul>
+        </div>
+    </div>
+    <%-- End of pagination --%>
 
 
 </div>

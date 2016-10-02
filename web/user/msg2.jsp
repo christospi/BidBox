@@ -5,8 +5,7 @@
 <html>
 <head>
 
-    <jsp:include page="/basics/maxcdn.jsp" />
-    <jsp:include page="/basics/nav.jsp" />
+    <jsp:include page="./../basics/user_header.jsp"/>
     <link rel="stylesheet" href="./../css/msg.css">
     <title>Messages</title>
 </head>

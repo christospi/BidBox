@@ -2,8 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="/basics/maxcdn.jsp" />
-    <jsp:include page="/basics/nav.jsp" />
+    <jsp:include page="./../basics/user_header.jsp"/>
     <title>Success!</title>
     <% User user = (User) request.getSession().getAttribute("user");%>
     <% out.println(user.username);%>

@@ -6,9 +6,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="/basics/maxcdn.jsp" />
-    <jsp:include page="/basics/auct_inf.jsp" />
-    <title>Auctions</title>
+    <jsp:include page="./../basics/user_header.jsp"/>
+    <title>Purchased Auctions</title>
     <style>
 
 

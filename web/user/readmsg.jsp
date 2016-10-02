@@ -5,8 +5,7 @@
 <html>
 <head>
 
-    <jsp:include page="/basics/maxcdn.jsp" />
-    <title>Title</title>
+    <jsp:include page="./../basics/user_header.jsp"/>    <title>Title</title>
     <% User user2 = (User) request.getSession().getAttribute("user");
         ArrayList<Message> mList = (ArrayList<Message>) request.getSession().getAttribute("mList");
         ArrayList<Message> mList2 = (ArrayList<Message>) request.getSession().getAttribute("mList2");
