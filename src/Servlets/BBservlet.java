@@ -839,7 +839,9 @@ public class BBservlet extends HttpServlet {
             String seller = request.getParameter("seller");
             session.setAttribute("seller", seller);
 
-            ArrayList<Photo> pList = Photo.pdoSelectAll(id); //get all photos this users uploaded
+            ArrayList<Photo> pList = Photo.pdoSelectAll(id); //get all photos of this item
+            ArrayList<Category> cList = Category.get_its_cat(id);
+            session.setAttribute("cList", cList);
             session.setAttribute("pList", pList);
 
             request.getRequestDispatcher("/welcome/search_info.jsp").include(request, response);
@@ -856,6 +858,8 @@ public class BBservlet extends HttpServlet {
 
             ArrayList<Photo> pList = Photo.pdoSelectAll(id); //get all photos this users uploaded
             session.setAttribute("pList", pList);
+            ArrayList<Category> cList = Category.get_its_cat(id);
+            session.setAttribute("cList", cList);
 
             request.getRequestDispatcher("/welcome/search_info_guest.jsp").include(request, response);
 

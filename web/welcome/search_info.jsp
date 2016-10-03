@@ -1,150 +1,245 @@
 <%@ page import="Javabeans.Auction" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="Javabeans.Photo" %>
+<%@ page import="Javabeans.Category" %>
 <%@ page import="Javabeans.User" %>
-<%@ page import="java.util.Objects" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <jsp:include page="./../basics/user_header.jsp"/>
+    <title>Search Result Info</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height:300px;
+            width:700px;
+        }
 
-    <jsp:include page="/basics/user_header.jsp" />
+    </style>
 
-    <title>Auction Info</title>
+    <center><h3>Auction Info</h3></center>
+    <%
+        User user2 = (User) request.getSession().getAttribute("user");
+        ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("aList");
+        ArrayList<Photo> pList = (ArrayList<Photo>) request.getSession().getAttribute("pList");
+        ArrayList<Category> cList = (ArrayList<Category>) request.getSession().getAttribute("cList");
+        Auction x = (Auction) request.getAttribute("auction");
+    %>
 
 
 </head>
 <body>
+
 <div class="container">
     <div class="row">
-        <center>
-            <h3>Auction Info</h3>
-            <%
-                User user2 = (User) request.getSession().getAttribute("user");
+        <div class="col-sm-12 ">
+            <div class="panel panel-default">
+                <div class="panel-heading"><center><h4> Item's Specification </h4></center></div>
+                <div class="panel-body">
 
-                Auction x = (Auction) request.getAttribute("auction");
-                ArrayList<Photo> pList = (ArrayList<Photo>) request.getSession().getAttribute("pList");%>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <jsp:include page="/seller/carousel.jsp"/>
+                        </div>
 
-            <div class="table-responsive">
-                <table  class="table table-striped table-bordered table-condensed table-hover"  cellpadding="2" border="2">
-                    <thead class="thead-default">
-                    </tr>
-                    <th>Owner Name:</th>
-                    <th>Item name:</th>
-                    <th>Country:</th>
-                    <th>City:</th>
-                    <th>Current bid:</th>
-                    <%--<th>Category:</th>--%>
-                    <th>End of auction : </th>
-                    <th>Description: </th>
-                    </tr>
-                    </thead>
+                        <div class="col-sm-8">
 
-                    <tbody>
-                    <tr>
-                        <%--TODO PROSOXH EDW AN EINAI GUEST DE THA PERNAEI H PARAMETROS USERNAME--%>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table  class="table table-striped table-bordered table-condensed table-hover"  cellpadding="2" border="2">
+                                            <thead class="thead-default">
+                                            </tr>
+                                            <th>Owner Name:</th>
+                                            <th>Item name:</th>
+                                            <th>Country:</th>
+                                            <th>City:</th>
+                                            <th>Current bid:</th>
+                                            <th>Buy Price:</th>
+                                            <th>End of auction:</th>
+                                            </tr>
+                                            </thead>
 
-                        <td><a href="./BBservlet?action=show_profile&username=<%=user2.username%>&sellerun=<%=x.seller%>"><%=x.seller%></a></td>
-                        <td><%=x.name%></td>
-                        <td><%=x.country%></td>
-                        <td><%=x.city%></td>
-                        <td><%=x.curr%></td>
-                        <%--<td><%=x.cat%></td>--%>
-                        <td><%=x.end%></td>
-                        <td><%=x.description%></td>
+                                            <tbody>
+                                            <tr>
+                                                <td><%=x.seller%></td>
+                                                <td><%=x.name%></td>
+                                                <td><%=x.country%></td>
+                                                <td><%=x.city%></td>
+                                                <td><%=x.curr%></td>
+                                                <%if (x.buy_pr==0){
 
-                    </tr>
-                    </tbody>
-                </table>
+                                                %><td>N/A</td><%}else{%>
+                                                <td><%=x.buy_pr%></td>
+                                                <%}%>
+                                                <td><%=x.end%></td>
+                                            </tr>
+
+                                            <input type="hidden" id="longi" value="<%=x.longt%>" >
+                                            <input type="hidden" id="lati" value="<%=x.lat%>" >
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><center><h4> Product Categories </h4></center></div>
+                                        <div class="panel-body">
+                                            <%  Category a = new Category();
+                                                for (int i=0; i<cList.size(); i++)  {
+                                                    a = new Category();
+                                                    a = cList.get(i);
+                                            %>
+                                            [   <%=a.name%>   ]
+                                            <%}%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><h4 align:center> Description </h4></div>
+                                <div class="panel-body">
+                                    <p> <%=x.description%> </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <center>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <script>
+
+                                    var end = new Date("<%=x.end%>");
+
+                                    var _second = 1000;
+                                    var _minute = _second * 60;
+                                    var _hour = _minute * 60;
+                                    var _day = _hour * 24;
+                                    var timer;
+                                    var sold= parseInt("<%=x.sold%>");
+
+                                    function showRemaining() {
+                                        var now = new Date();
+                                        var distance = end - now;
+                                        if (distance < 0) {
+
+                                            clearInterval(timer);
+                                            document.getElementById('clockdiv').innerHTML = '<p style="color:red;">EXPIRED!</p>';
+
+                                            return;
+                                        }else if(sold==1){
+                                            clearInterval(timer);
+                                            document.getElementById('clockdiv').innerHTML = '<p style="color:red;">SOLD OUT!</p>';
+
+                                            return;
+                                        }
+
+                                        var days = Math.floor(distance / _day);
+                                        var hours = Math.floor((distance % _day) / _hour);
+                                        var minutes = Math.floor((distance % _hour) / _minute);
+                                        var seconds = Math.floor((distance % _minute) / _second);
+
+                                        document.getElementById('clockdiv').innerHTML =  ' <div> <span id="days">' +days+ '</span> <div class="smalltext">Days</div> </div> ';
+                                        document.getElementById('clockdiv').innerHTML +=' <div> <span id="hours">' + hours + '</span> <div class="smalltext">hrs</div> </div> ';
+                                        document.getElementById('clockdiv').innerHTML +=  ' <div> <span id="minutes">'+ minutes +'</span> <div class="smalltext">mins</div> </div> ';
+                                        document.getElementById('clockdiv').innerHTML +=  ' <div> <span id="seconds">'+ seconds +'</span> <div class="smalltext">secs</div> </div> ';
+                                    }
+
+                                    timer = setInterval(showRemaining, 1000);
+                                </script>
+                                <div id="clockdiv"></div>
+                            </div>
+                        </div>
+                    </center>
+                    <hr>
+
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfp9V-7Zc4O_YtJFxAtw8mmy8Dd_XVD-Y&libraries=geometry"></script>
+                    <script>
+
+                        var marker1;
+
+                        function initMap() {
+                            var map = new google.maps.Map(document.getElementById('map'), {
+                                zoom: 10,
+                                center: {lat: <%=x.lat%>, lng: <%=x.longt%> }
+                            });
+
+                            var geocoder = new google.maps.Geocoder;
+                            map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+                                    document.getElementById('info'));
+
+                            marker1 = new google.maps.Marker({
+                                map: map,
+                                draggable: false,
+                                position: {lat: <%=x.lat%>, lng: <%=x.longt%>}
+                            });
+
+                        }
+                    </script>
+
+                    <script async defer
+                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiStlX5yVBGYb6sDGA7VHax7rb8BcgblM&language=en&callback=initMap">
+                    </script>
+
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <center><h4><label> Item's location </label></h4></center>
+                            <div id="map" ></div>
+                        </div>
+                    </div>
+                    <hr>
+
+
+                    <div class="row">
+                        <div class="col-sm-2 col-sm-offset-5">
+                            <center><h4><label> I am interested ! </label></h4></center>
+                            <%if(x.expired!=1 && x.sold!=1 && !(x.seller.equalsIgnoreCase(user2.username))){ %>
+                            <form method="post" action="/BBservlet?action=place_bid&itemid=<%=x.id%>&bidderid=<%=user2.userID%>&seller=<%=x.seller%>">
+                                <input type="number" class="form-control" step="any" name="amount" min="<%=x.curr+1%>" required>
+                                <%--<input type="submit" value="Bid !"/>--%>
+                                <br><center><input type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" value="Bid !"/></center>
+
+                                <%}%>
+                                <div id="myModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                    <center>
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Bid Confirmation</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to make this bid?</p>
+                                                <button  class="btn btn-success login" type="submit">Yes</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                                            </div>
+                                        </div>
+                                    </center>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <script>
-
-                var end = new Date("<%=x.end%>");
-
-                var _second = 1000;
-                var _minute = _second * 60;
-                var _hour = _minute * 60;
-                var _day = _hour * 24;
-                var timer;
-                var sold= parseInt("<%=x.sold%>");
-
-                function showRemaining() {
-                    var now = new Date();
-                    var distance = end - now;
-                    if (distance < 0) {
-
-                        clearInterval(timer);
-                        document.getElementById('clockdiv').innerHTML = '<p style="color:red;">EXPIRED!</p>';
-
-                        return;
-                    }else if(sold==1){
-                        clearInterval(timer);
-                        document.getElementById('clockdiv').innerHTML = '<p style="color:red;">SOLD OUT!</p>';
-
-                        return;
-                    }
-
-                    var days = Math.floor(distance / _day);
-                    var hours = Math.floor((distance % _day) / _hour);
-                    var minutes = Math.floor((distance % _hour) / _minute);
-                    var seconds = Math.floor((distance % _minute) / _second);
-
-                    document.getElementById('clockdiv').innerHTML =  ' <div> <span id="days">' +days+ '</span> <div class="smalltext">Days</div> </div> ';
-                    document.getElementById('clockdiv').innerHTML +=' <div> <span id="hours">' + hours + '</span> <div class="smalltext">hrs</div> </div> ';
-                    document.getElementById('clockdiv').innerHTML +=  ' <div> <span id="minutes">'+ minutes +'</span> <div class="smalltext">mins</div> </div> ';
-                    document.getElementById('clockdiv').innerHTML +=  ' <div> <span id="seconds">'+ seconds +'</span> <div class="smalltext">secs</div> </div> ';
-                }
-
-                timer = setInterval(showRemaining, 1000);
-            </script>
-
-            <div id="clockdiv">
-            </div>
-
-            <br>
-
-            <h3><b><a href="./BBservlet?action=viewphoto&id=<%=x.id%>&seller=<%=x.seller%>"><span class="glyphicon glyphicon-eye-open"></span> See photos for this item</a></b></h3>
-            <%if(x.expired!=1 && x.sold!=1 && !(x.seller.equalsIgnoreCase(user2.username))){ %>
-            <form method="post" action="/BBservlet?action=place_bid&itemid=<%=x.id%>&bidderid=<%=user2.userID%>&seller=<%=x.seller%>">
-                <input type="number" step="any" name="amount" min="<%=x.curr+1%>" required>
-                <%--<input type="submit" value="Bid !"/>--%>
-                <input type="button" data-toggle="modal" data-target="#myModal" value="Bid !"/>
-
-            <%}%>
-        </center>
-
-
-
-
-    </div>
-
-</div>
-<center>
-    <jsp:include page="/seller/carousel.jsp" />
-</center>
-
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-    <center>
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Bid Confirmation</h4>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to make this bid?</p>
-
-
-
-                    <button  class="btn btn-success login" type="submit">Yes</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-                </form>
-            </div>
-
         </div>
-    </center>
     </div>
 </div>
 <jsp:include page="/basics/footer.jsp" />

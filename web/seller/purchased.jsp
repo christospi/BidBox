@@ -20,7 +20,7 @@
             ArrayList<Auction> bList = (ArrayList<Auction>) request.getSession().getAttribute("boughtList");
             int total= (int) request.getSession().getAttribute("total");
 
-            if( total%10 == 0 ) total = total/10;
+            if( total%10 == 0 && total != 0) total = total/10;
             else total = total/10 + 1;
 
             int page_num= (int) request.getSession().getAttribute("page_num");
