@@ -145,13 +145,13 @@ html,body{
 
 }
 
-label, input {
-    display: block;
-}
+/*label, input {*/
+    /*display: block;*/
+/*}*/
 
-label {
-    margin-bottom: 20px;
-}
+/*label {*/
+    /*margin-bottom: 20px;*/
+/*}*/
 
 
 #clockdiv{

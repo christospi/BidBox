@@ -10,6 +10,7 @@
 <html>
 <head>
     <jsp:include page="./../basics/user_header.jsp"/>
+    <link rel="stylesheet" href="./../css/add_auct.css">
     <title>Edit Auction</title>
     <style>
         html, body {

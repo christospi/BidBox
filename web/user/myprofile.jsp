@@ -53,13 +53,6 @@
                 </table>
             </div>
 
-
-            <div>
-                <form method="post" action="">
-                    <button type="submit" class="btn btn-warning"  id="edit"> Edit personal info </button>
-                </form>
-
-            </div>
         </center>
     </div>
 </div>

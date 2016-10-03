@@ -8,7 +8,7 @@
     <title>User-List</title>
 </head>
 <body>
-    <h3>Users List</h3>
+<center><h3>Users List</h3></center>
 
 
     <ul>
@@ -26,13 +26,42 @@
             s = uList.get(i);
 
             if(s.ver == 0){%>
-                <li><a href="/BBservlet?action=userinfo&pointer=<%=pointer%>" class="href2" id="link1"><%out.println(s.username);%></a> (pending verification)</li>
+
+
+                <%--<li><a href="/BBservlet?action=userinfo&pointer=<%=pointer%>" class="href2" id="link1"><%out.println(s.username);%></a> (pending verification)</li>--%>
+
+                    <a href="/BBservlet?action=userinfo&pointer=<%=pointer%>">
+                        <div class="col-sm-3">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading"><%out.println(s.username);%></div>
+                                <center><div class="panel-body"><img src="./../img/user.png" class="img-responsive" style="max-width:220px; max-height:220px;" alt="Image"></div></center>
+                                <div class="panel-footer">Pending Verification</div>
+                            </div>
+                        </div>
+                    </a>
+
+
             <%}
             else{%>
-                <li><a href="/BBservlet?action=userinfo&pointer=<%=pointer%>" class="href2" id="link2"><%out.println(s.username);%></a></li>
+                <%--<li><a href="/BBservlet?action=userinfo&pointer=<%=pointer%>" class="href2" id="link2"><%out.println(s.username);%></a></li>--%>
+
+                <a href="/BBservlet?action=userinfo&pointer=<%=pointer%>">
+                    <div class="col-sm-3">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading"><%out.println(s.username);%></div>
+                            <center><div class="panel-body"><img src="./../img/user.png" class="img-responsive" style="max-width:220px; max-height:220px;" alt="Image"></div></center>
+
+                        </div>
+                    </div>
+                </a>
+
+
+
             <%}%>
     <%}%>
     </ul>
+
+
 
     <%-- Pagination --%>
     <div class="row">
@@ -75,4 +104,5 @@
     <%-- Pagination over --%>
 
 </body>
+<jsp:include page="./../basics/footer.jsp"/>
 </html>

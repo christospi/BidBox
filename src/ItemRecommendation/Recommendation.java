@@ -23,7 +23,7 @@ public class Recommendation {
         while(rs.next()){
             itemlist.add(rs.getInt("itemID"));
 
-        }
+        }                                           //returns the recommended items for the given userid
         db.closeConnection();
         return itemlist;
     }
@@ -69,17 +69,7 @@ public class Recommendation {
                if(!user_items.contains(auctions.get(i).id)) user_items.add(auctions.get(i).id);
             }
         }
-//        System.out.println(user.username);
-        for(int i=0;i<user_items.size();i++){
-//            System.out.println(user_items.get(i));
-        }
-//        for (int i=0;i<users.size();i++){
-//            for(int j=0;j<auctions.size();j++){
-//                System.out.print("("+auctions.get(j).id+","+users.get(i).userID+","+matrix[i][j]+")");
-//
-//            }
-//            System.out.println();
-//        }
+
         double dotProduct = 0;
         double magnitude1=0;
         double magnitude2=0;
@@ -108,9 +98,7 @@ public class Recommendation {
 
 
         }
-        for(int i=0;i<users.size();i++){
-//            System.out.print("("+users.get(i).userID+","+ percentages[i]+")");
-        }
+
 
     ///Parallel Bubble Sort between matrix and percentages///
 
@@ -150,9 +138,9 @@ public class Recommendation {
             }
         }
         double sum=0.0;
-        for(int j=0;j<users.size();j++){
+        for(int j=0;j<users.size();j++){  //in most cases this should be 30 , the 30 best users
             if(count[j]!=0 && pos!=j){
-                sum=sum+percentages[j];
+                sum=sum+percentages[j]; //sum up all the percentages in order to normalize the results by 100%
             }
 
         }
@@ -188,16 +176,8 @@ public class Recommendation {
                 }
             }
         }
-        for(int i=0;i<users.size();i++){
-//            System.out.println(percentages[i]);
-            for(int j=0;j<auctions.size();j++){
-//                System.out.print(matrix[i][j]);
-            }
-//            System.out.println();
-        }
-        for(int j=0;j<auctions.size();j++){
-//            System.out.println("ItemID:"+itemsids[j]+"normalised percentage:"+recommendations[j]);
-        }
+
+
         ArrayList<Integer>  final_list = new ArrayList<>(10);
 
         int count2=0;
@@ -229,9 +209,6 @@ public class Recommendation {
             }
         }
 
-        for(int j=0;j<final_list.size();j++){
-//            System.out.println("ItemID:"+final_list.get(j));
-        }
 
         db.closeConnection();
         return final_list;

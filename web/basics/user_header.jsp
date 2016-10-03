@@ -17,7 +17,7 @@
 
 <div class="jumbotron">
     <div class="container-fluid text-center" id="triangle-topleft">
-            <a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>"><img  class="penguin pull-left" src="./../img/logo5.png" height="130" width="285" > </a>
+            <a href="./../BBservlet?action=home&Username=<%=user2.username%>"><img  class="penguin pull-left" src="./../img/logo5.png" height="130" width="285" > </a>
     </div>
 </div>
 
@@ -33,11 +33,9 @@
         </div>
         <li class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li><a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>">Home</a></li>
-                <li><a href="./../BBservlet?action=searchpage"> Search Auctions</a></li>
-                <li><a href="./../BBservlet?action=addpage"> Add Auction</a></li>
+                <li><a href="./../BBservlet?action=home&Username=<%=user2.username%>"><i class="glyphicon glyphicon-home"></i> Home</a></li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" > My Box
+                    <a class="dropdown-toggle" data-toggle="dropdown" ><i class="glyphicon glyphicon-gift"></i> My Box
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="./../BBservlet?action=auctionlist&username=<%=user2.username%>&page_num=1"> My Auctions</a>
@@ -46,7 +44,10 @@
                         <li><a href="./../BBservlet?action=pending_bids&page_num=1"> Pending Bids</a></li>
                     </ul>
                 </li>
-                <li><a href="#">About us</a></li>
+                <li><a href="./../BBservlet?action=searchpage"><i class="glyphicon glyphicon-search"></i> Search Auctions</a></li>
+                <li><a href="./../BBservlet?action=addpage"><i class="glyphicon glyphicon-plus-sign"></i> Add Auction</a></li>
+
+                <li><a href="#"><i class="glyphicon glyphicon-info-sign"></i> About us</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="./../BBservlet?action=myprofile&username=<%=user2.username%>"><span class="glyphicon glyphicon-user"></span> My Account</a></li>

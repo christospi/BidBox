@@ -37,14 +37,14 @@
                         p=photos.get(i);
                         if (p.id==-1){
                     %>
-                    <a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>&itemID=<%=a.id%>"> <img  class="group list-group-image" src="./../img/item2.jpg "  alt="" /></a>
+                    <img  class="group list-group-image" src="./../img/item2.jpg "  alt="" />
                     <%}else{%>
-                    <a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>&itemID=<%=a.id%>"> <img class="group list-group-image " src="./../BBservlet?action=viewphoto2&pic_name=<%=p.pic_name%>"  ></a>
+                    <img class="group list-group-image " src="./../BBservlet?action=viewphoto2&pic_name=<%=p.pic_name%>"  >
 
                     <%}%>
                 </div>
                 <div class="caption ">
-                    <br><h4 class="group inner list-group-item-heading"><a href="./BBservlet?action=auctioninfo&pointer=<%=pointer%>&seller=<%=a.seller%>&itemID=<%=a.id%>" ><%out.println(a.name);%></a></h4>
+                    <br><b></b><h3 class="group inner list-group-item-heading"><%out.println(a.name);%><b></b></h3>
                     <p class="group inner list-group-item-text">
 
                         <%--<ul style="list-style: none;">--%>

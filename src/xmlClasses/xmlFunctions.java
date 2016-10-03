@@ -1,6 +1,7 @@
 package xmlClasses;
 
 
+import JBCrypt.BCrypt;
 import Javabeans.DataBase;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ResultTreeType;
 
@@ -212,7 +213,7 @@ public class xmlFunctions {
         state = db.getConn().prepareStatement(query);
         state.setInt (1, 0);
         state.setString (2, seller_username);
-        state.setString (3, "bidbox");
+        state.setString (3, BCrypt.hashpw("bidbox", BCrypt.gensalt()));
         state.setString (4, "John");
         state.setString (5, "Doe");
         state.setString (6, seller_username + "@bidbox.com");
@@ -263,7 +264,7 @@ public class xmlFunctions {
             state = db.getConn().prepareStatement(query);
             state.setInt (1, 0);
             state.setString (2, bidder_username.get(i));
-            state.setString (3, "bidbox");
+            state.setString (3, BCrypt.hashpw("bidbox", BCrypt.gensalt()));
             state.setString (4, "John");
             state.setString (5, "Doe");
             state.setString (6, bidder_username.get(i) + "@bidbox.com");

@@ -11,7 +11,7 @@
     <title>Auction list</title>
 </head>
 <body>
-<h2>My Auctions:</h2>
+<center><h2>My Auctions:</h2></center>
 <div class="container">
 
     <div id="products" class="row list-group">

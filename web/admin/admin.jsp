@@ -6,6 +6,10 @@
     <title>Admin Panel</title>
 </head>
 <body>
-    <li><a href="/BBservlet?action=userlist&page_num=1">User List</a></li>
+<center><h1><b>Welcome back BidBox master!</b></h1>
+   <br>
+    <img src="./../img/admin.png" class="img-responsive" style="max-width:350px; max-height:350px;" alt="Image">
+</center>
 </body>
+<jsp:include page="/basics/footer.jsp"/>
 </html>

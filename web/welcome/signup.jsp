@@ -7,7 +7,7 @@
 <head>
     <jsp:include page="/basics/maxcdn.jsp" />
     <jsp:include page="/basics/guest_header.jsp" />
-
+    <link rel="stylesheet" href="./../css/add_auct.css">
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript">
         $(document).ready(function()

@@ -1,16 +1,13 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kwnst
-  Date: 29-Aug-16
-  Time: 6:11 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@page import="Javabeans.User"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Photo failed!</title>
+    <jsp:include page="./../basics/user_header.jsp"/>
+    <title>Success!</title>
+
+    <center><h1> Photo failed to add! </h1></center>
 </head>
 <body>
-
+<jsp:include page="/basics/footer.jsp" />
 </body>
 </html>

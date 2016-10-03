@@ -12,6 +12,9 @@
 </head>
 <body>
 <div class="container">
+    <h2><b><center>Welcome back <%=user.username%></center></b></h2>
+    <h4><b><center><a href="/BBservlet?action=recommendations&seller=<%=user.userID%>">here's your recommendations... </a></center></b></h4>
+    <hr>
     <div class="row">
         <div class="col-sm-5">
             <div class="panel-group">
@@ -38,7 +41,7 @@
             </div>
         </div>
         <div class="col-sm-2">
-            <center><p style="font-size:78px;"><b>or</b></p></center>
+            <center><p style="font-size:60px;"><b>or</b></p></center>
 
         </div>
         <div class="col-sm-5">

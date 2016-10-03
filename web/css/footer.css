@@ -20,7 +20,7 @@
 /* Footer links */
 
 .footer-distributed p.footer-links{
-    font-size:18px;
+    font-size:16px;
     font-weight: bold;
     color:  #ffffff;
     margin: 0 0 10px;
@@ -33,7 +33,11 @@
     text-decoration: none;
     color:  inherit;
 }
-
+.footer-distributed .footer-center{
+    text-align: center;
+    /*margin-top: 6px;*/
+    max-width: 180px;
+}
 .footer-distributed .footer-right{
     float: right;
     margin-top: 6px;

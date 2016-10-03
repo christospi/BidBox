@@ -32,8 +32,8 @@
         <li class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
 
-                <li><a href="./../BBservlet?action=guest_searchpage"> Search Auctions</a></li>
-                <li><a href="#">About us</a></li>
+                <li><a href="./../BBservlet?action=guest_searchpage"><i class="glyphicon glyphicon-search"></i> Search Auctions</a></li>
+                <li><a href="#"><i class="glyphicon glyphicon-info-sign"></i> About us</a></li>
             </ul>
 
     </div>

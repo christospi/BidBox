@@ -4,14 +4,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="./../basics/maxcdn.jsp" />
-    <jsp:include page="./../basics/nav.jsp" />
-    <link rel="stylesheet" href="./../css/search.css">
+
     <title>Search Auctions</title>
     <%User user2 = (User) request.getSession().getAttribute("user");
+        String guest = (String) request.getSession().getAttribute("guest");
         ArrayList<Category> cList = (ArrayList<Category>) request.getAttribute("cList");
 
     %>
+    <%if (guest.equals("-1")){%>
+        <jsp:include page="./../basics/guest_header.jsp"/>
+    <%}else{%>
+        <jsp:include page="./../basics/user_header.jsp"/>
+    <%}%>
 </head>
 
 <body>
@@ -33,7 +37,6 @@
                             <div class="dropdown-menu">
                             <option selected value="" data-hidden="true" class="ddl-title" disabled>Choose Category: </option>
                             <option value="any" >Any</option>
-                            <option value="popular">Popular</option>
                             <div class="dropdown-divider"><hr></div>
                               <optgroup label="Category">
                                   <%for (int i=0; i<cList.size(); i++)  {
@@ -74,11 +77,13 @@
                     <%--</redirect></div>--%>
             <%--</div>--%>
         <%--</div>--%>
+            <center>
             <span class="input-group-btn">
                 <button id="btn-search" class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"></span> Search </button>
               </span>
             <a href="/BBservlet?action=recommendations&seller=<%=user2.userID%>">    <b>or see our recommendations for you...</b></a>
-    </div>
+            </center>
+        </div>
 
    </form>
 

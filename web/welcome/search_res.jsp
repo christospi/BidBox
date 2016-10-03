@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="/basics/maxcdn.jsp" />
+
     <link rel="stylesheet" href="./../css/itemlist.css">
     <%
         ArrayList<Auction> aList = (ArrayList<Auction>) request.getSession().getAttribute("search_list");
@@ -26,7 +26,7 @@
 </head>
 <body>
 
-<h2>Your search results:</h2>
+<center><h2>Your search results:</h2></center>
 <div class="container">
     <div id="products" class="row list-group">
 

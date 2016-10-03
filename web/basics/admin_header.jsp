@@ -14,7 +14,7 @@
 
 <div class="jumbotron">
     <div class="container-fluid text-center" id="triangle-topleft">
-        <a href="./../BBservlet?action=login&Username=<%=user2.username%>&Password=<%=user2.pass%>"><img  class="penguin pull-left" src="./../img/logo5.png" height="130" width="285" > </a>
+        <a href="./../BBservlet?action=home&Username=<%=user2.username%>"><img  class="penguin pull-left" src="./../img/logo5.png" height="130" width="285" > </a>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
         <li class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Users List
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-list"></i> Users List
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/BBservlet?action=userlist&page_num=1">All Users</a></li>
@@ -39,11 +39,11 @@
                         <li><a href="/BBservlet?action=verify_pend&page_num=1">Unverified Users</a></li>
                     </ul>
                 </li>
-                <li><a href="./../BBservlet?action=auctions_marsh&page_num=1">Export Auctions</a></li>
-                <li><a href="./../BBservlet?action=auctions_unmarshall">Import Auctions</a></li>
+                <li><a href="./../BBservlet?action=auctions_marsh&page_num=1"><i class="glyphicon glyphicon-floppy-save"></i> Export Auctions</a></li>
+                <li><a href="./../BBservlet?action=auctions_unmarshall"><i class="glyphicon glyphicon-floppy-open"></i> Import Auctions</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="./../BBservlet?action=myprofile&username=<%=user2.username%>"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
+
                 <li><a href="./../BBservlet?action=logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
             </ul>
     </div>

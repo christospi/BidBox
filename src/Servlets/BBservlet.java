@@ -1,6 +1,7 @@
 package Servlets;
 
 import ItemRecommendation.Recommendation;
+import JBCrypt.BCrypt;
 import Javabeans.*;
 import xmlClasses.xmlAuction;
 import xmlClasses.xmlAuctions;
@@ -16,7 +17,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/BBservlet?action=upload")
-@MultipartConfig(maxFileSize = 16177215)    // upload file's size up to 16MB
+@MultipartConfig(maxFileSize = 16177215)
 
 public class BBservlet extends HttpServlet {
 
@@ -60,15 +60,6 @@ public class BBservlet extends HttpServlet {
 
         HttpSession session = request.getSession(true);
         response.setContentType("text/html;charset=UTF-8");
-//        Timer timer = new Timer();
-//        TimerTask myTask = new TimerTask() {
-//            int i=0;
-//            public void run() {
-//               System.out.println("geia!");
-//            }
-//        };
-//
-//        timer.schedule(myTask, 2000, 2000);
         String action = request.getParameter("action");
         String page = request.getParameter("page");
         PrintWriter out = response.getWriter();
@@ -134,13 +125,14 @@ public class BBservlet extends HttpServlet {
 
         } else if (action.equals("signup_page")) {
             request.getRequestDispatcher("/welcome/signup.jsp").include(request, response);
-        } else if (action.equals("signup")) { //SIGN UP
+        } else if (action.equals("signup")) {
 
 
-            String FirstName = request.getParameter("name");   //take all parameters from form
+            String FirstName = request.getParameter("name");
             String LastName = request.getParameter("surname");
             String UserName = request.getParameter("username");
             String Password = request.getParameter("pass");
+            Password = BCrypt.hashpw(Password, BCrypt.gensalt());
             String Email = request.getParameter("email");
             String Phone = request.getParameter("phone");
             String afm = request.getParameter("afm");
@@ -150,7 +142,7 @@ public class BBservlet extends HttpServlet {
             String query = null;
             db.openConn();
 
-            String query3 = "SELECT COUNT(*) AS total FROM user where username='" + UserName + "'";   //check if username already exists
+            String query3 = "SELECT COUNT(*) AS total FROM user where username='" + UserName + "'";
             ResultSet rs3 = db.executeQuery(query3);
             int exists = 0;
             int exists2 = 0;
@@ -164,7 +156,7 @@ public class BBservlet extends HttpServlet {
             }
 
 
-            String query4 = "SELECT COUNT(*) AS total FROM user where email='" + Email + "'";  //check if email already exists
+            String query4 = "SELECT COUNT(*) AS total FROM user where email='" + Email + "'";
             ResultSet rs4 = db.executeQuery(query4);
 
             while (rs4.next()) {
@@ -173,7 +165,7 @@ public class BBservlet extends HttpServlet {
                 }
             }
 
-            if (exists == 0 && exists2 == 0) {   //user entered valid username and email
+            if (exists == 0 && exists2 == 0) {
 
 
 
@@ -195,32 +187,30 @@ public class BBservlet extends HttpServlet {
 
                 request.getRequestDispatcher("/welcome/success_signup.jsp").include(request, response);
             }
-//            else {
-//
-//                if(exists == 1) {   //username exists
-//                    request.getRequestDispatcher("/welcome/signup_user.jsp").include(request, response);
-//                }
-//                else if(exists2 == 1) { //email exists
-//                    request.getRequestDispatcher("/welcome/signup_email.jsp").include(request, response);
-//                }
-//
-//            }
 
             db.closeConnection();
 
-        } else if (action.equals("login")) {    //LOGIN
+        } else if (action.equals("login")) {
 
             try {
 
-                String username = request.getParameter("Username"); //get user and pass from form
-                String password = request.getParameter("Password");
-                String query = "select * from user where username='" + username + "' and pass='" + password + "'";
+                String username = request.getParameter("Username");
+
+
+                String query = "select * from user where username='" + username + "' ";
 
                 db.openConn();
 
                 ResultSet rs = db.executeQuery(query);
 
-                if (rs.next()) {    //if user exists
+
+                if (rs.next() ) {
+
+                    String pass=rs.getString("pass");
+                    if (!(BCrypt.checkpw(request.getParameter("Password"), pass))){
+                        request.getRequestDispatcher("./welcome/login_fail.jsp").include(request, response);
+                        return;
+                    }
 
                     User user = User.getUser(username);
                     ArrayList<Category> cList = Category.get_all_cat();
@@ -229,10 +219,9 @@ public class BBservlet extends HttpServlet {
                     session.setAttribute("guest",user.username);
                     session.setAttribute("username", user.username);
 
-                    if (user.ver == 0) {    //if he isnt verified yet display this
+                    if (user.ver == 0) {
                         request.getRequestDispatcher("/welcome/unverified.jsp").include(request, response);
-                    } else {  //else see his role and redirect him to the right page
-
+                    } else {
                         if (Objects.equals(user.username, "admin")) {
                             response.sendRedirect("/BBservlet?page=admin");
                         } else {
@@ -242,9 +231,9 @@ public class BBservlet extends HttpServlet {
 
                     }
 
-                } else { //if user and pass dont exist in db then..
+                } else {
 
-//                    out.print("Invalid User: " + username + " " + password);
+
                     request.getRequestDispatcher("./welcome/login_fail.jsp").include(request, response);
 
                 }
@@ -255,31 +244,51 @@ public class BBservlet extends HttpServlet {
                 Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        } else if (action.equals("login_guest")) {    //LOGIN
+        }else if(action.equals("home")){
+
+            String username = request.getParameter("Username");
+            User user = User.getUser(username);
+            ArrayList<Category> cList = Category.get_all_cat();
+            session.setAttribute("cList",cList);
+            session.setAttribute("user", user);
+            session.setAttribute("guest",user.username);
+            session.setAttribute("Username", user.username);
+
+            if (Objects.equals(user.username, "admin")) {
+                response.sendRedirect("/BBservlet?page=admin");
+            } else {
+                response.sendRedirect("/BBservlet?page=userlogin");
+            }
+        }
+        else if (action.equals("login_guest")) {    //LOGIN
 
             try {
 
-                String username = request.getParameter("Username"); //get user and pass from form
+                String username = request.getParameter("Username");
                 String password = request.getParameter("Password");
-                String query = "select * from user where username='" + username + "' and pass='" + password + "'";
+                String query = "select * from user where username='" + username + "'";
 
                 db.openConn();
 
                 ResultSet rs = db.executeQuery(query);
 
-                if (rs.next()) {    //if user exists
-
+                if (rs.next()) {
+                    String pass=rs.getString("pass");
+                    if (!(BCrypt.checkpw(request.getParameter("Password"), pass))){
+                        request.getRequestDispatcher("./welcome/login_fail.jsp").include(request, response);
+                        return;
+                    }
                     User user = User.getUser(username);
                     session.setAttribute("user", user);
 
-                    if (user.ver == 0) {    //if he isnt verified yet display this
+                    if (user.ver == 0) {
                         request.getRequestDispatcher("/welcome/unverified.jsp").include(request, response);
-                    } else {  //else see his role and redirect him to the right page
+                    } else {
 
                         if (Objects.equals(user.username, "admin")) {
                             response.sendRedirect("/BBservlet?page=admin");
                         } else {
-                            int id = Integer.parseInt(request.getParameter("auctionid"));   //pointer, points arraylists position to have info only for this estate
+                            int id = Integer.parseInt(request.getParameter("auctionid"));
 
 
                             String seller = request.getParameter("seller");
@@ -290,9 +299,9 @@ public class BBservlet extends HttpServlet {
 
                     }
 
-                } else { //if user and pass dont exist in db then..
+                } else {
 
-//                    out.print("Invalid User: " + username + " " + password);
+//
                     request.getRequestDispatcher("./welcome/login_fail.jsp").include(request, response);
 
                 }
@@ -303,50 +312,45 @@ public class BBservlet extends HttpServlet {
                 Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        } else if (action.equals("userlist")) {   //USER LIST
+        } else if (action.equals("userlist")) {
 
             int page_num = Integer.parseInt(request.getParameter("page_num"));
             int total = User.usersCounter();
-            ArrayList<User> uList = User.usersPerPage(page_num); //arraylist with all info fro all users in db
+            ArrayList<User> uList = User.usersPerPage(page_num);
             session.setAttribute("uList", uList);
 
             request.setAttribute("page_num", page_num);
             request.setAttribute("total", total);
             request.getRequestDispatcher("/admin/user_list.jsp").include(request, response);
-//            response.sendRedirect("/BBservlet?page=userlist");
-
-        } else if (action.equals("verify_pend")) {   //USER LIST
+//
+        } else if (action.equals("verify_pend")) {
 
             int page_num = Integer.parseInt(request.getParameter("page_num"));
             int total = User.unverUsersCounter();
-            ArrayList<User> uList = User.unverUsersPerPage(page_num); //arraylist with all info fro all users in db
+            ArrayList<User> uList = User.unverUsersPerPage(page_num);
             session.setAttribute("uList", uList);
 
             request.setAttribute("page_num", page_num);
             request.setAttribute("total", total);
             request.getRequestDispatcher("/admin/unver_user_list.jsp").include(request, response);
 
-        } else if (action.equals("userinfo")) {   //USER INFO
+        } else if (action.equals("userinfo")) {
 
-            String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this user
+            String pointer = request.getParameter("pointer");
             session.setAttribute("pointer", pointer);
             response.sendRedirect("/BBservlet?page=userinfo");
 
-        } else if (action.equals("verify")) { //VERIFY A USER
-
+        } else if (action.equals("verify")) {
             String user_name = request.getParameter("user_name2");
             String query = "UPDATE user SET verified=1 WHERE username='" + user_name + "'";
             db.openConn();
             int rs = db.executeUpdate(query);
             db.closeConnection();
-
-            ArrayList<User> uList = User.usersPerPage(1); //arraylist with all info fro all users in db
-            session.setAttribute("uList", uList);
-
-            response.sendRedirect("/BBservlet?page=verify");
+            request.setAttribute("user_name",user_name);
+            request.getRequestDispatcher("/admin/success_verify.jsp").include(request, response);
 
         } else if (action.equals("addpage")) {
-            ArrayList<Category> cList = Category.get_all_cat(); //arraylist with all info fro all users in db
+            ArrayList<Category> cList = Category.get_all_cat();
             session.setAttribute("cList", cList);
             response.sendRedirect("/BBservlet?page=addauction");
 
@@ -417,48 +421,33 @@ public class BBservlet extends HttpServlet {
                 request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
             }
 
-//            Integer i = db.executeUpdate(query);
-            //out.print(i);
-
-//            if (i>0) {
-//                request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
-//            }
-//            else {
-//                request.getRequestDispatcher("/seller/fail_add.jsp").include(request, response);
-//            }
+//
 
             db.closeConnection();
 
         } else if (action.equals("upload")) { //UPLOAD A PHOTO
 
             String owner = request.getParameter("seller");
-            //String imageName = null;
             int id = Integer.parseInt(request.getParameter("id"));
-            InputStream inputStream = null; // input stream of the upload file
+            InputStream inputStream = null;
 
-            // obtains the upload file part in this multipart request
+
             Part filePart = request.getPart("photo_file");
             String header = filePart.getHeader("content-disposition");
-            String filename = header.substring(header.indexOf("filename=\"")).split("\"")[1];  //getting filename
-            //System.out.println(filename +"!!!!!!!!!!!");
+            String filename = header.substring(header.indexOf("filename=\"")).split("\"")[1];
 
             if (filePart != null) {
-                //  prints out some information for debugging
-//                System.out.println(filePart.getName());
-//                System.out.println(filePart.getSize());
-//                System.out.println(filePart.getContentType());
 
-                // obtains input stream of the upload file
                 inputStream = filePart.getInputStream();
-                //imageName = filePart.getName();
+
             }
 
             try {
-                // connects to the database
+
                 db.openConn();
                 Connection conn = db.getConn();
 
-                // constructs SQL statement
+
                 String sql = "INSERT INTO photo (owner,pic,pic_name,itemID) values(?,?,?,?)";
 
                 PreparedStatement statement = conn.prepareStatement(sql);
@@ -467,11 +456,11 @@ public class BBservlet extends HttpServlet {
                 statement.setString(3, filename);
                 statement.setInt(4, id);
                 if (inputStream != null) {
-                    // fetches input stream of the upload file for the blob column
+
                     statement.setBlob(2, inputStream);
                 }
 
-                // sends the statement to the database server
+
                 int row = statement.executeUpdate();
 
                 if (row > 0) {
@@ -484,11 +473,10 @@ public class BBservlet extends HttpServlet {
                 db.closeConnection();
             }
 
-        } else if (action.equals("auctionlist")) { //Auction LIST
+        } else if (action.equals("auctionlist")) {
 
             String seller = request.getParameter("username");
             int page_num = Integer.parseInt(request.getParameter("page_num"));
-//            ArrayList<Auction> aList = Auction.Auctionlist(seller);   //arraylist with all info for a user's estates
             int total = Auction.getnum(seller);
             session.setAttribute("page_num", page_num);
             session.setAttribute("total", total);
@@ -501,37 +489,35 @@ public class BBservlet extends HttpServlet {
             response.sendRedirect("/BBservlet?page=auctionlist");
         } else if (action.equals("auctioninfo")) {
 
-            String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this estate
+            String pointer = request.getParameter("pointer");
             session.setAttribute("pointer", pointer);
 
             int itemID = Integer.parseInt(request.getParameter("itemID"));
             ArrayList<Category> cList = Category.get_its_cat(itemID);
 
             session.setAttribute("cList", cList);
-            //TODO fusiologiki sunartisi gia photografies
-            ArrayList<Photo> pList = Photo.pdoSelectAll(itemID); //get all photos this users uploaded
+
+            ArrayList<Photo> pList = Photo.pdoSelectAll(itemID);
             session.setAttribute("pList", pList);
 
-//            ArrayList<MessageBean> mList = MessageBean.get_inbox(owner); //get all messages this user has recieved
-//            session.setAttribute("mList", mList);
+
 
             response.sendRedirect("/BBservlet?page=auctioninfo");
 
         }  else if (action.equals("purchasedinfo")) {
 
-            String pointer = request.getParameter("pointer");   //pointer, points arraylists position to have info only for this estate
+            String pointer = request.getParameter("pointer");
             session.setAttribute("pointer", pointer);
 
 
             int itemID = Integer.parseInt(request.getParameter("itemID"));
             ArrayList<Category> cList = Category.get_its_cat(itemID);
             session.setAttribute("boughtcList", cList);
-            //TODO fusiologiki sunartisi gia photografies
-            ArrayList<Photo> pList = Photo.pdoSelectAll(itemID); //get all photos this users uploaded
+
+            ArrayList<Photo> pList = Photo.pdoSelectAll(itemID);
             session.setAttribute("boughtpList", pList);
 
-//            ArrayList<MessageBean> mList = MessageBean.get_inbox(owner); //get all messages this user has recieved
-//            session.setAttribute("mList", mList);
+
 
             response.sendRedirect("/BBservlet?page=purchasedinfo");
 
@@ -546,7 +532,6 @@ public class BBservlet extends HttpServlet {
             session.setAttribute("page_num", page_num);
             String query="SELECT * FROM auction WHERE buyerID='" +user.userID+"' AND sold >=1 LIMIT " + (page_num - 1) * 10 + ", " + 10 + "";
             ArrayList<Auction> bList = Auction.search_auction(query);
-//            int total = bList.size();
             session.setAttribute("total", total);
             session.setAttribute("boughtList", bList);
 
@@ -620,7 +605,7 @@ public class BBservlet extends HttpServlet {
             response.sendRedirect("/BBservlet?page=viewphoto");
 
         }
-        else if (action.equals("viewphoto2")) {   //SEE ESTATE'S PHOTOS ON JSP
+        else if (action.equals("viewphoto2")) {
 
             String name = request.getParameter("pic_name");
             Connection con = null;
@@ -649,7 +634,7 @@ public class BBservlet extends HttpServlet {
 
                 }
 
-                // display the image
+
                 response.reset();
                 response.setContentType("image/gpg");
                 OutputStream o = response.getOutputStream();
@@ -673,9 +658,9 @@ public class BBservlet extends HttpServlet {
                 }
             }
         }
-        else if (action.equals("logout")) { //LOG OUT
+        else if (action.equals("logout")) {
 
-            request.getSession().invalidate();  //terminate session
+            request.getSession().invalidate();
             response.sendRedirect("/BBservlet?page=log_out");
 
         }
@@ -684,9 +669,9 @@ public class BBservlet extends HttpServlet {
             String username = request.getParameter("username");
             session.setAttribute("username", username);
 
-            ArrayList<Message> mList = Message.get_inbox(username); //get all messages this user has recieved
+            ArrayList<Message> mList = Message.get_inbox(username);
             session.setAttribute("mList", mList);
-            ArrayList<Message> mList2 = Message.get_sent(username); //get all messages this user has recieved
+            ArrayList<Message> mList2 = Message.get_sent(username);
             session.setAttribute("mList2", mList2);
             String query="UPDATE message SET seen=1 WHERE owner='"+ username +"' ";
             db.executeUpdate(query);
@@ -731,7 +716,7 @@ public class BBservlet extends HttpServlet {
         }
         else if (action.equals("searchres")){
 
-            //TODO thelei doulitsa akoma den to xw dokimasei katholou
+
 
             String seller = request.getParameter("seller");
             session.setAttribute("guest",seller);
@@ -817,8 +802,7 @@ public class BBservlet extends HttpServlet {
 
             request.getRequestDispatcher("/welcome/search_res.jsp").include(request, response);
 
-//            session.setAttribute("aList",aList);
-//            response.sendRedirect("");
+
 
         }else if (action.equals("search_paging")){
 
@@ -832,14 +816,14 @@ public class BBservlet extends HttpServlet {
         else if (action.equals("auction_search")){
 
 
-            int id = Integer.parseInt(request.getParameter("auctionid"));   //pointer, points arraylists position to have info only for this estate
+            int id = Integer.parseInt(request.getParameter("auctionid"));
             Auction auction = Auction.getAuctionbyid(id);
             request.setAttribute("auction", auction);
 
             String seller = request.getParameter("seller");
             session.setAttribute("seller", seller);
 
-            ArrayList<Photo> pList = Photo.pdoSelectAll(id); //get all photos of this item
+            ArrayList<Photo> pList = Photo.pdoSelectAll(id);
             ArrayList<Category> cList = Category.get_its_cat(id);
             session.setAttribute("cList", cList);
             session.setAttribute("pList", pList);
@@ -849,14 +833,14 @@ public class BBservlet extends HttpServlet {
         } else if (action.equals("auction_search_guest")){
 
 
-            int id = Integer.parseInt(request.getParameter("auctionid"));   //pointer, points arraylists position to have info only for this estate
+            int id = Integer.parseInt(request.getParameter("auctionid"));
             Auction auction = Auction.getAuctionbyid(id);
             request.setAttribute("auction", auction);
 
             String seller = request.getParameter("seller");
             session.setAttribute("seller", seller);
 
-            ArrayList<Photo> pList = Photo.pdoSelectAll(id); //get all photos this users uploaded
+            ArrayList<Photo> pList = Photo.pdoSelectAll(id);
             session.setAttribute("pList", pList);
             ArrayList<Category> cList = Category.get_its_cat(id);
             session.setAttribute("cList", cList);
@@ -964,7 +948,7 @@ public class BBservlet extends HttpServlet {
             String receiver = request.getParameter("receiver");
             String message = request.getParameter("message");
 
-            //TODO mipws to itemid thelei int ? !!!
+
             String itemID = request.getParameter("itemID");
 
             String query = "INSERT INTO message VALUES(0, '" + message + "',"
@@ -1019,11 +1003,10 @@ public class BBservlet extends HttpServlet {
             session.setAttribute("cList", cList);
             Auction auction = Auction.getAuctionbyid(itemid);
 
-            //TODO mipws einai ligo vlaxiko na pigainei apo action se page xwris logo ?? XAXAXAXA
-            //response.sendRedirect("/BBservlet?action=auctionlist&username="+uname+"");
+
 
             request.setAttribute("auction",auction);
-            //request.setAttribute("username",uname);
+
             request.getRequestDispatcher("/seller/edit_auction.jsp").include(request, response);
         }
         else if (action.equals("do_edit_auction")) {
@@ -1072,14 +1055,6 @@ public class BBservlet extends HttpServlet {
 
             db.closeConnection();
 
-            //TODO thelei veltiwsh,den mporw na to steilw sto auctioinfo giati to exoume
-            //TODO kanei na pernaei pointer (psaxnei oli ti lista) kai oxi itemid
-//            if (i>0) {
-//                request.getRequestDispatcher("/seller/success_add.jsp").include(request, response);
-//            }
-//            else {
-//                request.getRequestDispatcher("/seller/fail_add.jsp").include(request, response);
-//            }
 
             response.sendRedirect("/BBservlet?action=auctionlist&page_num=1&username=" + seller);
 
@@ -1087,7 +1062,6 @@ public class BBservlet extends HttpServlet {
         }
         else if (action.equals("myprofile")) {
 
-            //TODO den kserw an xreiazontai giati to user einai hdh sto session
             String uname = request.getParameter("username");
             User user = User.getUser(uname);
             session.setAttribute("user", user);
@@ -1099,14 +1073,14 @@ public class BBservlet extends HttpServlet {
             ArrayList<Category> cList = Category.get_all_cat();
             request.setAttribute("cList", cList);
 
-//           Double[] auga = Recommendation.Similarity(132);
+
             request.getRequestDispatcher("/welcome/search.jsp").include(request, response);
 
         } else if(action.equals("guest_searchpage")){
             ArrayList<Category> cList = Category.get_all_cat();
             request.setAttribute("cList", cList);
 
-//           Double[] auga = Recommendation.Similarity(132);
+
             request.getRequestDispatcher("/welcome/search_guest.jsp").include(request, response);
         }else if(action.equals("auctions_unmarshall")){
             ServletContext context = request.getServletContext();
@@ -1132,7 +1106,7 @@ public class BBservlet extends HttpServlet {
             String file = context.getRealPath("/XMLfiles/"+filename);
 
 
-            //TODO edw allakse to bale kati diko sou
+
             File f = new File(file);
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
 
@@ -1166,7 +1140,6 @@ public class BBservlet extends HttpServlet {
                 itemIDs[i]=Integer.parseInt(checkboxValues[i]);
 
             }
-            //TODO edw allakse to bale kati diko sou
             File file = new File("C:\\Users\\kwnst\\Desktop\\custom3.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(xmlAuctions.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -1175,12 +1148,12 @@ public class BBservlet extends HttpServlet {
 
             xmlAuctions auctions = new xmlAuctions();
 
-            //TODO edw vale ena itemid pou na uparxei sth vasi
+
             auctions.getauctions( itemIDs );
 
             jaxbMarshaller.marshal(auctions, file);
 
-//            jaxbMarshaller.marshal(auctions, System.out);
+
 
             response.sendRedirect("/BBservlet?action=auctions_marsh&page_num="+page_num);
 
@@ -1198,14 +1171,15 @@ public class BBservlet extends HttpServlet {
 
             String uname = request.getParameter("username");
             int itemid = Integer.parseInt(request.getParameter("id"));
-
+            db.openConn();
             String start;
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
             start = dateFormat.format(date);
+            String query="UPDATE auction SET st='"+start+"' WHERE itemID='"+itemid+"'";
+            int i=db.executeUpdate(query);
 
-            db.openConn();
             db.closeConnection();
 
             response.sendRedirect("/BBservlet?action=auctionlist&page_num=1&username=" + uname);
@@ -1234,12 +1208,6 @@ public class BBservlet extends HttpServlet {
 
             db.closeConnection();
 
-//            System.out.println("##############################");
-//            System.out.println("total--" + total + "sizelist--" + pendlist.size());
-//            System.out.println("total--" + total + "sizelist--" + pendlist.size());
-//            System.out.println("total--" + total + "sizelist--" + pendlist.size());
-//
-//            System.out.println("##############################");
 
             ArrayList<Photo> photos = Photo.PhotoPerItem( pendlist );
             session.setAttribute("aList",pendlist);

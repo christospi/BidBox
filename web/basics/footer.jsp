@@ -9,22 +9,19 @@
 
 <footer class="footer-distributed">
     <div class="footer-right">
-        <a href="#"><i class="fa fa-facebook"></i></a>
-        <a href="#"><i class="fa fa-twitter"></i></a>
-        <a href="#"><i class="fa fa-linkedin"></i></a>
-        <a href="#"><i class="fa fa-github"></i></a>
+        <a href="https://facebook.com/"><i class="fa fa-facebook"></i></a>
+        <a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+        <a href="https://www.linkedin.com/uas/login"><i class="fa fa-linkedin"></i></a>
+        <a href="https://github.com/christospi/BidBox"><i class="fa fa-github"></i></a>
+        <br>
+        <br>
 
+        <img src="./../img/credits.png" class="img-responsive" style="max-width:160px; max-height:220px;" alt="Image">
     </div>
 
     <div class="footer-left">
 
         <p class="footer-links">
-            <a href="#">Home</a>
-            ·
-            <a href="#">Blog</a>
-            ·
-            <a href="#">Pricing</a>
-            ·
             <a href="#">About</a>
             ·
             <a href="#">Faq</a>
@@ -32,7 +29,8 @@
             <a href="#">Contact</a>
         </p>
 
-        <p>Company Name &copy; 2015</p>
+        <p>Developed by Chris&Kons &copy; 2016</p>
+
     </div>
 
 </footer><!--End footer 2-->
